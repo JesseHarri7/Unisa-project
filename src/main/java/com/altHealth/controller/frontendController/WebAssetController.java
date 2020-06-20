@@ -1,9 +1,9 @@
-package com.altHealth.controller;
+package com.altHealth.controller.frontendController;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@RequestMapping(value = "/pages/")
+//@RequestMapping(value = "/pages/")
 @Controller
 public class WebAssetController 
 {

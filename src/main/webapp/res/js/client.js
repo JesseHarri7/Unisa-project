@@ -6,11 +6,8 @@ $(document).ready(function()
 	//All data fields on start up
 	findAll();
 	
-	//Show button if there is data in the local storage
-	showBtn();
-	
-	//Show button to assign if reassign is selected
-	showAssignBtn();
+	//Add temps html files
+	includeHTML();
 	
 	//find all
 	function findAll()
@@ -30,7 +27,7 @@ $(document).ready(function()
 	}	
 	
 	//Select
-	$('#emp-table tbody').on('click','tr', function()
+	$('#client-table tbody').on('click','tr', function()
 	{
 		$(this).toggleClass('selected');
 		
@@ -45,94 +42,7 @@ $(document).ready(function()
             $(this).addClass('selected');
             $('#setEmp-btn').prop('disabled', false);
         }*/
-	} );
-	
-	//Delete
-	$('#delete-btn').click(function(event) 
-	{
-		var table = $('#emp-table').DataTable();
-		remove();
-		
-		table.row('.selected').remove().draw( false );
-		
-	});
-	
-	//Clear local storage to cancel assign 
-	$('#cancel-btn').click(function(event) 
-	{
-		resetLocal();
-	});
-	
-	//Clear local storage
-	$('#clear-btn').click( function()
-	{
-		localStorage.removeItem('asset');
-		localStorage.removeItem('emp');
-		alert("Cleared");
-	})
-	
-	//select Employee 
-	$('#setEmp-btn').click( function () 
-	{	
-		var table = $('#emp-table').DataTable();
-		var empData = table.rows( '.selected' ).data();
-		if(empData.length == 0)
-		{
-			alert("Please select an employee to assign to an asset");
-			
-		}
-		else if(empData.length >= 2)
-		{
-			alert("Please only select one employee");
-		}
-		else
-		{
-			asset = JSON.parse(localStorage.getItem('asset0'));
-			if(asset)
-			{
-				//Create asset assigned table if there is asset data
-				selectEmp();
-				assign();
-			}
-			else
-			{
-				//Send to asset table if there is no asset data
-				clearLocal();
-				selectEmp();
-				window.location = "/assetManagement/pages/asset";
-				//alert("Please select an asset to assign to the selected employee");
-			}
-		}
-			
-    } );
-	
-
-	//select Employee for reassign
-	$('#reassign-btn').click( function () 
-	{	
-		var assign = JSON.parse(localStorage.getItem('assign'));
-			
-		var table = $('#emp-table').DataTable();
-		var empData = table.rows( '.selected' ).data();
-		if(empData.length == 0)
-		{
-			alert("Please select an employee to reassign to an asset");
-		}
-		else if(empData.length >= 2)
-		{
-			alert("Please only select one employee");
-		}
-		else
-		{			
-			//Save new reassignment
-			selectEmp();
-			reassignAsset();
-			localStorage.clear();
-			
-		}
-				
-    } );
-	
+	} );	
 	
 	function clientList(dataSet)
 	{
@@ -147,6 +57,7 @@ $(document).ready(function()
 				{data: 'cTelH'},
 				{data: 'cTelW'},
 				{data: 'cTelCell'},
+				{data: 'cEmail'},
 				{data: 'referenceId'}
 			]
 		});
@@ -154,236 +65,156 @@ $(document).ready(function()
 		return clientTable;
 	}
 	
-	function remove()
+	//Create button
+	$('#create-btn').click(function(event) 
 	{
-		var table = $('#emp-table').DataTable();
-
-		var rowToDelete = table.row( '.selected' ).data();
+		//Clear form red border css
+		clearFormBorder();
 		
-		if (rowToDelete)
-		{
-			$.ajax({
-				url:"/assetManagement/employee/delete/" + rowToDelete.employeeID, 
-				dataType: "json",
-				type: "DELETE",
-				success: alert("Asset " + rowToDelete.employeeID + " was removed")
-			});
-			
-			table.row('.selected').remove().draw( false );
-		}
-		else
-		{
-			alert("Please select a asset to remove");
-		}
+		//Clear form content if any
+		document.getElementById("create").reset();
 		
-	}
+		$('.notifyjs-corner').remove();
+	});
 	
-	function selectEmp()
+	//Modal form create button
+	$('#form-create-btn').click(function(event) 
 	{
-		var table = $('#emp-table').DataTable();
-		var empData = table.row( '.selected' ).data();
+		//Clear form red border css
+		clearFormBorder();
+		$('.notifyjs-corner').remove();
 		
-		if(empData)
-		{
-			localStorage.setItem('emp', JSON.stringify(empData));
-			
-//			var asset = JSON.parse(localStorage.getItem('asset'));
-			
-//			localStorage.removeItem('asset');
-		}
-		else
-		{
-			alert("Please select a employee");
-		}
-	}
+		//Check to see if all fields are filled in
+		//if(validate())
+		//{
+			//if all fields are filled then create asset
+			create();
+		//}
+	});
 	
-	function assign()
+	function create()
 	{
-		createTable();
-		if(count > 0)
-		{
-			alert("Data successfully assigned");
-			window.location = "/assetManagement/pages/assetAssigned";
-		}
-
-		clearLocal();
-		$('#cancel-btn').hide();
-	}
-	
-	function reassignAsset()
-	{
-		assign = JSON.parse(localStorage.getItem('assign'));
-		emp = JSON.parse(localStorage.getItem('emp'));
+		dataSet = [];
+		var table = $('#client-table').DataTable();
 		
-		var asset = assign.assets;
-		var id = assign.id;
+		var clientId = $('#id').val();
+		var cName = $('#cName').val();
+		var cSurname = $('#cSurname').val();
+		var cEmail = $('#cEmail').val();
+		var cTelH = $('#cTelH').val();
+		var cTelW = $('#cTelW').val();
+		var cTelCell = $('#cTelCell').val();
+		var referenceId = $('#refId').val();
 		
-		if(asset && emp)
-		{
-			var assetAssigned = {assets: asset, employees: emp};
-			
-			var today = new Date();
-			var dd = today.getDate();
-			var mm = today.getMonth()+1; 
-			var yyyy = today.getFullYear();
-			
-			today = dd + '-' + mm + '-' + yyyy;
-			assetAssigned.moveDate = today;
-			assetAssigned.id = id;
-			//assetAssigned.moveDate = new Date(dd,mm,yyyy);
+		//Set as object
+		var client = {clientId, cName, cSurname, cEmail, cTelH, cTelW: cTelCell, referenceId};
 		
-			var data_json = JSON.stringify(assetAssigned);
-	
+		//Translate so that JSON can read it
+		var data_json = JSON.stringify(client);
+		
+		//Before creating, first check to see if the asset already exists
+		//var exists = findId(assetCode);
+		
+		//if(exists.length == 0)
+		//{
 			$.ajax(
 			{
 				headers: {
 			        'Accept': 'application/json',
-			        'Content-Type': 'application/json'
+			        'Content-Type': 'application/json' 
 			    },
-				url:"/assetManagement/assetAssigned/update",
+				url:"/altHealth/client/formCreateBtn", 
 				dataType: "json",
 				data: data_json,
-				type: "PUT",
+				type: "POST",
 				success: success()
 			});
 			function success()
 			{
-				alert("Data successfully assigned");
-				window.location = "/assetManagement/pages/assetAssigned";
-			}		
+				$.notify("Success! Asset " + clientId + " has been created.", "success");
 				
-		}
-		else
-		{
-			alert("Neither an asset or employee was selected");
-		}
-	}
-	
-	function createTable()
-	{
-		var assetStorage = localStorage.length - 1;
-		
-		asset = JSON.parse(localStorage.getItem('asset0'));
-		emp = JSON.parse(localStorage.getItem('emp'));
-		
-		if(asset && emp)
-		{
-			for(i = 0; i < assetStorage; i++)
-			{
-				asset = JSON.parse(localStorage.getItem('asset' + [i]));
-				var assetSet = alreadySet(asset.assetCode);
-				if(assetSet)
-				{
-					alert("Asset " + asset.assetCode + " is already assigned to employee " + assetSet.employees.employeeID);
-				}
-				else
-				{
-					count++;
-					var assetAssigned = {assets: asset, employees: emp};
-					
-					var today = new Date();
-					var dd = today.getDate();
-					var mm = today.getMonth()+1; 
-					var yyyy = today.getFullYear();
-					
-					today = dd + '-' + mm + '-' + yyyy;
-					assetAssigned.moveDate = today;
-					//assetAssigned.moveDate = new Date(dd,mm,yyyy);
+//				displayAlertT("Asset " + assetCode + " has been created.", "success", "Success!");
 				
-					var data_json = JSON.stringify(assetAssigned);
-			
-					$.ajax(
-					{
-						headers: {
-					        'Accept': 'application/json',
-					        'Content-Type': 'application/json'
-					    },
-						url:"/assetManagement/assetAssigned/create",
-						dataType: "json",
-						data: data_json,
-						type: "POST"
-					});
-				}
+				//alert("Asset " + assetCode + " has been created") + table.row.add(asset).draw()
+				
+				//table.row.add(asset).draw()
 			}
-				
-		}
-		else
-		{
-			alert("Neither an asset or employee was selected");
-		}
-	}
-	
-	function clearLocal()
-	{
-		if(asset)
-		{
-			var assetStorage = localStorage.length - 1;
-		}
-		else
-		{
-			var assetStorage = localStorage.length;
-		}
-		
-		for(i = 0; i < assetStorage; i++)
-		{
-			localStorage.removeItem('asset' + [i]);
-		}
-		
-		localStorage.removeItem('emp');
-	}
-	
-	function resetLocal()
-	{
-		localStorage.clear();
-		alert("Assigning successfully canceled");
-		$('#cancel-btn').removeClass('visible');
-		$('#reassign-btn').hide();
-	}
-	
-	//Make cancel button visible
-	function showBtn()
-	{
-		if(localStorage.length > 0)
-		{
-			$('#cancel-btn').addClass('visible');
-		}
-	}
-	
-	function showAssignBtn()
-	{
-		var assign = JSON.parse(localStorage.getItem('assign'));
-		
-		if(assign)
-		{
-			$('#reassign-btn').addClass('visible-r');
-		}
-	}
-	
-	function alreadySet(id)
-	{
-		var dataSetA = [];
+			
+			//Clear data from the modal form
+			document.getElementById("create").reset();
+			$('#createModal').modal('hide');
+		//}
+		//else
+		//{
+		//	$.notify("Error! The Asset " + assetCode + " you're trying to create already exists.", "error");
+			
+//			displayAlertT("The Asset " + assetCode + " you're trying to create already exists.", "danger", "Error!");
 
-		$.ajax({
-			url:"/assetManagement/assetAssigned/findAllAsset/" + id,
-			async: false,
-			dataType: "json",
-			type: "GET",
-			success: function(data)
-			{
-				dataSetA = data
-			},
-			error: dataSetA = null
-		});
-		
-		if(dataSetA)
-		{
-			return dataSetA;
-		}
-		else
-		{
-			return false;
-		}
+			//alert("The Asset "+ assetCode + " you're trying to create already exists");
+		//}
 
+	}
+	
+	function clearFormBorder()
+	{
+		//create form
+		$('#id').removeClass("form-fill-error");
+		$('#name').removeClass("form-fill-error");
+		$('#type').removeClass("form-fill-error");
+		$('#brand').removeClass("form-fill-error");
+		$('#datePurchased').removeClass("form-fill-error");
+		
+		//Update form
+		$('#uId').removeClass("form-fill-error");
+		$('#uName').removeClass("form-fill-error");
+		$('#uType').removeClass("form-fill-error");
+		$('#uBrand').removeClass("form-fill-error");
+		$('#uDatePurchased').removeClass("form-fill-error");
+	}
+	
+	function includeHTML() 
+	{
+		  var z, i, elmnt, file, xhttp;
+		  /*loop through a collection of all HTML elements:*/
+		  z = document.getElementsByTagName("*");
+		  for (i = 0; i < z.length; i++) 
+		  {
+		    elmnt = z[i];
+		    /*search for elements with a certain atrribute:*/
+		    file = elmnt.getAttribute("w3-include-html");
+		    if (file) 
+		    {
+		      /*make an HTTP request using the attribute value as the file name:*/
+		      xhttp = new XMLHttpRequest();
+		      xhttp.onreadystatechange = function() 
+		      {
+		        if (this.readyState == 4) 
+		        {
+		          if (this.status == 200) {elmnt.innerHTML = this.responseText;}
+		          if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
+		          /*remove the attribute, and call this function once more:*/
+		          elmnt.removeAttribute("w3-include-html");
+		          includeHTML();
+		        }
+		      }
+		      xhttp.open("GET", file, true);
+		      xhttp.send();
+		      /*exit the function:*/
+		      return;
+		    }
+		  }
+		  showActiveNav();
+	}
+	
+	function showActiveNav()
+	{
+		$('#aNav').addClass('active');
+		/*var url = window.location.pathname;
+		
+		if(url == "/assetManagement/pages/asset")
+		{
+			$('#aNav').addClass('active');
+		}*/
 	}
 
 });
