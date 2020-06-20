@@ -13,6 +13,12 @@ public class WebAssetController
 		return "/pages/Client.html";
 	}
 	
+	@RequestMapping(value = "supplier")
+    public String supplier() 
+	{
+		return "/pages/Supplier.html";
+	}
+	
 	/*@RequestMapping(value = "/assetManagement/error")
     public String Error403() 
 	{
