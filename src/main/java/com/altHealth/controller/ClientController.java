@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.altHealth.activity.ClientActiviy;
 import com.altHealth.entity.Client;
 import com.altHealth.service.ClientService;
 
@@ -17,6 +18,8 @@ public class ClientController implements Controller<Client, String>{
 
 	@Autowired
 	ClientService service;
+	@Autowired
+	ClientActiviy activity;
 
 	@Override
 	public Client findById(String id) {
@@ -34,10 +37,9 @@ public class ClientController implements Controller<Client, String>{
 	}
 
 	@Override
-	//Find All
-	@RequestMapping(value = "findAll", method = RequestMethod.GET)
 	public List<Client> findAll() {
-		return service.readAll();
+//		return service.readAll();
+		return activity.findAll();
 	}
 
 	@Override

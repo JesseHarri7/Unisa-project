@@ -127,18 +127,17 @@ $(document).ready(function()
 				dataType: "json",
 				data: data_json,
 				type: "POST",
-				success: success()
+				success: function(response)
+				{
+	//				$.notify("Success! Asset " + clientId + " has been created.", "success");
+					$.notify("Success! Returned message: " + response.msg, "success");
+	//				displayAlertT("Asset " + assetCode + " has been created.", "success", "Success!");
+					
+					//alert("Asset " + assetCode + " has been created") + table.row.add(asset).draw()
+					
+					//table.row.add(asset).draw()
+				}
 			});
-			function success()
-			{
-				$.notify("Success! Asset " + clientId + " has been created.", "success");
-				
-//				displayAlertT("Asset " + assetCode + " has been created.", "success", "Success!");
-				
-				//alert("Asset " + assetCode + " has been created") + table.row.add(asset).draw()
-				
-				//table.row.add(asset).draw()
-			}
 			
 			//Clear data from the modal form
 			document.getElementById("create").reset();
