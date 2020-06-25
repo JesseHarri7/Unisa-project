@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Supplier</title>
+	
+	<!--CSS links -->
+	<link rel="icon" type="image/png" href="../res/images/icons/S-favicon.png" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<link rel="stylesheet"
+		href="http://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
+	<link rel="stylesheet" href="../res/css/styles.css" />
+</head>
+<body>
+
+	<div w3-include-html="../pages/temps/header.html"></div>
+	<div w3-include-html="../pages/temps/nav.html"></div>
+
+	<div id="nav-buttons">
+		<input type="button" value="Create" id="create-btn" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
+		<input type="button" value="Edit" id="edit-btn" class="btn btn-primary" data-target="#updateModal">
+		<input type="button" value="Remove" id="delete-btn" class="btn btn-primary">
+	</div>
+	
+	<!--Table -->
+	<div class="table-width-outter">
+		<div class="table-width-inner">
+			<table class="display" id="client-table" style="width:100%">
+				<thead>
+					<tr>
+						<th>Tel number</th>
+						<th>Email</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+	<!-- Emp-create modal view -->
+	<!-- Create Modal -->
+	<div class="modal fade" id="createModal" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="modal-title">Add Supplier</h2>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<form name="create" id="create">
+					
+						<div class="form-group">
+							<label for="supplierId">Supplier ID:</label> <input type="text"
+								class="form-control" id="id" placeholder="Enter Supplier ID" required>
+						</div>
+						
+						<div class="form-group">
+							<label for="contactPerson">Contact Person:</label> <input type="text"
+								class="form-control" id="contactPerson" 
+								placeholder="Enter contact person" required>
+						</div>
+						
+						<div class="form-group">
+							<label for="supplierEmail">Email:</label> <input type="text"
+								class="form-control" id="supplierEmail" 
+								placeholder="Enter email" required>
+						</div>
+						
+						<div class="form-group">
+							<label for="supplierTel">Tel number:</label> <input type="text"
+								class="form-control" id="supplierTel" 
+								placeholder="Enter tel number" required>
+						</div>
+						
+						<div class="form-group">
+							<label for="supplierBankNum">Supplier bank number:</label> <input type="text"
+								class="form-control" id="supplierBankNum" 
+								placeholder="Enter supplier bank number" required>
+						</div>
+						
+						<div class="form-group">
+							<label for="supplierTypeBankAccount">Supplier account:</label> <input type="text"
+								class="form-control" id="supplierTypeBankAccount" 
+								placeholder="Enter supplier type bank account" required>
+						</div>
+
+						<div class="form-group">
+							<label for="bank">Bank:</label> <input type="text"
+								class="form-control" id="bank" 
+								placeholder="Enter bank" required>
+						</div>	
+
+						<div class="form-group">
+							<label for="bankCode">Bank code:</label> <input type="text"
+								class="form-control" id="bankCode" 
+								placeholder="Enter bank code" required>
+						</div>							
+						
+						<!-- <button type="submit" class="btn btn-default">Submit</button> -->
+					</form>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="form-create-btn">Save</button>
+						<button type="button" class="btn btn-secondary" id="form-close-btn" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div w3-include-html="../pages/temps/footer.html"></div>
+	
+	<!--scripts -->
+	<script src="../res/js/plugins/jquery-3.5.1.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	<script src="http://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+	<script src="../res/js/plugins/notify.js"></script>
+	<script src="../res/js/client.js"></script>
+</body>
+</html>
