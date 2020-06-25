@@ -80,16 +80,19 @@ $(document).ready(function()
 	//Modal form create button
 	$('#form-create-btn').click(function(event) 
 	{
+		var id = document.forms["create"]["id"].value;
 		//Clear form red border css
 		clearFormBorder();
 		$('.notifyjs-corner').remove();
 		
-		//Check to see if all fields are filled in
-		//if(validate())
-		//{
-			//if all fields are filled then create asset
-			create();
-		//}
+		var requiredFields = validateEmptyFields();
+		
+		if(requiredFields){
+			//Validate ID field
+			if(validateId(id)) {
+				create();
+			}
+		}
 	});
 	
 	function create()
@@ -104,10 +107,12 @@ $(document).ready(function()
 		var cTelH = $('#cTelH').val();
 		var cTelW = $('#cTelW').val();
 		var cTelCell = $('#cTelCell').val();
+		var address = $('#address').val();
+		var code = $('#code').val();
 		var referenceId = $('#refId').val();
 		
 		//Set as object
-		var client = {clientId, cName, cSurname, cEmail, cTelH, cTelW: cTelCell, referenceId};
+		var client = {clientId, cName, cSurname, cEmail, cTelH, cTelW, cTelCell, address, code, referenceId};
 		
 		//Translate so that JSON can read it
 		var data_json = JSON.stringify(client);
@@ -127,32 +132,118 @@ $(document).ready(function()
 				dataType: "json",
 				data: data_json,
 				type: "POST",
-				success: success()
+				success: function(response)
+				{
+					if(response.status == "true") {
+						$.notify(response.msg, "success");
+					
+						table.row.add(client).draw()
+						
+						//Clear data from the modal form
+						document.getElementById("create").reset();
+						$('#createModal').modal('hide');
+					}else {
+						for (x of response.result) {
+							$.notify(x, "error");
+						}
+						
+						for (x of response.idTags) {
+							$(x).addClass("form-fill-error");
+						}
+					}
+				},
+				error : function(e) {
+					console.log("ERROR: ", e);
+					$.notify("Status 405", "error");
+				}
 			});
-			function success()
-			{
-				$.notify("Success! Asset " + clientId + " has been created.", "success");
-				
-//				displayAlertT("Asset " + assetCode + " has been created.", "success", "Success!");
-				
-				//alert("Asset " + assetCode + " has been created") + table.row.add(asset).draw()
-				
-				//table.row.add(asset).draw()
-			}
-			
-			//Clear data from the modal form
-			document.getElementById("create").reset();
-			$('#createModal').modal('hide');
-		//}
-		//else
-		//{
-		//	$.notify("Error! The Asset " + assetCode + " you're trying to create already exists.", "error");
-			
-//			displayAlertT("The Asset " + assetCode + " you're trying to create already exists.", "danger", "Error!");
 
-			//alert("The Asset "+ assetCode + " you're trying to create already exists");
-		//}
-
+	}
+	
+	function validateId(id) {
+		var valid;
+		var numbers = /^[0-9]+$/;
+		var idLength = 13;
+		
+		if(id.match(numbers)) {
+			valid = true;
+		}else {
+			$.notify("Heads up! Please input numeric characters only.", "error");
+			$('#id').addClass("form-fill-error");
+			valid = false;
+		}
+		
+		if(id.length != idLength) {
+			$.notify("Heads up! Please input 13 characters.", "error");
+			$('#id').addClass("form-fill-error");
+			valid = false;
+		}
+		
+		return valid;
+	}
+	
+	function validateEmptyFields()
+	{
+		var id = document.forms["create"]["id"].value;
+		var cName = document.forms["create"]["cName"].value;
+		var cSurname = document.forms["create"]["cSurname"].value;
+		var cEmail = document.forms["create"]["cEmail"].value;
+		var cTelH = document.forms["create"]["cTelH"].value;
+		var cTelW = document.forms["create"]["cTelW"].value;
+		var cTelCell = document.forms["create"]["cTelCell"].value;
+		
+		if (id == "" || cName == "" || cSurname == "" || cEmail == "" || cTelH == "" || cTelW == "" || cTelCell == "") {
+			displayFormBorder(id, cName, cSurname, cEmail, cTelH, cTelW, cTelCell);
+			$.notify("Heads up! All fields must be filled out.", "error");
+			return false;
+		}else {
+			return true;
+		}	
+	}
+	
+	function displayFormBorder(id, cName, cSurname, cEmail, cTelH, cTelW, cTelCell)
+	{
+		if(!id)
+		{
+			$('#id').addClass("form-fill-error");
+			$('#uId').addClass("form-fill-error");
+		}	
+		
+		if(!cName)
+		{
+			$('#cName').addClass("form-fill-error");
+			//$('#uName').addClass("form-fill-error");
+		}
+		
+		if(!cSurname)
+		{
+			$('#cSurname').addClass("form-fill-error");
+			//$('#uSurname').addClass("form-fill-error");
+		}
+		
+		if(!cEmail)
+		{
+			$('#cEmail').addClass("form-fill-error");
+			//$('#uEmail').addClass("form-fill-error");
+		}
+		
+		if(!cTelH)
+		{
+			$('#cTelH').addClass("form-fill-error");
+			//$('#uDateStart').addClass("form-fill-error");
+		}
+		
+		if(!cTelW)
+		{
+			$('#cTelW').addClass("form-fill-error");
+			//$('#uDateStart').addClass("form-fill-error");
+		}
+		
+		if(!cTelCell)
+		{
+			$('#cTelCell').addClass("form-fill-error");
+			//$('#uDateStart').addClass("form-fill-error");
+		}
 	}
 	
 	function clearFormBorder()

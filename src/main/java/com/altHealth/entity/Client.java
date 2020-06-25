@@ -6,12 +6,14 @@ package com.altHealth.entity;
  * and open the template in the editor.
  */
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.SQLDelete;
 
@@ -66,6 +68,9 @@ public class Client implements Serializable
 	
 	@Column(name = "Term_date")
 	private String termDate;
+	
+	@Transient
+	List<String> errorList;
 
 	public Client() {
 	}
@@ -183,6 +188,14 @@ public class Client implements Serializable
 
 	public void setTermDate(String termDate) {
 		this.termDate = termDate;
+	}
+
+	public List<String> getErrorList() {
+		return errorList;
+	}
+
+	public void setErrorList(List<String> errorList) {
+		this.errorList = errorList;
 	}
 
 	@Override
