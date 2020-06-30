@@ -6,6 +6,8 @@ $(document).ready(function()
 	//All data fields on start up
 	findAll();
 	
+	populateRefDropDown();
+	
 	//Add temps html files
 	includeHTML();
 	
@@ -63,6 +65,23 @@ $(document).ready(function()
 		});
 		
 		return clientTable;
+	}
+	
+	function populateRefDropDown(){
+		$.ajax({
+			url:"/altHealth/reference/findAll", 
+			dataType: "json",
+			type: "GET",
+			success: function(data)
+			{
+				var li="";
+				for (ref of data) {
+					li+='<option>'+ref.description+'</option>';
+				}
+				
+				$('#refId').append(li);
+			}
+		});
 	}
 	
 	//Create button
@@ -182,31 +201,29 @@ $(document).ready(function()
 		return valid;
 	}
 	
-	function validateEmptyFields()
-	{
+	function validateEmptyFields() {
 		var id = document.forms["create"]["id"].value;
 		var cName = document.forms["create"]["cName"].value;
 		var cSurname = document.forms["create"]["cSurname"].value;
 		var cEmail = document.forms["create"]["cEmail"].value;
-		var cTelH = document.forms["create"]["cTelH"].value;
-		var cTelW = document.forms["create"]["cTelW"].value;
-		var cTelCell = document.forms["create"]["cTelCell"].value;
+		var address = document.forms["create"]["address"].value;
+		var code = document.forms["create"]["code"].value;
+		//var cTelCell = document.forms["create"]["cTelCell"].value;
 		
-		if (id == "" || cName == "" || cSurname == "" || cEmail == "" || cTelH == "" || cTelW == "" || cTelCell == "") {
-			displayFormBorder(id, cName, cSurname, cEmail, cTelH, cTelW, cTelCell);
-			$.notify("Heads up! All fields must be filled out.", "error");
+		if (id == "" || cName == "" || cSurname == "" || cEmail == "" || address == "" || code == "") {
+			displayFormBorder(id, cName, cSurname, cEmail, address, code);
+			$.notify("Heads up! All required fields must be filled out.", "error");
 			return false;
 		}else {
 			return true;
 		}	
 	}
 	
-	function displayFormBorder(id, cName, cSurname, cEmail, cTelH, cTelW, cTelCell)
-	{
+	function displayFormBorder(id, cName, cSurname, cEmail, address, code) {
 		if(!id)
 		{
 			$('#id').addClass("form-fill-error");
-			$('#uId').addClass("form-fill-error");
+			//$('#uId').addClass("form-fill-error");
 		}	
 		
 		if(!cName)
@@ -227,33 +244,39 @@ $(document).ready(function()
 			//$('#uEmail').addClass("form-fill-error");
 		}
 		
-		if(!cTelH)
+		if(!address)
 		{
-			$('#cTelH').addClass("form-fill-error");
+			$('#address').addClass("form-fill-error");
 			//$('#uDateStart').addClass("form-fill-error");
 		}
 		
-		if(!cTelW)
+		if(!code)
 		{
-			$('#cTelW').addClass("form-fill-error");
+			$('#code').addClass("form-fill-error");
 			//$('#uDateStart').addClass("form-fill-error");
 		}
 		
-		if(!cTelCell)
+/*		if(!cTelCell)
 		{
 			$('#cTelCell').addClass("form-fill-error");
 			//$('#uDateStart').addClass("form-fill-error");
 		}
+*/
 	}
 	
 	function clearFormBorder()
 	{
 		//create form
 		$('#id').removeClass("form-fill-error");
-		$('#name').removeClass("form-fill-error");
-		$('#type').removeClass("form-fill-error");
-		$('#brand').removeClass("form-fill-error");
-		$('#datePurchased').removeClass("form-fill-error");
+		$('#cName').removeClass("form-fill-error");
+		$('#cSurname').removeClass("form-fill-error");
+		$('#cEmail').removeClass("form-fill-error");
+		$('#cTelH').removeClass("form-fill-error");
+		$('#cTelW').removeClass("form-fill-error");
+		$('#cTelCell').removeClass("form-fill-error");
+		$('#address').removeClass("form-fill-error");
+		$('#code').removeClass("form-fill-error");
+		$('#refId').removeClass("form-fill-error");
 		
 		//Update form
 		$('#uId').removeClass("form-fill-error");

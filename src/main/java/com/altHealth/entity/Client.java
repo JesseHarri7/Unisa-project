@@ -10,7 +10,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -27,9 +26,6 @@ public class Client implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	@GeneratedValue
-	private Long Id;
 	
 	@Id
 	@Column(name = "Client_Id")
@@ -85,14 +81,6 @@ public class Client implements Serializable
 		this.referenceId = refId;
 
 	}	
-
-	public Long getId() {
-		return Id;
-	}
-
-	public void setId(Long id) {
-		Id = id;
-	}
 
 	public String getClientId() {
 		return clientId;
@@ -200,7 +188,7 @@ public class Client implements Serializable
 
 	@Override
 	public String toString() {
-		return "Client [Id=" + Id + ", clientId=" + clientId + ", cName=" + cName + ", cSurname=" + cSurname
+		return "Client [clientId=" + clientId + ", cName=" + cName + ", cSurname=" + cSurname
 				+ ", address=" + address + ", code=" + code + ", cTelH=" + cTelH + ", cTelW=" + cTelW + ", cTelCell="
 				+ cTelCell + ", cEmail=" + cEmail + ", referenceId=" + referenceId + ", state=" + state + ", termDate="
 				+ termDate + "]";

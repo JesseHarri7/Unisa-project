@@ -36,7 +36,13 @@ public class ClientActivityService implements ClientActiviy{
 		boolean isValidDateFormat = validation.DateFormatValidation(ModelMappings.DATE_FORMAT, first6, errorList, idTagList);
 		boolean isValidID = validation.SAIdNumberValidation(client.getClientId(), errorList, idTagList);
 		
-		if(isValidDateFormat && isValidID) {
+		//Validate email
+		boolean isValidEmail = validation.emailValidation(client.getcEmail(), errorList, idTagList);
+		
+		//Validate tel number format
+		boolean isValidTelNum = validation.telNumValidation(client.getcTelH(), client.getcTelW(), client.getcTelCell(), errorList, idTagList);
+		
+		if(isValidDateFormat && isValidID && isValidEmail && isValidTelNum) {
 			service.create(client);
 		}
 		
