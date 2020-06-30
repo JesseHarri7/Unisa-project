@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -20,9 +19,6 @@ public class Supplement implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	@GeneratedValue
-	private Long Id;
 	
 	@Id
 	@Column(name = "Supplement_Id")
@@ -68,14 +64,6 @@ public class Supplement implements Serializable
 		this.minLevels = minLevels;
 		this.currentStockLevels = currentStockLevels;
 		this.nappiCode = nappiCode;
-	}
-
-	public Long getId() {
-		return Id;
-	}
-
-	public void setId(Long id) {
-		Id = id;
 	}
 
 	public String getSupplementId() {
@@ -160,7 +148,7 @@ public class Supplement implements Serializable
 
 	@Override
 	public String toString() {
-		return "Supplement [Id=" + Id + ", supplementId=" + supplementId + ", supplierId=" + supplierId
+		return "Supplement [supplementId=" + supplementId + ", supplierId=" + supplierId
 				+ ", supplementDescription=" + supplementDescription + ", costExcl=" + costExcl + ", costIncl="
 				+ costIncl + ", minLevels=" + minLevels + ", currentStockLevels=" + currentStockLevels + ", nappiCode="
 				+ nappiCode + ", state=" + state + ", termDate=" + termDate + "]";

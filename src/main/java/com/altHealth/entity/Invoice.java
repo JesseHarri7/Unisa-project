@@ -5,7 +5,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -23,9 +22,6 @@ public class Invoice implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	@GeneratedValue
-	private Long Id;
 	
 	@Id
 	@Column(name = "Inv_Num")
@@ -65,14 +61,6 @@ public class Invoice implements Serializable
 		this.invPaid = invPaid;
 		this.invPaidDate = invPaidDate;
 		this.comments = comments;
-	}
-
-	public Long getId() {
-		return Id;
-	}
-
-	public void setId(Long id) {
-		Id = id;
 	}
 
 	public String getInvNum() {
@@ -141,7 +129,7 @@ public class Invoice implements Serializable
 
 	@Override
 	public String toString() {
-		return "Invoice [Id=" + Id + ", invNum=" + invNum + ", clientId=" + clientId + ", invDate=" + invDate
+		return "Invoice [invNum=" + invNum + ", clientId=" + clientId + ", invDate=" + invDate
 				+ ", invPaid=" + invPaid + ", invPaidDate=" + invPaidDate + ", comments=" + comments + ", state="
 				+ state + ", termDate=" + termDate + "]";
 	}

@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -20,9 +19,6 @@ public class InvoiceItem implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	@GeneratedValue
-	private Long Id;
 	
 	@Id
 	@Column(name = "Inv_Num")
@@ -53,14 +49,6 @@ public class InvoiceItem implements Serializable
 		this.supplementId = supplementId;
 		this.itemPrice = itemPrice;
 		this.itemQuantity = itemQuantity;
-	}
-
-	public Long getId() {
-		return Id;
-	}
-
-	public void setId(Long id) {
-		Id = id;
 	}
 
 	public String getInvNum() {
@@ -113,7 +101,7 @@ public class InvoiceItem implements Serializable
 
 	@Override
 	public String toString() {
-		return "InvoiceItem [Id=" + Id + ", invNum=" + invNum + ", supplementId=" + supplementId + ", itemPrice="
+		return "InvoiceItem [invNum=" + invNum + ", supplementId=" + supplementId + ", itemPrice="
 				+ itemPrice + ", itemQuantity=" + itemQuantity + ", state=" + state + ", termDate=" + termDate + "]";
 	}
 	

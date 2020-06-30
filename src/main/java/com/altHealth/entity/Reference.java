@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -17,9 +16,6 @@ public class Reference implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	@GeneratedValue
-	private Long Id;
 	
 	@Id
 	@Column(name = "Reference_Id")
@@ -34,14 +30,6 @@ public class Reference implements Serializable
 	public Reference(String referenceId, String description) {
 		this.referenceId = referenceId;
 		this.description = description;
-	}
-
-	public Long getId() {
-		return Id;
-	}
-
-	public void setId(Long id) {
-		Id = id;
 	}
 
 	public String getReferenceId() {
@@ -62,7 +50,7 @@ public class Reference implements Serializable
 
 	@Override
 	public String toString() {
-		return "Reference [Id=" + Id + ", referenceId=" + referenceId + ", description=" + description + "]";
+		return "Reference [referenceId=" + referenceId + ", description=" + description + "]";
 	}
 		
 	

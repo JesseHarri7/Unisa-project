@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -20,9 +19,6 @@ public class Supplier implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	@GeneratedValue
-	private Long Id;
 	
 	@Id
 	@Column(name = "Supplier_Id")
@@ -68,14 +64,6 @@ public class Supplier implements Serializable
 		this.bankCode = bankCode;
 		this.supplierBankNum = supplierBankNum;
 		this.supplierTypeBankAccount = supplierTypeBankAccount;
-	}
-
-	public Long getId() {
-		return Id;
-	}
-
-	public void setId(Long id) {
-		Id = id;
 	}
 
 	public String getSupplierId() {
@@ -160,7 +148,7 @@ public class Supplier implements Serializable
 
 	@Override
 	public String toString() {
-		return "Supplier [Id=" + Id + ", supplierId=" + supplierId + ", contactPerson=" + contactPerson
+		return "Supplier [supplierId=" + supplierId + ", contactPerson=" + contactPerson
 				+ ", supplierTel=" + supplierTel + ", supplierEmail=" + supplierEmail + ", bank=" + bank + ", bankCode="
 				+ bankCode + ", supplierBankNum=" + supplierBankNum + ", supplierTypeBankAccount="
 				+ supplierTypeBankAccount + ", state=" + state + ", termDate=" + termDate + "]";
