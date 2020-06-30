@@ -25,4 +25,14 @@ public class ModelMappings {
 	public final static String SUPPLIER_bankCode = "#bankCode";
 	public final static String SUPPLIER_supplierBankNum = "#supplierBankNum";
 	public final static String SUPPLIER_supplierTypeBankAccount = "#supplierTypeBankAccount";
+	
+	//Supplement
+	public final static String SUPPLEMENT_supplementId = "#id";
+	public final static String SUPPLEMENT_supplierId = "#supplierId";
+	public final static String SUPPLEMENT_supplementDescription = "#supplementDescription";
+	public final static String SUPPLEMENT_costExcl = "#costExcl";
+	public final static String SUPPLEMENT_costIncl = "#costIncl";
+	public final static String SUPPLEMENT_minLevels = "#minLevels";
+	public final static String SUPPLEMENT_currentStockLevels = "#currentStockLevels";
+	public final static String SUPPLEMENT_nappiCode = "#nappiCode";
 }

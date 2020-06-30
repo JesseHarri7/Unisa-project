@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Supplement</title>
+	
+	<!--CSS links -->
+	<link rel="icon" type="image/png" href="../res/images/icons/S-favicon.png" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<link rel="stylesheet"
+		href="http://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
+	<link rel="stylesheet" href="../res/css/styles.css" />
+</head>
+<body>
+
+	<div w3-include-html="../pages/temps/header.html"></div>
+	<div w3-include-html="../pages/temps/nav.html"></div>
+
+	<div id="nav-buttons">
+		<input type="button" value="Create" id="create-btn" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
+		<input type="button" value="Edit" id="edit-btn" class="btn btn-primary" data-target="#updateModal">
+		<input type="button" value="Remove" id="delete-btn" class="btn btn-primary">
+	</div>
+	
+	<!--Table -->
+	<div class="table-width-outter">
+		<div class="table-width-inner">
+			<table class="display" id="supplement-table" style="width:100%">
+				<thead>
+					<tr>
+						<th>Supplement ID</th>
+						<th>Supplier ID</th>
+						<th>Supplement description</th>
+						<th>Cost Excl</th>
+						<th>Cost Incl</th>
+						<th>Min levels</th>
+						<th>Current stock level</th>
+						<th>Nappi Code</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+	<!-- Emp-create modal view -->
+	<!-- Create Modal -->
+	<div class="modal fade" id="createModal" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="modal-title">Add Supplier</h2>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<form name="create" id="create">
+					
+						<div class="form-group">
+							<label for="supplementId">*Supplement ID:</label> <input type="text"
+								class="form-control" id="id" placeholder="Enter Supplement ID" required>
+						</div>
+						
+						<div class="form-group">
+							<label for="supplierId">*Supplier ID:</label> 
+							<select class="form-control" id="supplierId">
+						  	</select>
+						</div>
+						
+						<div class="form-group">
+							<label for="supplementDescription">*Supplement description:</label> <input type="text"
+								class="form-control" id="supplementDescription" 
+								placeholder="Enter supplement description" required>
+						</div>
+						
+						<div class="form-group">
+							<label for="costExcl">*Cost Excl:</label> <input type="text"
+								class="form-control" id="costExcl"
+								placeholder="Enter Cost (Excluding VAT)"
+								data-type="currency"
+								pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
+								required>
+						</div>
+						
+						<div class="form-group">
+							<label for="minLevels">*Min levels:</label> <input type="number"
+								class="form-control" id="minLevels" 
+								placeholder="Enter Min levels" required>
+						</div>
+						
+						<div class="form-group">
+							<label for="currentStockLevels">*Current stock level:</label> <input type="number"
+								class="form-control" id="currentStockLevels" 
+								placeholder="Enter current stock level" required>
+						</div>
+
+						<div class="form-group">
+							<label for="nappiCode">Nappi Code:</label> <input type="text"
+								class="form-control" id="nappiCode" 
+								placeholder="Enter nappi Code">
+						</div>						
+						
+						<!-- <button type="submit" class="btn btn-default">Submit</button> -->
+					</form>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="form-create-btn">Save</button>
+						<button type="button" class="btn btn-secondary" id="form-close-btn" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div w3-include-html="../pages/temps/footer.html"></div>
+	
+	<!--scripts -->
+	<script src="../res/js/plugins/jquery-3.5.1.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	<script src="http://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+	<script src="../res/js/plugins/notify.js"></script>
+	<script src="../res/js/plugins/currency.js"></script>
+	<script src="../res/js/supplement.js"></script>
+</body>
+</html>
