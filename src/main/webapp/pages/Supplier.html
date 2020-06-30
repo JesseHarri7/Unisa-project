@@ -27,11 +27,17 @@
 	<!--Table -->
 	<div class="table-width-outter">
 		<div class="table-width-inner">
-			<table class="display" id="client-table" style="width:100%">
+			<table class="display" id="supplier-table" style="width:100%">
 				<thead>
 					<tr>
+						<th>Supplier ID</th>
+						<th>Contact person</th>
 						<th>Tel number</th>
 						<th>Email</th>
+						<th>Bank</th>
+						<th>Bank code</th>
+						<th>Bank number</th>
+						<th>Account Type</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -54,48 +60,50 @@
 					<form name="create" id="create">
 					
 						<div class="form-group">
-							<label for="supplierId">Supplier ID:</label> <input type="text"
+							<label for="supplierId">*Supplier ID:</label> <input type="text"
 								class="form-control" id="id" placeholder="Enter Supplier ID" required>
 						</div>
 						
 						<div class="form-group">
-							<label for="contactPerson">Contact Person:</label> <input type="text"
+							<label for="contactPerson">*Contact Person:</label> <input type="text"
 								class="form-control" id="contactPerson" 
 								placeholder="Enter contact person" required>
 						</div>
 						
 						<div class="form-group">
-							<label for="supplierEmail">Email:</label> <input type="text"
+							<label for="supplierEmail">*Email:</label> <input type="text"
 								class="form-control" id="supplierEmail" 
 								placeholder="Enter email" required>
 						</div>
 						
 						<div class="form-group">
-							<label for="supplierTel">Tel number:</label> <input type="text"
+							<label for="supplierTel">Tel number:</label> <input type="tel"
 								class="form-control" id="supplierTel" 
-								placeholder="Enter tel number" required>
+								placeholder="000-000-0000"
+								maxlength="12"
+								pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
 						</div>
 						
 						<div class="form-group">
-							<label for="supplierBankNum">Supplier bank number:</label> <input type="text"
+							<label for="supplierBankNum">*Supplier bank number:</label> <input type="text"
 								class="form-control" id="supplierBankNum" 
 								placeholder="Enter supplier bank number" required>
 						</div>
 						
 						<div class="form-group">
-							<label for="supplierTypeBankAccount">Supplier account:</label> <input type="text"
+							<label for="supplierTypeBankAccount">*Supplier account:</label> <input type="text"
 								class="form-control" id="supplierTypeBankAccount" 
 								placeholder="Enter supplier type bank account" required>
 						</div>
 
 						<div class="form-group">
-							<label for="bank">Bank:</label> <input type="text"
+							<label for="bank">*Bank:</label> <input type="text"
 								class="form-control" id="bank" 
 								placeholder="Enter bank" required>
 						</div>	
 
 						<div class="form-group">
-							<label for="bankCode">Bank code:</label> <input type="text"
+							<label for="bankCode">*Bank code:</label> <input type="text"
 								class="form-control" id="bankCode" 
 								placeholder="Enter bank code" required>
 						</div>							
@@ -119,6 +127,6 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 	<script src="http://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 	<script src="../res/js/plugins/notify.js"></script>
-	<script src="../res/js/client.js"></script>
+	<script src="../res/js/supplier.js"></script>
 </body>
 </html>

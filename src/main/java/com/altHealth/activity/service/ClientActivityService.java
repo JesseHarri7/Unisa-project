@@ -31,18 +31,20 @@ public class ClientActivityService implements ClientActiviy{
 		returnModel.setErrorList(errorList);
 		returnModel.setIdTags(idTagList);
 		
+		boolean validAdd = doesClientExist(client.getClientId(), errorList, idTagList);
+		
 		//valid ID date format
 		String first6 = client.getClientId().substring(0, 6);
-		boolean isValidDateFormat = validation.DateFormatValidation(ModelMappings.DATE_FORMAT, first6, errorList, idTagList);
-		boolean isValidID = validation.SAIdNumberValidation(client.getClientId(), errorList, idTagList);
+		boolean isValidDateFormat = validation.DateFormatValidation(ModelMappings.DATE_FORMAT, first6, errorList, idTagList, ModelMappings.CLIENT_id);
+		boolean isValidID = validation.SAIdNumberValidation(client.getClientId(), errorList, idTagList, ModelMappings.CLIENT_id);
 		
 		//Validate email
-		boolean isValidEmail = validation.emailValidation(client.getcEmail(), errorList, idTagList);
+		boolean isValidEmail = validation.emailValidation(client.getcEmail(), errorList, idTagList, ModelMappings.CLIENT_cEmail);
 		
 		//Validate tel number format
-		boolean isValidTelNum = validation.telNumValidation(client.getcTelH(), client.getcTelW(), client.getcTelCell(), errorList, idTagList);
+		boolean isValidTelNum = validation.telNumValidation(client.getcTelH(), client.getcTelW(), client.getcTelCell(), errorList, idTagList, ModelMappings.CLIENT_cTelH, ModelMappings.CLIENT_cTelW, ModelMappings.CLIENT_cTelCell);
 		
-		if(isValidDateFormat && isValidID && isValidEmail && isValidTelNum) {
+		if(validAdd && isValidDateFormat && isValidID && isValidEmail && isValidTelNum) {
 			service.create(client);
 		}
 		
@@ -57,6 +59,20 @@ public class ClientActivityService implements ClientActiviy{
 		}
 		return clients;
 	}
-
+	
+	private boolean doesClientExist(String clientId, List<String> errorList, List<String> idTagList) {
+		boolean valid = true;
+		
+		Client client = service.readById(clientId);
+		if(client != null) {
+			String result = "Client: " + clientId + " already exists!";
+	    	System.out.println(result);
+			errorList.add(result);
+			idTagList.add(ModelMappings.CLIENT_id);
+			valid = false;
+		}
+		
+		return valid;
+	}
 	
 }

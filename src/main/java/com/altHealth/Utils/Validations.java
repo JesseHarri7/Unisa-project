@@ -8,12 +8,10 @@ import java.util.regex.Pattern;
 
 import javax.annotation.ManagedBean;
 
-import com.altHealth.mappings.ModelMappings;
-
 @ManagedBean
 public class Validations {
 	
-	public boolean DateFormatValidation(String format, String dateToFormat, List<String> errorList, List<String> idTagList) {
+	public boolean DateFormatValidation(String format, String dateToFormat, List<String> errorList, List<String> idTagList, String... tags) {
 		boolean valid = true;
 		
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
@@ -25,17 +23,20 @@ public class Validations {
 	        valid = true;
 	    } catch (ParseException e) {
 	    	/* Date format is invalid */
-	    	String result = dateToFormat+" is a invalid Date format";
+	    	String result = "Error! " + dateToFormat+" is a invalid Date format";
 	        System.out.println(result);
 	        errorList.add(result);
-	        idTagList.add(ModelMappings.CLIENT_id);
+	        for(String tag : tags) {
+	        	idTagList.add(tag);
+	        }
+	        
 	        valid = false;
 	    }
 		
 		return valid;
 	}
 	
-	public boolean SAIdNumberValidation(String id, List<String> errorList, List<String> idTagList) {
+	public boolean SAIdNumberValidation(String id, List<String> errorList, List<String> idTagList, String... tags) {
 		boolean valid = true;
 		char[] idchars = id.toCharArray();
 	    int sum = 0;
@@ -52,15 +53,17 @@ public class Validations {
 	    	valid = true;
 	    }else {
 	    	valid = false;
-	    	String result = id + " is a invalid identification number";
+	    	String result = "Error! " + id + " is a invalid identification number";
 	    	System.out.println(result);
 	    	errorList.add(result);
-	    	idTagList.add(ModelMappings.CLIENT_id);
+	    	for(String tag : tags) {
+	        	idTagList.add(tag);
+	        }
 	    }
 	    return valid;
 	}
 	
-	public boolean emailValidation(String email, List<String> errorList, List<String> idTagList) {
+	public boolean emailValidation(String email, List<String> errorList, List<String> idTagList, String... tags) {
 		boolean valid = true;
 		
 		String patternString = "(.*)(.@)(.*)";
@@ -71,57 +74,60 @@ public class Validations {
         valid = matcher.matches();
         
         if(!valid) {
-        	String result = email + " is a invalid email format";
+        	String result = "Error! " + email + " is a invalid email format";
 	    	System.out.println(result);
 	    	errorList.add(result);
-	    	idTagList.add(ModelMappings.CLIENT_cEmail);
+	    	for(String tag : tags) {
+	    		idTagList.add(tag);
+	    	}
         }
         
 		return valid;
 	}
 	
-	public boolean telNumValidation(String telH, String telW, String telCell, List<String> errorList, List<String> idTagList) {
+	public boolean telNumValidation(String tel1, String tel2, String tel3, List<String> errorList, List<String> idTagList, String... tags) {
 		boolean valid = true;
-		boolean validtelH = true;
-		boolean validtelW = true;
-		boolean validtelCell = true;
+		boolean validtel1 = true;
+		boolean validtel2 = true;
+		boolean validtel3 = true;
 		
 		String patternString = "^(([0-9]{3}))?[-. ]?([0-9]{3})[-. ]?([0-9]{4})";
 		Pattern pattern = Pattern.compile(patternString);
 
-		if(telH != null) {
-	        Matcher matcherTelH = pattern.matcher(telH);
-	        validtelH = matcherTelH.matches();
+		if(tel1 != null) {
+	        Matcher matcherTelH = pattern.matcher(tel1);
+	        validtel1 = matcherTelH.matches();
 		}
         
-		if(telW != null) {
-	        Matcher matcherTelW = pattern.matcher(telW);
-	        validtelW = matcherTelW.matches();
+		if(tel2 != null) {
+	        Matcher matcherTelW = pattern.matcher(tel2);
+	        validtel2 = matcherTelW.matches();
 		}
         
-		if(telCell != null) {
-	        Matcher matcherTelCell = pattern.matcher(telCell);
-	        validtelCell = matcherTelCell.matches();
+		if(tel3 != null) {
+	        Matcher matcherTelCell = pattern.matcher(tel3);
+	        validtel3 = matcherTelCell.matches();
 		}
         
-        if(!validtelH) {
-        	String result = telH + " is a invalid tel format";
+        if(!validtel1) {
+        	String result = tel1 + " is a invalid tel format";
 	    	System.out.println(result);
-	    	idTagList.add(ModelMappings.CLIENT_cTelH);
+	    	idTagList.add(tags[0]);
         }
-        if(!validtelH) {
-        	String result = telW + " is a invalid tel format";
+        if(!validtel2) {
+        	String result = tel2 + " is a invalid tel format";
 	    	System.out.println(result);
-	    	idTagList.add(ModelMappings.CLIENT_cTelW);
+	    	idTagList.add(tags[1]);
         }
-        if(!validtelH) {
-        	String result = telCell + " is a invalid tel format";
+        if(!validtel3) {
+        	String result = tel3 + " is a invalid tel format";
 	    	System.out.println(result);
-	    	idTagList.add(ModelMappings.CLIENT_cTelCell);
+	    	idTagList.add(tags[2]);
         }
         
-        if(validtelH && validtelW && validtelCell) {
-        	errorList.add("Please match the 000-000-0000 format");
+        if(!validtel1 || !validtel2 || !validtel3) {
+        	errorList.add("Error! Please match the 000-000-0000 format");
+        	valid = false;
         }
         
 		return valid;
