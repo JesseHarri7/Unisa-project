@@ -165,6 +165,10 @@
 	content: url("../images/icons/logout.png");
 }
 
+.glyphicon-cog{
+	content: url("../images/icons/cog.png");
+}
+
 .form-fill-error{
 	border-color: red!important;
 }

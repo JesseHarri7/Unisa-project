@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.altHealth.Utils.ServiceHelper;
+import com.altHealth.Utils.Utils;
 import com.altHealth.Utils.Validations;
 import com.altHealth.activity.SupplementActiviy;
 import com.altHealth.entity.ReturnModel;
 import com.altHealth.entity.Supplement;
 import com.altHealth.entity.Supplier;
+import com.altHealth.entity.SysParameters;
 import com.altHealth.mappings.ModelMappings;
 
 @Service
@@ -21,6 +23,8 @@ public class SupplementActivityService implements SupplementActiviy{
 	ServiceHelper service;
 	@Autowired
 	Validations validation;
+	@Autowired
+	Utils utils;
 	
 	@Override
 	public ReturnModel formCreateBtn(Supplement supp) {
@@ -36,6 +40,7 @@ public class SupplementActivityService implements SupplementActiviy{
 		boolean isValidSupplierID = doesSupplierIDExist(supp.getSupplierId(), errorList, idTagList);
 		
 		if(validAdd && isValidSupplierID) {
+			updateCostIncl(supp);
 			service.getSupplementService().create(supp);
 		}
 		
@@ -70,6 +75,13 @@ public class SupplementActivityService implements SupplementActiviy{
 		}
 		
 		return valid;
+	}
+	
+	private void updateCostIncl(Supplement supp) {
+		SysParameters settings = service.getSysParaService().readById(1);
+		Double costIncl = utils.calcVAT(supp.getCostExcl(), settings.getVatPercent());
+		
+		supp.setCostIncl(costIncl);
 	}
 	
 }

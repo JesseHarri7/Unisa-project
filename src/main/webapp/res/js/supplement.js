@@ -128,7 +128,7 @@ $(document).ready(function()
 				if(response.status == "true") {
 					$.notify(response.msg, "success");
 				
-					table.row.add(supplement).draw()
+					table.row.add(response.result).draw()
 					
 					//Clear data from the modal form
 					document.getElementById("create").reset();

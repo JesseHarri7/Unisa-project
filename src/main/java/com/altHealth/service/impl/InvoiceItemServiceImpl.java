@@ -87,4 +87,9 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
 		}
 	}
 
+	@Override
+	public void updateAll(List<InvoiceItem> entities) {
+		repo.saveAll(entities);
+	}
+
 }

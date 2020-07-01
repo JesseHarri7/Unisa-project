@@ -49,6 +49,11 @@ public class ClientServiceImpl implements ClientService {
 			return repo.save(entity);
 		}
 	}
+	
+	@Override
+	public void updateAll(List<Client> entities) {
+		repo.saveAll(entities);
+	}
 
 	@Override
 	public void delete(Client entity) {

@@ -101,4 +101,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 		}
 	}
 
+	@Override
+	public void updateAll(List<Invoice> entities) {
+		repo.saveAll(entities);
+	}
+
 }

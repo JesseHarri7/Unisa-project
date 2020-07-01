@@ -35,4 +35,8 @@ public class ModelMappings {
 	public final static String SUPPLEMENT_minLevels = "#minLevels";
 	public final static String SUPPLEMENT_currentStockLevels = "#currentStockLevels";
 	public final static String SUPPLEMENT_nappiCode = "#nappiCode";
+	
+	//SysParameters
+	public final static String SETTINGS_id = "#id";
+	public final static String SETTINGS_vatPercent = "#vatPercent";
 }
