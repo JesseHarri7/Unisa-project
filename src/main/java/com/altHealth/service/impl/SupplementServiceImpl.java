@@ -49,6 +49,11 @@ public class SupplementServiceImpl implements SupplementService {
 			return repo.save(entity);
 		}
 	}
+	
+	@Override
+	public void updateAll(List<Supplement> entities) {
+		repo.saveAll(entities);
+	}
 
 	@Override
 	public void delete(Supplement entity) {

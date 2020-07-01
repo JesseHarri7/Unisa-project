@@ -38,8 +38,8 @@ public class ClientController implements Controller<Client, String>{
 
 	@Override
 	public List<Client> findAll() {
-//		return service.readAll();
-		return activity.findAll();
+		return service.readAll();
+//		return activity.findAll();
 	}
 
 	@Override

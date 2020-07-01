@@ -10,6 +10,7 @@ import com.altHealth.service.InvoiceService;
 import com.altHealth.service.ReferenceService;
 import com.altHealth.service.SupplementService;
 import com.altHealth.service.SupplierService;
+import com.altHealth.service.SysParametersService;
 
 @ManagedBean
 public class ServiceHelper {
@@ -25,6 +26,8 @@ public class ServiceHelper {
 	SupplementService supplementService;
 	@Autowired
 	SupplierService supplierService;
+	@Autowired
+	SysParametersService sysParaService;
 	
 	public ClientService getClientService() {
 		return clientService;
@@ -44,4 +47,8 @@ public class ServiceHelper {
 	public SupplierService getSupplierService() {
 		return supplierService;
 	}
+	public SysParametersService getSysParaService() {
+		return sysParaService;
+	}
+	
 }

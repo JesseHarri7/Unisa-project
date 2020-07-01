@@ -6,6 +6,7 @@ $(document).ready(function()
 	//All data fields on start up
 	findAll();
 	
+	//Get data from the ref table
 	populateRefDropDown();
 	
 	//Add temps html files
@@ -86,7 +87,7 @@ $(document).ready(function()
 	
 	//Create button
 	$('#create-btn').click(function(event) 
-	{
+	{		
 		//Clear form red border css
 		clearFormBorder();
 		

@@ -98,4 +98,9 @@ public class SupplierServiceImpl implements SupplierService {
 		}
 	}
 
+	@Override
+	public void updateAll(List<Supplier> entities) {
+		repo.saveAll(entities);
+	}
+
 }

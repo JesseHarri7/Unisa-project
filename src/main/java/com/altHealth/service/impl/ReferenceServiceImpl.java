@@ -71,4 +71,9 @@ public class ReferenceServiceImpl implements ReferenceService {
 		return null;
 	}
 
+	@Override
+	public void updateAll(List<Reference> entities) {
+		repo.saveAll(entities);
+	}
+
 }

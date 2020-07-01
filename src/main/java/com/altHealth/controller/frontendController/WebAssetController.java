@@ -25,6 +25,12 @@ public class WebAssetController
 		return "/pages/Supplement.html";
 	}
 	
+	@RequestMapping(value = "settings")
+    public String settings() 
+	{
+		return "/pages/Settings.html";
+	}
+	
 	/*@RequestMapping(value = "/assetManagement/error")
     public String Error403() 
 	{
