@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.altHealth.Utils.AjaxResponseBody;
+import com.altHealth.activity.CartActivity;
 import com.altHealth.activity.ClientActiviy;
 import com.altHealth.entity.Client;
-import com.altHealth.entity.ReturnModel;
 import com.altHealth.mappings.ModelMappings;
+import com.altHealth.model.ReturnModel;
 
 @RestController
 @RequestMapping("/client/")
@@ -18,6 +19,8 @@ public class WebClientController {
 	
 	@Autowired
 	ClientActiviy activity;
+	@Autowired
+	CartActivity cartActivity;
 	
 	//create
 	@RequestMapping(value = "formCreateBtn", method = RequestMethod.POST)
@@ -30,6 +33,28 @@ public class WebClientController {
 		if(returnModel.getErrorList().isEmpty()) {
 			result.setStatus(ModelMappings.TRUE);
 			result.setMsg("Success! Client " + client.getClientId() + " has been created.");
+			result.setResult(client);
+		}else {
+			result.setStatus(ModelMappings.FALSE);
+			result.setMsg("Error! " + returnModel.getStringErrorList());
+			result.setResult(returnModel.getErrorList());
+			result.setIdTags(returnModel.getIdTags());
+		}
+
+		//AjaxResponseBody will be converted into json format and send back to the request.
+		return result;
+	}
+	
+	//create
+	@RequestMapping(value = "addClientToCart", method = RequestMethod.POST)
+	public AjaxResponseBody addClientToCart(@RequestBody Client entity) {
+		ReturnModel returnModel = cartActivity.addClientToCart(entity);
+		AjaxResponseBody result = new AjaxResponseBody();
+		Client client = (Client) returnModel.getEntity();
+		
+		if(returnModel.getErrorList().isEmpty()) {
+			result.setStatus(ModelMappings.TRUE);
+			result.setMsg("Success! Client " + client.getClientId() + " added to cart!.");
 			result.setResult(client);
 		}else {
 			result.setStatus(ModelMappings.FALSE);

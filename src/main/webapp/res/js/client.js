@@ -180,6 +180,60 @@ $(document).ready(function()
 
 	}
 	
+	//Add client to cart
+	$('#cart-btn').click(function(event) {
+		var table = $('#client-table').DataTable();			
+
+		//Returns an array of the selected rows
+		var clientToAdd = table.rows( '.selected' ).data();
+		
+		$('.notifyjs-corner').remove();
+		
+		if (clientToAdd.length == 0) {
+			$.notify("Heads up! Please select client to add to the cart.", "error");
+		}
+		else if (clientToAdd.length >= 2) {
+			$.notify("Heads up! Please only select one client to add.", "error");
+		}else {
+			addClientToSession(clientToAdd);
+		}
+		
+	});
+	
+	function addClientToSession(clientToAdd){
+		
+		//Set as object
+		var client = clientToAdd[0];
+		
+		//Translate so that JSON can read it
+		var data_json = JSON.stringify(client);
+		
+		$.ajax(
+		{
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json' 
+			},
+			url:"/altHealth/client/addClientToCart", 
+			dataType: "json",
+			data: data_json,
+			type: "POST",
+			success: function(response) {
+				if(response.status == "true") {
+					$.notify(response.msg, "success");
+				}else {
+					for (x of response.result) {
+						$.notify(x, "error");
+					}
+				}
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				$.notify("Status 405", "error");
+			}
+		});
+	}
+	
 	function validateId(id) {
 		var valid;
 		var numbers = /^[0-9]+$/;
@@ -287,6 +341,40 @@ $(document).ready(function()
 		$('#uDatePurchased').removeClass("form-fill-error");
 	}
 	
+	//Notify class
+	function createNotify() {
+		//add a new style 'foo'
+		$.notify.addStyle('foo', {
+		  html: 
+		    "<div>" +
+		      "<div class='clearfix'>" +
+		        "<div class='title' data-notify-html='title'/>" +
+		        "<div class='buttons'>" +
+		          "<button class='btn btn-secondary no'>Cancel</button>" +
+		          "<button class='btn btn-secondary yes' data-notify-text='button'></button>" +
+		        "</div>" +
+		      "</div>" +
+		    "</div>"
+		});
+	}
+	
+	//listen for click events from this style
+	//If no
+	$(document).on('click', '.notifyjs-foo-base .no', function() {
+		//programmatically trigger propogating hide event
+		$(this).trigger('notify-hide');
+		
+	});
+
+	//if Yes
+	$(document).on('click', '.notifyjs-foo-base .yes', function() {	
+		//Function
+		updateVat();
+		//hide notification
+		$(this).trigger('notify-hide');
+		
+	});
+	
 	function includeHTML() 
 	{
 		  var z, i, elmnt, file, xhttp;
@@ -323,7 +411,7 @@ $(document).ready(function()
 	
 	function showActiveNav()
 	{
-		$('#aNav').addClass('active');
+		$('#clientNav').addClass('active');
 		/*var url = window.location.pathname;
 		
 		if(url == "/assetManagement/pages/asset")

@@ -266,7 +266,7 @@ $(document).ready(function()
 	
 	function showActiveNav()
 	{
-		$('#aNav').addClass('active');
+		$('#supplierNav').addClass('active');
 		/*var url = window.location.pathname;
 		
 		if(url == "/assetManagement/pages/asset")

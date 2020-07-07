@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.altHealth.Utils.AjaxResponseBody;
 import com.altHealth.activity.SupplierActiviy;
-import com.altHealth.entity.ReturnModel;
 import com.altHealth.entity.Supplier;
 import com.altHealth.mappings.ModelMappings;
+import com.altHealth.model.ReturnModel;
 
 @RestController
 @RequestMapping("/supplier/")
@@ -18,6 +18,7 @@ public class WebSupplierController {
 	
 	@Autowired
 	SupplierActiviy activity;
+	
 	
 	//create
 	@RequestMapping(value = "formCreateBtn", method = RequestMethod.POST)

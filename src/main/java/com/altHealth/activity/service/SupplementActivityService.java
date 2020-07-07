@@ -10,11 +10,12 @@ import com.altHealth.Utils.ServiceHelper;
 import com.altHealth.Utils.Utils;
 import com.altHealth.Utils.Validations;
 import com.altHealth.activity.SupplementActiviy;
-import com.altHealth.entity.ReturnModel;
 import com.altHealth.entity.Supplement;
 import com.altHealth.entity.Supplier;
 import com.altHealth.entity.SysParameters;
 import com.altHealth.mappings.ModelMappings;
+import com.altHealth.model.CartModelActivity;
+import com.altHealth.model.ReturnModel;
 
 @Service
 public class SupplementActivityService implements SupplementActiviy{
@@ -25,6 +26,8 @@ public class SupplementActivityService implements SupplementActiviy{
 	Validations validation;
 	@Autowired
 	Utils utils;
+	@Autowired
+	CartModelActivity cart;
 	
 	@Override
 	public ReturnModel formCreateBtn(Supplement supp) {

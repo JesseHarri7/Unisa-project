@@ -2,7 +2,7 @@ package com.altHealth.Utils;
 
 import java.util.List;
 
-import com.altHealth.entity.Views;
+import com.altHealth.model.Views;
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class AjaxResponseBody {
@@ -17,7 +17,7 @@ public class AjaxResponseBody {
 	Object result;
 	
 	@JsonView(Views.Public.class)
-	List<Object> resultList;
+	List<String> resultList;
 	
 	@JsonView(Views.Public.class)
 	List<String> idTags;
@@ -46,12 +46,12 @@ public class AjaxResponseBody {
 		this.result = result;
 	}
 
-	public List<Object> getResultList() {
+	public List<String> getResultList() {
 		return resultList;
 	}
 
-	public void setResultList(List<Object> resultList) {
-		this.resultList = resultList;
+	public void setResultList(List<String> list) {
+		this.resultList = list;
 	}
 
 	public List<String> getIdTags() {
