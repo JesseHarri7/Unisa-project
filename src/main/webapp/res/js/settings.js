@@ -260,7 +260,7 @@ $(document).ready(function()
 	
 	function showActiveNav()
 	{
-		$('#aNav').addClass('active');
+		$('#settingsNav').addClass('active');
 	}
 
 });
