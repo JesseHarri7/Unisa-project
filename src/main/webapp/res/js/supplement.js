@@ -39,8 +39,8 @@ $(document).ready(function()
 				{data: 'supplementId'},
 				{data: 'supplierId'},
 				{data: 'supplementDescription'},
-				{data: 'costExcl'},
-				{data: 'costIncl'},
+				{data: 'costExcl', render: $.fn.dataTable.render.number( ' ', '.', 2, 'R ' )},
+				{data: 'costIncl', render: $.fn.dataTable.render.number( ' ', '.', 2, 'R ' )},
 				{data: 'minLevels'},
 				{data: 'currentStockLevels'},
 				{data: 'nappiCode'}
@@ -54,17 +54,7 @@ $(document).ready(function()
 	$('#supplement-table tbody').on('click','tr', function() {
 		$(this).toggleClass('selected');
 		
-		/*if ( $(this).hasClass('selected') ) 
-		{
-            $(this).removeClass('selected');
-            $('#setEmp-btn').prop('disabled', true);
-		}
-		else 
-		{
-            $('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-            $('#setEmp-btn').prop('disabled', false);
-        }*/
+
 	} );
 	
 	//Create button
@@ -149,6 +139,65 @@ $(document).ready(function()
 			}
 		});
 
+	}
+	
+	//Add client to cart
+	$('#addToCart-btn').click(function(event) {
+		var table = $('#supplement-table').DataTable();			
+
+		//Returns an array of the selected rows
+		var itemsToAdd = table.rows( '.selected' ).data();
+		
+		$('.notifyjs-corner').remove();
+		
+		if (itemsToAdd.length == 0) {
+			$.notify("Heads up! Please select supplement/s to add to the cart.", "error");
+		}else {
+			addItemsToSession(itemsToAdd);
+		}
+		
+	});
+	
+	function addItemsToSession(itemsToAdd){
+		
+		var supplement = [];
+		
+		//Set as object
+		for (i = 0; i < itemsToAdd.length; i++) {
+			supplement.push(itemsToAdd[i]);
+		}
+		
+		//Translate so that JSON can read it
+		var data_json = JSON.stringify(supplement);
+		
+		$.ajax(
+		{
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json' 
+			},
+			url:"/altHealth/supplement/addCartItems", 
+			dataType: "json",
+			data: data_json,
+			type: "POST",
+			success: function(response) {
+				if(response.status == "true") {
+					$.notify(response.msg, "success");
+				}else {
+					for (x of response.result) {
+						$.notify(x, "warn");
+					}
+					
+					for (x of response.resultList) {
+						$.notify(x, "success");
+					}
+				}
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				$.notify("Status 405", "error");
+			}
+		});
 	}
 	
 	function populateSuppDropDown(){
@@ -310,7 +359,7 @@ $(document).ready(function()
 	
 	function showActiveNav()
 	{
-		$('#aNav').addClass('active');
+		$('#supplementNav').addClass('active');
 		/*var url = window.location.pathname;
 		
 		if(url == "/assetManagement/pages/asset")
