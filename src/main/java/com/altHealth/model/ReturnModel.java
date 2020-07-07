@@ -1,4 +1,4 @@
-package com.altHealth.entity;
+package com.altHealth.model;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,6 +8,7 @@ public class ReturnModel {
 	Object entity;
 	List<String> errorList;
 	List<String> idTags;
+	List<String> resultList;
 	
 	
 	public ReturnModel() {
@@ -40,6 +41,14 @@ public class ReturnModel {
 			errors = errors + e + ", ";
 		}
 		return errors;
+	}
+
+	public List<String> getResultList() {
+		return resultList;
+	}
+
+	public void setResultList(List<String> resultList) {
+		this.resultList = resultList;
 	}
 
 	public List<String> getIdTags() {

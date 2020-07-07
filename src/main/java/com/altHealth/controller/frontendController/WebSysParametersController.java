@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.altHealth.Utils.AjaxResponseBody;
 import com.altHealth.activity.SysParametersActiviy;
-import com.altHealth.entity.ReturnModel;
 import com.altHealth.entity.SysParameters;
 import com.altHealth.mappings.ModelMappings;
+import com.altHealth.model.ReturnModel;
 
 @RestController
 @RequestMapping("/sysParameters/")

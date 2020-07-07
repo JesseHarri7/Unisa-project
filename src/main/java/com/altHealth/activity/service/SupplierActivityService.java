@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.altHealth.Utils.Validations;
 import com.altHealth.activity.SupplierActiviy;
-import com.altHealth.entity.ReturnModel;
 import com.altHealth.entity.Supplier;
 import com.altHealth.mappings.ModelMappings;
+import com.altHealth.model.CartModelActivity;
+import com.altHealth.model.ReturnModel;
 import com.altHealth.service.SupplierService;
 
 @Service
@@ -20,6 +21,8 @@ public class SupplierActivityService implements SupplierActiviy{
 	SupplierService service;
 	@Autowired
 	Validations validation;
+	@Autowired
+	CartModelActivity cart;
 	
 	
 	@Override

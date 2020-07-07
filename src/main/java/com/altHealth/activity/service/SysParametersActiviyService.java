@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import com.altHealth.Utils.ServiceHelper;
 import com.altHealth.Utils.Utils;
 import com.altHealth.activity.SysParametersActiviy;
-import com.altHealth.entity.ReturnModel;
 import com.altHealth.entity.Supplement;
 import com.altHealth.entity.SysParameters;
 import com.altHealth.mappings.ModelMappings;
+import com.altHealth.model.ReturnModel;
 
 @Service
 public class SysParametersActiviyService implements SysParametersActiviy {

@@ -169,6 +169,10 @@
 	content: url("../images/icons/cog.png");
 }
 
+.glyphicon-shopping-cart{
+	content: url("../images/icons/cart.png");
+}
+
 .form-fill-error{
 	border-color: red!important;
 }

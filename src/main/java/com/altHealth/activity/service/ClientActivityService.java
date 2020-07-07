@@ -9,8 +9,9 @@ import org.springframework.stereotype.Service;
 import com.altHealth.Utils.Validations;
 import com.altHealth.activity.ClientActiviy;
 import com.altHealth.entity.Client;
-import com.altHealth.entity.ReturnModel;
 import com.altHealth.mappings.ModelMappings;
+import com.altHealth.model.CartModelActivity;
+import com.altHealth.model.ReturnModel;
 import com.altHealth.service.ClientService;
 
 @Service
@@ -20,6 +21,8 @@ public class ClientActivityService implements ClientActiviy{
 	ClientService service;
 	@Autowired
 	Validations validation;
+	@Autowired
+	CartModelActivity cart;
 	
 	
 	@Override
@@ -49,15 +52,6 @@ public class ClientActivityService implements ClientActiviy{
 		}
 		
 		return returnModel;
-	}
-
-	@Override
-	public List<Client> findAll() {
-		List<Client> clients = service.readAll();
-		if(!clients.isEmpty()) {
-			System.out.println("Got clients info");
-		}
-		return clients;
 	}
 	
 	private boolean doesClientExist(String clientId, List<String> errorList, List<String> idTagList) {
