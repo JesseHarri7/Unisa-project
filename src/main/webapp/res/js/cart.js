@@ -2,7 +2,6 @@
 $(document).ready(function() {
  
 /* Set rates + misc */
-var taxRate = 0.05;
 var fadeTime = 300;
 
 	//Add temps html files
@@ -10,27 +9,35 @@ var fadeTime = 300;
 	
 	includeCurrDate();
 	
-	getClientInfo();
+	getCartInfo();
 	
-	getCartInfo();	
+	getSettings();
 	
 	//Get client info
-	function getClientInfo() {
+	function getCartInfo() {
 		$.ajax({
-			url:"/altHealth/cart/getClientInfo", 
+			url:"/altHealth/cart/getCartInfo", 
 			dataType: "json",
 			type: "GET",
 			success: function(response) {
 				
 				if(response.status == "true") {
-					dataSet = [response.result];
-					clientInfoTable(dataSet);
+					//Client
+					clientInfoTable(response.clientInfo);
+					
+					//Supplements
+					var suppDataSet = [response.supplementList];
+					cartItemsTable(suppDataSet[0]);
+					
+					//Invoice
+					invoiceInfo(response.invoiceInfo);
 				}else {
 					for (x of response.result) {
 						$.notify(x, "error");
 					}
 				}
-		
+				
+				recalculateCart();
 			},
 			error : function(e) {
 				console.log("ERROR: ", e);
@@ -40,42 +47,150 @@ var fadeTime = 300;
 	}
 	
 	function clientInfoTable(dataSet){
-		var suppTable = $("#client-table").DataTable({
-			dom: '<rt>',
-			retrieve: true,
-			select: true,
-			data: dataSet,
-			columns: 
-			[
-				{data: 'clientId'},
-				{data: 'cName'},
-				{data: 'cSurname'},
-				{data: 'address'},
-				{data: 'cTelH'},
-				{data: 'cTelW'},
-				{data: 'cTelCell'},
-				{data: 'cEmail'},
+		$('#cNameSurname').html(dataSet.cName + ' ' + dataSet.cSurname);
+		$('#address').html(dataSet.address);
+		$('#cEmail').html(dataSet.cEmail);
+	}
+	
+	function invoiceInfo(dataSet){
+		$('#invNum').html(dataSet.invNum);
+	}
+	
+	function cartItemsTable(suppDataSet){
+		var tr="";
+		for (ref of suppDataSet) {
+			tr+= '<tr class="dataRow">' +
+					'<td class="no">' +
+						'<h6 class="title text-truncate">' + ref.supplementId + '</h6>' +
+					'</td>' +
+					'<td class="text-left">' +
+						ref.supplementDescription +
+					'</td>' +
+					'<td class="qty">' + 
+						'<input type="number" class="form-control" id="qty" value="1" min="1" ' +
+							'max="' + ref.currentStockLevels + '" required>' +
+					'</td>' +
+					'<td class="unit costExcl">' + 
+						ref.costExcl +
+					'</td>' +
+					'<td class="unit costIncl">' + 
+						ref.costIncl + 
+					'</td>' +
+					'<td class="unit total">' + 
+						ref.costExcl +
+					'</td>' +
+					'<td class="text-right removal">' +
+						'<button class="btn btn-outline-danger"> × Remove</button>' +
+					'</td>' +
+				'</tr>';
+		}
+		
+		$('#cartItems').append(tr);
+	}
+	
+	//find settings
+	function getSettings() {
+		$.ajax({
+			url:"/altHealth/sysParameters/1", 
+			dataType: "json",
+			type: "GET",
+			success: function(data) {
+				$('#vat').html(data.vatPercent);
 				
-			]
+			}
 		});
 	}
 	
-	function getCartInfo(){
+	//listen for click events from this style
+	$(document).on('click', '.qty', function() {
+
+		updateQuantity(this);
+		
+	});
+	
+	//Form update button
+	$('#addSupp-btn').click(function(event) {
+		window.location = "/altHealth/supplement/";
+	});
+	 
+	$(document).on('click', '.btn.btn-outline-danger', function() {
+	  removeItem(this);
+	}); 
+	
+	/* Update quantity */
+	function updateQuantity(quantityInput) {
+	  /* Calculate line price */
+	  var productRow = $(quantityInput).parent();
+	  //var tr = productRow[0];
+	  var price = parseFloat(productRow.children('.unit.costExcl').text());
+	  var quantity = $(quantityInput).children().val();
+	  var linePrice = price * quantity;
+	   
+	  /* Update line price display and recalc cart totals */
+	  productRow.children('.total').each(function () {
+		$(this).fadeOut(fadeTime, function() {
+		  $(this).text(linePrice.toFixed(2));
+		  recalculateCart();
+		  $(this).fadeIn(fadeTime);
+		});
+	  });  
+	}
+	
+	/* Recalculate cart */
+	function recalculateCart() {
+	  var subtotal = 0;
+	   
+	  /* Sum up row totals */
+	  $('.dataRow').each(function () {
+		subtotal += parseFloat($(this).children('.unit.total').text());
+	  });
+	   
+	  /* Calculate totals */
+	  var vat = $('.vat').text();
+	  var vatPerc = vat / 100;
+	  var tax = subtotal * vatPerc;
+	  var total = subtotal + tax;
+	   
+	  /* Update totals display */
+	  $('.totals-value').fadeOut(fadeTime, function() {
+		$('#cart-subtotal').html(subtotal.toFixed(2));
+		$('#cart-tax').html(tax.toFixed(2));
+		$('#cart-total').html(total.toFixed(2));
+		if(total == 0){
+		  $('.btn btn-info').fadeOut(fadeTime);
+		}else{
+		  $('.btn btn-info').fadeIn(fadeTime);
+		}
+		$('.totals-value').fadeIn(fadeTime);
+	  });
+	} 
+ 
+	/* Remove item from cart */
+	function removeItem(removeButton) {
+	  /* Remove row from DOM and recalc cart total */
+	  var productRow = $(removeButton).parent().parent();
+		removeSupplementFromSession(productRow);
+	}
+	
+	function removeSupplementFromSession(productRow){
+		var supplementId = productRow.children('.no').text();
+		
 		$.ajax({
-			url:"/altHealth/cart/getCartItems", 
+			url:"/altHealth/cart/removeSupplement/" + supplementId, 
 			dataType: "json",
-			type: "GET",
+			type: "POST",
 			success: function(response) {
-				
 				if(response.status == "true") {
-					dataSet = [response.result];
-					cartItemsTable(dataSet[0]);
+					productRow.slideUp(fadeTime, function() {
+						productRow.remove();
+						recalculateCart();
+					});
 				}else {
 					for (x of response.result) {
 						$.notify(x, "error");
 					}
 				}
-		
+				
 			},
 			error : function(e) {
 				console.log("ERROR: ", e);
@@ -84,127 +199,21 @@ var fadeTime = 300;
 		});
 	}
 	
-	function cartItemsTable(dataSet){
-		var tr="";
-		for (ref of dataSet) {
-			tr+= '<tr>' +
-					'<td>' +
-						'<figure class="media">' +
-							'<figcaption class="media-body">' +
-								'<h6 class="title text-truncate">' + ref.supplementId + '</h6>' +
-								'<dl class="param param-inline small">' +
-								  '<dt>Supplement description: </dt>' +
-								  '<dd>' + ref.supplementDescription + '</dd>' +
-								'</dl>' +
-							'</figcaption>' +
-						'</figure>' + 
-					'</td>' +
-					'<td>' + 
-						'<input type="number" class="form-control" id="qty" value="1" min="1" ' +
-							'max="' + ref.currentStockLevels + '" required>' +
-					'</td>' +
-					'<td>' + 
-						'<div class="price-wrap">' + 
-							'<var class="price">R ' + ref.costExcl + '</var>' +
-						'</div>' +
-					'</td>' +
-					'<td>' + 
-						'<div class="price-wrap">' + 
-							'<var class="price">R ' + ref.costIncl + '</var>' + 
-						'</div>' +
-					'</td>' +
-					'<td class="text-right">' +
-					'<a href="" class="btn btn-outline-danger"> × Remove</a>' +
-					'</td>' +
-				'</tr>';
+	$('#printInvoice').click(function(){
+		Popup($('.invoice')[0].outerHTML);
+		function Popup(data) 
+		{
+			window.print();
+			return true;
 		}
-		
-		$('#cartItems').append(tr);
-	}
-	
-	//Form update button
-	$('#addSupp-btn').click(function(event) {
-		window.location = "/altHealth/supplement/";
 	});
- 
-	/* Assign actions */
-	$('.product-quantity input').change( function() {
-	  updateQuantity(this);
-	});
-	 
-	$('.product-removal button').click( function() {
-	  removeItem(this);
-	});
- 
- 
-	/* Recalculate cart */
-	function recalculateCart()
-	{
-	  var subtotal = 0;
-	   
-	  /* Sum up row totals */
-	  $('.product').each(function () {
-		subtotal += parseFloat($(this).children('.product-line-price').text());
-	  });
-	   
-	  /* Calculate totals */
-	  var tax = subtotal * taxRate;
-	  var shipping = (subtotal > 0 ? shippingRate : 0);
-	  var total = subtotal + tax + shipping;
-	   
-	  /* Update totals display */
-	  $('.totals-value').fadeOut(fadeTime, function() {
-		$('#cart-subtotal').html(subtotal.toFixed(2));
-		$('#cart-tax').html(tax.toFixed(2));
-		$('#cart-shipping').html(shipping.toFixed(2));
-		$('#cart-total').html(total.toFixed(2));
-		if(total == 0){
-		  $('.checkout').fadeOut(fadeTime);
-		}else{
-		  $('.checkout').fadeIn(fadeTime);
-		}
-		$('.totals-value').fadeIn(fadeTime);
-	  });
-	}
- 
- 
-	/* Update quantity */
-	function updateQuantity(quantityInput)
-	{
-	  /* Calculate line price */
-	  var productRow = $(quantityInput).parent().parent();
-	  var price = parseFloat(productRow.children('.product-price').text());
-	  var quantity = $(quantityInput).val();
-	  var linePrice = price * quantity;
-	   
-	  /* Update line price display and recalc cart totals */
-	  productRow.children('.product-line-price').each(function () {
-		$(this).fadeOut(fadeTime, function() {
-		  $(this).text(linePrice.toFixed(2));
-		  recalculateCart();
-		  $(this).fadeIn(fadeTime);
-		});
-	  });  
-	}
- 
- 
-	/* Remove item from cart */
-	function removeItem(removeButton)
-	{
-	  /* Remove row from DOM and recalc cart total */
-	  var productRow = $(removeButton).parent().parent();
-	  productRow.slideUp(fadeTime, function() {
-		productRow.remove();
-		recalculateCart();
-	  });
-	}
 	
 	function includeCurrDate(){
 		n =  new Date();
 		y = n.getFullYear();
 		m = n.getMonth() + 1;
 		d = n.getDate();
-		document.getElementById("currDate").innerHTML = m + "/" + d + "/" + y;
+		document.getElementById("currDate").innerHTML = d + "/" + m + "/" + y;
 	}
 
 	function includeHTML() {

@@ -155,7 +155,7 @@ $(document).ready(function()
 		}else {
 			addItemsToSession(itemsToAdd);
 		}
-		
+		$('tr.selected').toggleClass('selected');
 	});
 	
 	function addItemsToSession(itemsToAdd){

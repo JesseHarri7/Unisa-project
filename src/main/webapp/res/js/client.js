@@ -181,7 +181,7 @@ $(document).ready(function()
 	}
 	
 	//Add client to cart
-	$('#cart-btn').click(function(event) {
+	$('#addToCart-btn').click(function(event) {
 		var table = $('#client-table').DataTable();			
 
 		//Returns an array of the selected rows
@@ -197,6 +197,7 @@ $(document).ready(function()
 		}else {
 			addClientToSession(clientToAdd);
 		}
+		$('tr.selected').toggleClass('selected');
 		
 	});
 	
