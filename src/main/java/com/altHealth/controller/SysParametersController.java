@@ -19,7 +19,8 @@ public class SysParametersController implements Controller<SysParameters, Intege
 	SysParametersService service;
 	
 	@Override
-	public SysParameters findById(Integer id) {
+	@RequestMapping(value = "{id}", method = RequestMethod.GET)
+	public SysParameters findById(@PathVariable Integer id) {
 		return service.readById(id);
 	}
 
