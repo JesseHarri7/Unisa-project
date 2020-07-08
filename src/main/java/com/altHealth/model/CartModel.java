@@ -22,6 +22,9 @@ public class CartModel implements CartModelActivity{
 	Client client;
 	List<Supplement> supplementList = new ArrayList<Supplement>();
 	
+	
+
+	public CartModel() {}
 
 	public Invoice getInvoice() {
 		return invoice;
@@ -51,5 +54,15 @@ public class CartModel implements CartModelActivity{
 	public void setSupplement(Supplement supplement) {
 		this.supplementList.add(supplement);
 		
+	}
+
+	@Override
+	public CartModel getCart() {
+		CartModel cart = new CartModel();
+		cart.setClient(this.client);
+		cart.setSupplementList(this.supplementList);
+		cart.setInvoice(this.invoice);
+		
+		return cart;
 	}
 }

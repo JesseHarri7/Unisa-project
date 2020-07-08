@@ -30,6 +30,11 @@ public class WebAssetController {
 	public String cart() {
 		return "/pages/Cart.html";
 	}
+	
+	@RequestMapping(value = "test")
+	public String test() {
+		return "/pages/Test.html";
+	}
 
 	/*
 	 * @RequestMapping(value = "/assetManagement/error") public String Error403() {

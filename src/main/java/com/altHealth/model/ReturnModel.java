@@ -10,7 +10,6 @@ public class ReturnModel {
 	List<String> idTags;
 	List<String> resultList;
 	
-	
 	public ReturnModel() {
 	}
 

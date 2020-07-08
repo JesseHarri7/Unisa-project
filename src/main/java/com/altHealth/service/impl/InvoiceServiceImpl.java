@@ -106,4 +106,14 @@ public class InvoiceServiceImpl implements InvoiceService {
 		repo.saveAll(entities);
 	}
 
+	@Override
+	public String findInvNumByMax() {
+		String invNumMax = repo.findInvNumByMax();
+		if(invNumMax == null) {
+			return null;
+		}else {
+			return invNumMax;
+		}
+	}
+
 }

@@ -17,4 +17,6 @@ public interface InvoiceService extends Service<Invoice, String> {
 	
 	List<Invoice> findInvoiceByInvPaidDate(Date invPaidDate);
 	
+	String findInvNumByMax();
+	
 }

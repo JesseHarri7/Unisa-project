@@ -13,4 +13,8 @@ public interface CartActivity {
 	abstract ReturnModel addSupplementToCart(Supplement supplement);
 	abstract ReturnModel addSupplementsToCart(List<Supplement> supplements);
 	abstract ReturnModel getSupplements();
+	
+	abstract ReturnModel getCartInfo();
+	
+	abstract ReturnModel removeSupplement(String supplementId);
 }

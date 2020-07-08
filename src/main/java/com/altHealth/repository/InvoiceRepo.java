@@ -21,6 +21,9 @@ public interface InvoiceRepo extends CrudRepository<Invoice, String> {
 	List<Invoice> findInvoiceByInvPaid(String invPaid);
 	
 	List<Invoice> findInvoiceByInvPaidDate(Date invPaidDate);
+	
+	@Query(value = "select max(inv_num) from tblinv_info", nativeQuery = true)
+	String findInvNumByMax();
     
     @Query(value = "SELECT * FROM tblinv_info", nativeQuery = true)
    	List<Invoice> findInvoiceAllHistory();

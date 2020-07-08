@@ -2,6 +2,9 @@ package com.altHealth.Utils;
 
 import java.util.List;
 
+import com.altHealth.entity.Client;
+import com.altHealth.entity.Invoice;
+import com.altHealth.entity.Supplement;
 import com.altHealth.model.Views;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -21,6 +24,15 @@ public class AjaxResponseBody {
 	
 	@JsonView(Views.Public.class)
 	List<String> idTags;
+	
+	@JsonView(Views.Public.class)
+	Client clientInfo;
+	
+	@JsonView(Views.Public.class)
+	List<Supplement> supplementList;
+	
+	@JsonView(Views.Public.class)
+	Invoice invoiceInfo;
 
 	public String getMsg() {
 		return msg;
@@ -60,6 +72,30 @@ public class AjaxResponseBody {
 
 	public void setIdTags(List<String> idTags) {
 		this.idTags = idTags;
+	}
+
+	public Client getClientInfo() {
+		return clientInfo;
+	}
+
+	public void setClientInfo(Client clientInfo) {
+		this.clientInfo = clientInfo;
+	}
+
+	public List<Supplement> getSupplementList() {
+		return supplementList;
+	}
+
+	public void setSupplementList(List<Supplement> supplementList) {
+		this.supplementList = supplementList;
+	}
+
+	public Invoice getInvoiceInfo() {
+		return invoiceInfo;
+	}
+
+	public void setInvoiceInfo(Invoice invoiceInfo) {
+		this.invoiceInfo = invoiceInfo;
 	}
 
 }
