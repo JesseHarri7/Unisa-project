@@ -13,74 +13,76 @@
 	<!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
 	<link rel="stylesheet" href="../res/css/cart.css" />
 	<link rel="stylesheet" href="../res/css/styles.css" />
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
 </head>
 <body>
 
 	<div w3-include-html="../pages/temps/header.html"></div>
 	<div w3-include-html="../pages/temps/nav.html"></div>
 	
+	<p>Invoice Number: <label id="invNum"></p>
+	<p>Date: <label id="currDate"></p>
+	
 	<!-- Client details Table -->
-	<div class="panel-group">
-		<div class="panel panel-default">
-		  <div class="panel-heading">
-			<h4 class="panel-title">
-			  <a data-toggle="collapse" href="#clientDetails">Client Details</a>
-			</h4>
-		  </div>
-		  <div id="clientDetails" class="panel-collapse collapse show">
-			<div class="panel-body">
-			
-				<div class="table-width-outter">
-					<div class="table-width-inner">
-						<table class="display" id="client-table" style="width:90%">
-							<thead>
-								<tr>
-									<th>Client ID</th>
-									<th>First name</th>
-									<th>Last name</th>
-									<th>Address</th>
-									<th>Tel number home</th>
-									<th>Tel number work</th>
-									<th>Tel number cell</th>
-									<th>Email</th>
-								</tr>
-							</thead>
-							<tbody>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<hr>
+	<div class="card">
+		<div class="panel-group">
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+				<h4 class="panel-title">
+				  <a data-toggle="collapse" href="#clientDetails">Client Details</a>
+				</h4>
+			  </div>
+			  <div id="clientDetails" class="panel-collapse collapse show">
+				<div class="panel-body">
 				
+					<div class="table-width-outter">
+						<div class="table-width-inner">
+							<table class="display" id="client-table" style="width:90%">
+								<thead>
+									<tr>
+										<th>Client ID</th>
+										<th>First name</th>
+										<th>Last name</th>
+										<th>Address</th>
+										<th>Tel number home</th>
+										<th>Tel number work</th>
+										<th>Tel number cell</th>
+										<th>Email</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<hr>
+					
+				</div>
+			  </div>
 			</div>
-		  </div>
 		</div>
 	</div>
 	
- 
+	
 	<!-- Cart -->
-	<h4 class="panel-title">
-		Cart
-	</h4>
-	<p>Invoice Number: <label id="invNum"></p>
-	<p>Date: <label id="currDate"></p>
-	<div class="table-width-outter">
-		<div class="table-width-inner">
-			<table class="display" id="supplement-table" style="width:100%">
-				<thead>
-					<tr>
-						<th>Supplement ID</th>
-						<th>Supplement description</th>
-						<th>Supplement Cost(Excl)</th>
-						<th>Quantity</th>
-						<th>Price(Excl)</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
-	</div>
+	<div class="card">
+	<table class="table table-hover shopping-cart-wrap">
+	<thead class="text-muted">
+	<tr>
+	  <th scope="col">Supplement ID</th>
+	  <th scope="col" width="120">Quantity</th>
+	  <th scope="col" width="120">Cost(Excl)</th>
+	  <th scope="col" width="120">Cost(Incl)</th>
+	  <th scope="col" width="200" class="text-right">Action</th>
+	</tr>
+	</thead>
+	<tbody id="cartItems">
+	
+	</tbody>
+	</table>
+	</div> <!-- card.// -->
+	 
+	<input type="button" value="Add supplement +" id="addSupp-btn" class="btn btn-success">
 	 
 	</br>
 	<div class="totals">
