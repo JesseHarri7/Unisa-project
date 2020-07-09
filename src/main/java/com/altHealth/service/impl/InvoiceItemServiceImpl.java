@@ -64,8 +64,8 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
 	}
 	
 	@Override
-	public List<InvoiceItem> findInvoiceItemByInvNum(String invNum) {
-		List<InvoiceItem> invoiceItems = repo.findInvoiceItemByInvNum(invNum);
+	public List<InvoiceItem> findByInvNum(String invNum) {
+		List<InvoiceItem> invoiceItems = repo.findByInvNum(invNum);
 		return returnList(invoiceItems);
 	}
 

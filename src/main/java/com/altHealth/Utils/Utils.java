@@ -120,7 +120,7 @@ public class Utils {
 		 * 
 		 * Session session = Session.getDefaultInstance(props, auth);
 		 */
-
+/*
 		//Get the Session object. 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
@@ -174,7 +174,7 @@ public class Utils {
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
-
+*/
 	}
 
 }

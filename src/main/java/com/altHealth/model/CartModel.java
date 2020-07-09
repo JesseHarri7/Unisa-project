@@ -10,6 +10,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.altHealth.entity.Client;
 import com.altHealth.entity.Invoice;
+import com.altHealth.entity.InvoiceItem;
 import com.altHealth.entity.Supplement;
 
 @Component
@@ -19,9 +20,9 @@ public class CartModel implements CartModelActivity{
 	
 	
 	Invoice invoice;
+	List<InvoiceItem> invoiceItems = new ArrayList<InvoiceItem>();
 	Client client;
 	List<Supplement> supplementList = new ArrayList<Supplement>();
-	
 	
 
 	public CartModel() {}
@@ -54,6 +55,14 @@ public class CartModel implements CartModelActivity{
 	public void setSupplement(Supplement supplement) {
 		this.supplementList.add(supplement);
 		
+	}
+
+	public List<InvoiceItem> getInvoiceItems() {
+		return invoiceItems;
+	}
+
+	public void setInvoiceItems(List<InvoiceItem> invoiceItems) {
+		this.invoiceItems = invoiceItems;
 	}
 
 	@Override

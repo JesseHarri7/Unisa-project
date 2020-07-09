@@ -6,7 +6,7 @@ import com.altHealth.entity.InvoiceItem;
 
 public interface InvoiceItemService extends Service<InvoiceItem, String> {
 	
-	List<InvoiceItem> findInvoiceItemByInvNum(String invNum);
+	List<InvoiceItem> findByInvNum(String invNum);
 	
 	List<InvoiceItem> findInvoiceItemBySupplementId(String supplementId);
 	
