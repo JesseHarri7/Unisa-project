@@ -3,6 +3,7 @@ $(document).ready(function() {
  
 /* Set rates + misc */
 var fadeTime = 300;
+var emptyArray = [];
 
 	//Add temps html files
 	includeHTML(); 
@@ -13,7 +14,7 @@ var fadeTime = 300;
 	
 	getSettings();
 	
-	//Get client info
+	//Get cart info
 	function getCartInfo() {
 		$.ajax({
 			url:"/altHealth/cart/getCartInfo", 
@@ -35,6 +36,22 @@ var fadeTime = 300;
 					for (x of response.result) {
 						$.notify(x, "error");
 					}
+					
+					if(response.clientInfo != null){
+						//Client
+						clientInfoTable(response.clientInfo);
+					}
+					
+					if(response.supplementList.length > 0){
+						//Supplements
+						var suppDataSet = [response.supplementList];
+						cartItemsTable(suppDataSet[0]);
+					}
+					
+					if(response.invoiceInfo != null){
+						//Invoice
+						invoiceInfo(response.invoiceInfo);
+					}
 				}
 				
 				recalculateCart();
@@ -48,7 +65,9 @@ var fadeTime = 300;
 	
 	function clientInfoTable(dataSet){
 		$('#cNameSurname').html(dataSet.cName + ' ' + dataSet.cSurname);
-		$('#address').html(dataSet.address);
+		$('#clientId').html(dataSet.clientId);
+		$('#cAddress').html(dataSet.address);
+		$('#cTelCell').html(dataSet.cTelCell);
 		$('#cEmail').html(dataSet.cEmail);
 	}
 	
@@ -96,6 +115,9 @@ var fadeTime = 300;
 			type: "GET",
 			success: function(data) {
 				$('#vat').html(data.vatPercent);
+				$('#sysAddress').html(data.address);
+				$('#sysTelNo').html(data.telNo);
+				$('#sysEmail').html(data.email);
 				
 			}
 		});
@@ -200,13 +222,58 @@ var fadeTime = 300;
 	}
 	
 	$('#printInvoice').click(function(){
+		
+		var html = $('.invoice')[0].outerHTML;
+		var fileName = $('#invNum').text();
+		
+		//TODO: for pdf get invoice num from invoiceCreate
+		//Only send PDF on successful Invoice create
+		//sendPDF(fileName, html);
+	
+	});
+	
+	function sendPDF(invNum, html){
+		
+		//Set as object
+		var htmlFile = {invNum, html};
+		
+		//Translate so that JSON can read it
+		var data_json = JSON.stringify(htmlFile);
+		
+		$.ajax({
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json' 
+			},
+			url:"/altHealth/cart/sendPDF",
+			dataType: "json",
+			data: data_json,
+			type: "POST",
+			success: function(response) {
+				if(response.status == "true") {
+					$.notify(response.msg, "success");
+				}else {
+					for (x of response.result) {
+						$.notify(x, "error");
+					}
+				}
+				
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				$.notify("Status 405", "error");
+			}
+		});
+	}
+	
+	$('#printLocal').click(function(){	
 		Popup($('.invoice')[0].outerHTML);
-		function Popup(data) 
-		{
+		function Popup(data) {
 			window.print();
 			return true;
 		}
 	});
+	
 	
 	function includeCurrDate(){
 		n =  new Date();

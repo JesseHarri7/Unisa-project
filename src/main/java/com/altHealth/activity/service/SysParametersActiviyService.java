@@ -52,7 +52,7 @@ public class SysParametersActiviyService implements SysParametersActiviy {
 		
 		List<Supplement> failedSuppList = new ArrayList<Supplement>();
 		List<Supplement> supplementList = service.getSupplementService().readAll();
-		SysParameters settings = service.getSysParaService().readById(1);
+		SysParameters settings = service.getSysParaService().readById(ModelMappings.COMPANY_ID);
 		
 		for(Supplement supp : supplementList) {
 			Double costIncl = utils.calcVAT(supp.getCostExcl(), settings.getVatPercent());

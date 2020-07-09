@@ -1,5 +1,7 @@
 package com.altHealth.activity.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,12 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.altHealth.Utils.ServiceHelper;
+import com.altHealth.Utils.Utils;
 import com.altHealth.activity.CartActivity;
 import com.altHealth.entity.Client;
 import com.altHealth.entity.Invoice;
 import com.altHealth.entity.Supplement;
 import com.altHealth.model.CartModel;
 import com.altHealth.model.CartModelActivity;
+import com.altHealth.model.HTMLModel;
 import com.altHealth.model.ReturnModel;
 
 @Service
@@ -22,6 +26,8 @@ public class CartActivityService implements CartActivity {
 	CartModelActivity cart;
 	@Autowired
 	ServiceHelper service;
+	@Autowired
+	Utils util;
 
 	@Override
 	public ReturnModel addClientToCart(Client client) {
@@ -78,8 +84,8 @@ public class CartActivityService implements CartActivity {
 			System.out.println(result);
 			errorList.add(result);
 		}
-		
-		if(sessionCart.getInvoice() == null) {
+
+		if (sessionCart.getInvoice() == null) {
 			Invoice newInvoice = new Invoice();
 			String max = service.getInvoiceService().findInvNumByMax();
 			max = max.substring(3);
@@ -190,34 +196,55 @@ public class CartActivityService implements CartActivity {
 		List<String> idTagList = new ArrayList<String>();
 		returnModel.setErrorList(errorList);
 		returnModel.setIdTags(idTagList);
-		
+
 		CartModel sessionCart = cart.getCart();
 		returnModel.setEntity(sessionCart);
-		
+
 		Supplement suppToRemove = service.getSupplementService().readById(supplementId);
 		boolean found = false;
-		
-		if(suppToRemove != null) {
+
+		if (suppToRemove != null) {
 			List<Supplement> currSuppList = cart.getSupplementList();
-			for(Supplement supp : currSuppList) {
-				if(supp.getSupplementId().equalsIgnoreCase(suppToRemove.getSupplementId())) {
+			for (Supplement supp : currSuppList) {
+				if (supp.getSupplementId().equalsIgnoreCase(suppToRemove.getSupplementId())) {
 					currSuppList.remove(supp);
 					cart.setSupplementList(currSuppList);
 					found = true;
 					break;
 				}
 			}
-		}else {
+		} else {
 			String result = "Supplement ID: " + supplementId + " does not exist!";
 			System.out.println(result);
 			errorList.add(result);
 		}
-		if(!found) {
+		if (!found) {
 			String result = "Supplement ID: " + supplementId + " does not exist in session cart!";
 			System.out.println(result);
 			errorList.add(result);
 		}
-		
+
+		return returnModel;
+	}
+
+	@Override
+	public ReturnModel sendPDF(HTMLModel html) {
+		ReturnModel returnModel = new ReturnModel();
+		List<String> errorList = new ArrayList<String>();
+		List<String> idTagList = new ArrayList<String>();
+		returnModel.setErrorList(errorList);
+		returnModel.setIdTags(idTagList);
+		returnModel.setEntity(html);
+		String css = "<link rel=\"stylesheet\" href=\"../unisa-project/src/main/webapp/res/css/cartPDF.css\" />";
+		String subject = "Invoice order for: " + html.getInvNum();
+		try {
+			File htmlFile = util.writeTempHTMLFile(html.getInvNum(), html.getHtml(), css);
+			String filePath = util.generatePDFFromHTML(html.getInvNum(), htmlFile);
+			util.sendEmailAtt(html.getEmail(), filePath, subject);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		return returnModel;
 	}
 

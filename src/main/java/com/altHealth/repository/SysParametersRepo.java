@@ -13,6 +13,8 @@ public interface SysParametersRepo extends CrudRepository<SysParameters, Integer
 	
 	SysParameters findSysParametersById(Integer id);
 	
+	SysParameters findSysParametersByEmail(String email);
+	
 	@Query(value = "SELECT * FROM tblSysParameters", nativeQuery = true)
 	List<SysParameters> findSysParametersAll();
 	

@@ -5,6 +5,7 @@ public class ModelMappings {
 	public final static String DATE_FORMAT = "yyMMdd";
 	public final static String TRUE = "true";
 	public final static String FALSE = "false";
+	public final static Integer COMPANY_ID = 1;
 	
 	//Client
 	public final static String CLIENT_id = "#id";
