@@ -59,9 +59,9 @@ public class InvoiceItemController implements Controller<InvoiceItem, String> {
 	}
 	
 	//findByInvNum
-	@RequestMapping(value = "findInvoiceItemByInvNum/{invNum}", method = RequestMethod.GET)
-	List<InvoiceItem> findInvoiceItemByInvNum(@PathVariable String invNum){
-		return service.findInvoiceItemByInvNum(invNum);
+	@RequestMapping(value = "findByInvNum/{invNum}", method = RequestMethod.GET)
+	List<InvoiceItem> findByInvNum(@PathVariable String invNum){
+		return service.findByInvNum(invNum);
 	}
 	
 	//findBySuppId

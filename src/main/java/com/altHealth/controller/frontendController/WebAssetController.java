@@ -31,6 +31,11 @@ public class WebAssetController {
 		return "/pages/Cart.html";
 	}
 	
+	@RequestMapping(value = "invoice")
+	public String invoice() {
+		return "/pages/Invoice.html";
+	}
+	
 	@RequestMapping(value = "test")
 	public String test() {
 		return "/pages/Test.html";

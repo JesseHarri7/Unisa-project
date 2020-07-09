@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.altHealth.entity.Client;
 import com.altHealth.entity.Invoice;
+import com.altHealth.entity.InvoiceItem;
 import com.altHealth.entity.Supplement;
 import com.altHealth.model.Views;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -33,6 +34,9 @@ public class AjaxResponseBody {
 	
 	@JsonView(Views.Public.class)
 	Invoice invoiceInfo;
+	
+	@JsonView(Views.Public.class)
+	List<InvoiceItem> invoiceItems;
 
 	public String getMsg() {
 		return msg;
@@ -96,6 +100,14 @@ public class AjaxResponseBody {
 
 	public void setInvoiceInfo(Invoice invoiceInfo) {
 		this.invoiceInfo = invoiceInfo;
+	}
+
+	public List<InvoiceItem> getInvoiceItems() {
+		return invoiceItems;
+	}
+
+	public void setInvoiceItems(List<InvoiceItem> invoiceItems) {
+		this.invoiceItems = invoiceItems;
 	}
 
 }

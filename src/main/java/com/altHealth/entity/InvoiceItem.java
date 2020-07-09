@@ -5,11 +5,16 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.SQLDelete;
 
+import com.altHealth.entity.pk.InvoiceItemPK;
+
 @Entity
+@IdClass(InvoiceItemPK.class)
 @Table(name = "tblInv_Items")
 @SQLDelete(sql = "UPDATE tblInv_Items set state = 'D', Term_date = CURDATE() WHERE Inv_Num = ?")
 public class InvoiceItem implements Serializable 
@@ -24,7 +29,7 @@ public class InvoiceItem implements Serializable
 	@Column(name = "Inv_Num")
 	private String invNum;
 	
-//	@Id
+	@Id
 	@Column(name = "Supplement_Id")
 	private String supplementId;
 	
@@ -39,6 +44,11 @@ public class InvoiceItem implements Serializable
 	
 	@Column(name = "Term_date")
 	private String termDate;
+	
+	@Transient
+	private String supplementDescription;
+	@Transient
+	private Double lineTotal;
 
 	public InvoiceItem() {
 	}
@@ -97,6 +107,22 @@ public class InvoiceItem implements Serializable
 
 	public void setTermDate(String termDate) {
 		this.termDate = termDate;
+	}
+
+	public String getSupplementDescription() {
+		return supplementDescription;
+	}
+
+	public void setSupplementDescription(String supplementDescription) {
+		this.supplementDescription = supplementDescription;
+	}
+
+	public Double getLineTotal() {
+		return lineTotal;
+	}
+
+	public void setLineTotal(Double lineTotal) {
+		this.lineTotal = lineTotal;
 	}
 
 	@Override
