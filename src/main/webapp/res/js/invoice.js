@@ -1,60 +1,52 @@
 
 $(document).ready(function() {
- 
-/* Set rates + misc */
-var fadeTime = 300;
-var emptyArray = [];
 
 	//Add temps html files
 	includeHTML(); 
 	
-	includeCurrDate();
-	
-	getCartInfo();
-	
+	//Company info
 	getSettings();
 	
+	//search button
+	$('#searchInv-btn').click(function(event) {
+		var invNum = $('#sInvNum').val();
+		
+		//Clear form red border css
+		clearFormBorder();
+		$('.notifyjs-corner').remove();
+		
+		if(validateEmpty(invNum)){
+			getCartInfo(invNum)
+		}
+	});
+	
 	//Get cart info
-	function getCartInfo() {
+	function getCartInfo(invNum) {
 		$.ajax({
-			url:"/altHealth/cart/getCartInfo", 
+			url:"/altHealth/invoice/getInvoiceInfo/" + invNum, 
 			dataType: "json",
 			type: "GET",
 			success: function(response) {
 				
 				if(response.status == "true") {
+					clearItemsTable();
 					//Client
 					clientInfoTable(response.clientInfo);
 					
-					//Supplements
-					var suppDataSet = [response.supplementList];
-					cartItemsTable(suppDataSet[0]);
-					
 					//Invoice
 					invoiceInfo(response.invoiceInfo);
+					
+					//Invoice Items
+					var itemsDataSet = [response.invoiceItems];
+					cartItemsTable(itemsDataSet[0]);
+					
 				}else {
 					for (x of response.result) {
 						$.notify(x, "error");
 					}
-					
-					if(response.clientInfo != null){
-						//Client
-						clientInfoTable(response.clientInfo);
-					}
-					
-					if(response.supplementList.length > 0){
-						//Supplements
-						var suppDataSet = [response.supplementList];
-						cartItemsTable(suppDataSet[0]);
-					}
-					
-					if(response.invoiceInfo != null){
-						//Invoice
-						invoiceInfo(response.invoiceInfo);
-					}
 				}
 				
-				recalculateCart();
+				//recalculateCart();
 			},
 			error : function(e) {
 				console.log("ERROR: ", e);
@@ -74,11 +66,13 @@ var emptyArray = [];
 	function invoiceInfo(dataSet){
 		$('#invNum').html(dataSet.invNum);
 		$('#invNum2').html(dataSet.invNum);
+		$('#invDate').html(dataSet.invDate);
+		$('#invPaidDate').html(dataSet.invPaidDate);
 	}
 	
-	function cartItemsTable(suppDataSet){
+	function cartItemsTable(itemsDataSet){
 		var tr="";
-		for (ref of suppDataSet) {
+		for (ref of itemsDataSet) {
 			tr+= '<tr class="dataRow">' +
 					'<td class="no">' +
 						'<h6 class="title text-truncate">' + ref.supplementId + '</h6>' +
@@ -87,20 +81,13 @@ var emptyArray = [];
 						ref.supplementDescription +
 					'</td>' +
 					'<td class="qty">' + 
-						'<input type="number" class="form-control" id="qty" value="1" min="1" ' +
-							'max="' + ref.currentStockLevels + '" required>' +
+						ref.itemQuantity +
 					'</td>' +
 					'<td class="unit costExcl">' + 
-						ref.costExcl +
-					'</td>' +
-					'<td class="unit costIncl">' + 
-						ref.costIncl + 
+						ref.itemPrice +
 					'</td>' +
 					'<td class="unit total">' + 
-						ref.costExcl +
-					'</td>' +
-					'<td class="text-right removal">' +
-						'<button class="btn btn-outline-danger"> × Remove</button>' +
+						ref.lineTotal +
 					'</td>' +
 				'</tr>';
 		}
@@ -120,104 +107,6 @@ var emptyArray = [];
 				$('#sysTelNo').html(data.telNo);
 				$('#sysEmail').html(data.email);
 				
-			}
-		});
-	}
-	
-	//listen for click events from this style
-	$(document).on('click', '.qty', function() {
-
-		updateQuantity(this);
-		
-	});
-	
-	//Form update button
-	$('#addSupp-btn').click(function(event) {
-		window.location = "/altHealth/supplement/";
-	});
-	 
-	$(document).on('click', '.btn.btn-outline-danger', function() {
-	  removeItem(this);
-	}); 
-	
-	/* Update quantity */
-	function updateQuantity(quantityInput) {
-	  /* Calculate line price */
-	  var productRow = $(quantityInput).parent();
-	  //var tr = productRow[0];
-	  var price = parseFloat(productRow.children('.unit.costExcl').text());
-	  var quantity = $(quantityInput).children().val();
-	  var linePrice = price * quantity;
-	   
-	  /* Update line price display and recalc cart totals */
-	  productRow.children('.total').each(function () {
-		$(this).fadeOut(fadeTime, function() {
-		  $(this).text(linePrice.toFixed(2));
-		  recalculateCart();
-		  $(this).fadeIn(fadeTime);
-		});
-	  });  
-	}
-	
-	/* Recalculate cart */
-	function recalculateCart() {
-	  var subtotal = 0;
-	   
-	  /* Sum up row totals */
-	  $('.dataRow').each(function () {
-		subtotal += parseFloat($(this).children('.unit.total').text());
-	  });
-	   
-	  /* Calculate totals */
-	  var vat = $('.vat').text();
-	  var vatPerc = vat / 100;
-	  var tax = subtotal * vatPerc;
-	  var total = subtotal + tax;
-	   
-	  /* Update totals display */
-	  $('.totals-value').fadeOut(fadeTime, function() {
-		$('#cart-subtotal').html(subtotal.toFixed(2));
-		$('#cart-tax').html(tax.toFixed(2));
-		$('#cart-total').html(total.toFixed(2));
-		if(total == 0){
-		  $('.btn btn-info').fadeOut(fadeTime);
-		}else{
-		  $('.btn btn-info').fadeIn(fadeTime);
-		}
-		$('.totals-value').fadeIn(fadeTime);
-	  });
-	} 
- 
-	/* Remove item from cart */
-	function removeItem(removeButton) {
-	  /* Remove row from DOM and recalc cart total */
-	  var productRow = $(removeButton).parent().parent();
-		removeSupplementFromSession(productRow);
-	}
-	
-	function removeSupplementFromSession(productRow){
-		var supplementId = productRow.children('.no').text();
-		
-		$.ajax({
-			url:"/altHealth/cart/removeSupplement/" + supplementId, 
-			dataType: "json",
-			type: "POST",
-			success: function(response) {
-				if(response.status == "true") {
-					productRow.slideUp(fadeTime, function() {
-						productRow.remove();
-						recalculateCart();
-					});
-				}else {
-					for (x of response.result) {
-						$.notify(x, "error");
-					}
-				}
-				
-			},
-			error : function(e) {
-				console.log("ERROR: ", e);
-				$.notify("Status 405", "error");
 			}
 		});
 	}
@@ -246,7 +135,7 @@ var emptyArray = [];
 				'Accept': 'application/json',
 				'Content-Type': 'application/json' 
 			},
-			url:"/altHealth/cart/sendPDF",
+			url:"/altHealth/invoice/sendPDF",
 			dataType: "json",
 			data: data_json,
 			type: "POST",
@@ -275,13 +164,29 @@ var emptyArray = [];
 		}
 	});
 	
+	function clearItemsTable(){
+		var tr="";
+		$('#cartItems').html(tr);
+	}
 	
-	function includeCurrDate(){
-		n =  new Date();
-		y = n.getFullYear();
-		m = n.getMonth() + 1;
-		d = n.getDate();
-		document.getElementById("currDate").innerHTML = d + "/" + m + "/" + y;
+	function validateEmpty(invNum){
+		if (invNum == "" || invNum == " ") {
+			displayFormBorder(invNum);
+			$.notify("Heads up! Please Enter a valid invoice number", "error");
+			return false;
+		}else {
+			return true;
+		}	
+	}
+	
+	function displayFormBorder(invNum) {
+		if(!invNum) {
+			$('#sInvNum').addClass("form-fill-error");
+		}
+	}
+	
+	function clearFormBorder() {
+		$('#sInvNum').removeClass("form-fill-error");
 	}
 
 	function includeHTML() {
