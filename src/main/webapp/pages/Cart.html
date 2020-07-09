@@ -17,7 +17,6 @@
 </head>
 <body>
 
-	<div w3-include-html="../pages/temps/header.html"></div>
 	<div w3-include-html="../pages/temps/nav.html"></div>
 		
 	
@@ -25,8 +24,8 @@
 
     <div class="toolbar hidden-print">
         <div class="text-right">
-            <button id="printInvoice" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
-            <button class="btn btn-info"><i class="fa fa-file-pdf-o"></i> Export as PDF</button>
+            <button id="printLocal" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
+            <button id="printInvoice" class="btn btn-info"><i class="fa fa-file-pdf-o"></i> Send invoice</button>
         </div>
         <hr>
     </div>
@@ -41,9 +40,9 @@
                         <h2 class="name">
                             Alt Health
                         </h2>
-                        <div>Address</div>
-                        <div>(123) 456-789</div>
-                        <div>company@altHealth.co.za</div>
+                        <div id="sysAddress"></div>
+                        <div id="sysTelNo">(123) 456-789</div>
+                        <div id="sysEmail">company@altHealth.co.za</div>
                     </div>
                 </div>
             </header>
@@ -52,7 +51,9 @@
                     <div class="col invoice-to">
                         <div class="text-gray-light">INVOICE TO:</div>
                         <h2 id="cNameSurname" class="to"></h2>
-                        <div id="address" class="address"></div>
+						<div id="clientId" class="clientId"></div>
+                        <div id="cAddress" class="address"></div>
+						<div id="cTelCell" class="cTelCell"></div>
                         <div id="cEmail" class="email"></div>
                     </div>
                     <div class="col invoice-details">

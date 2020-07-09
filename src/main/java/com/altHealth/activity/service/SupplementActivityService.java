@@ -81,7 +81,7 @@ public class SupplementActivityService implements SupplementActiviy{
 	}
 	
 	private void updateCostIncl(Supplement supp) {
-		SysParameters settings = service.getSysParaService().readById(1);
+		SysParameters settings = service.getSysParaService().readById(ModelMappings.COMPANY_ID);
 		Double costIncl = utils.calcVAT(supp.getCostExcl(), settings.getVatPercent());
 		
 		supp.setCostIncl(costIncl);

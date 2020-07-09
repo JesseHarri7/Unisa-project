@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.altHealth.entity.SysParameters;
+import com.altHealth.mappings.ModelMappings;
 import com.altHealth.service.SysParametersService;
 
 @RestController
@@ -26,13 +27,13 @@ public class SysParametersController implements Controller<SysParameters, Intege
 
 	@Override
 	public SysParameters create(SysParameters entity) {
-		entity.setId(1);
+		entity.setId(ModelMappings.COMPANY_ID);
 		return service.create(entity);
 	}
 
 	@Override
 	public void update(SysParameters entity) {
-		entity.setId(1);
+		entity.setId(ModelMappings.COMPANY_ID);
 		service.update(entity);
 	}
 
@@ -53,6 +54,11 @@ public class SysParametersController implements Controller<SysParameters, Intege
 		if (entity != null) {
 			service.delete(entity);
 		}		
+	}
+	
+	@RequestMapping(value = "email/{email}", method = RequestMethod.GET)
+	public SysParameters findSysParametersByEmail(@PathVariable String email) {
+		return service.findSysParametersByEmail(email);
 	}
 	
 	@RequestMapping(value = "findSysParametersByVarPercent/{vatPercent}", method = RequestMethod.GET)

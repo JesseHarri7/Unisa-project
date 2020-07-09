@@ -1,95 +1,3 @@
-.param {
-    margin-bottom: 7px;
-    line-height: 1.4;
-}
-.param-inline dt {
-    display: inline-block;
-}
-.param dt {
-    margin: 0;
-    margin-right: 7px;
-    font-weight: 600;
-}
-.param-inline dd {
-    vertical-align: baseline;
-    display: inline-block;
-}
-
-.param dd {
-    margin: 0;
-    vertical-align: baseline;
-} 
-
-.shopping-cart-wrap .price {
-    color: #007bff;
-    font-size: 18px;
-    font-weight: bold;
-    margin-right: 5px;
-    display: block;
-}
-var {
-    font-style: normal;
-}
-
-.media img {
-    margin-right: 1rem;
-}
-.img-sm {
-    width: 90px;
-    max-height: 75px;
-    object-fit: cover;
-}
-
-/* Apply clearfix in a few places */
-/* Apply dollar signs */
-.product .product-price:before, .product .product-line-price:before, .totals-value:before {
-  content: 'R';
-}
-
-/* Totals section */
-.totals .totals-item {
-  float: right;
-  clear: both;
-  width: 100%;
-  margin-bottom: 10px;
-}
-.totals .totals-item label {
-  float: left;
-  clear: both;
-  width: 79%;
-  text-align: right;
-}
-.totals .totals-item .totals-value {
-  float: right;
-  width: 21%;
-  text-align: right;
-}
-.totals .totals-item-total {
-  font-family: "HelveticaNeue-Medium", "Helvetica Neue Medium";
-}
- 
-.checkout {
-  float: right;
-  border: 0;
-  margin-top: 20px;
-  padding: 6px 25px;
-  background-color: #6b6;
-  color: #fff;
-  font-size: 25px;
-  border-radius: 3px;
-}
- 
-.checkout:hover {
-  background-color: #494;
-}
-
-/* Data tables hide sort icons */
-table.dataTable thead .sorting, 
-table.dataTable thead .sorting_asc, 
-table.dataTable thead .sorting_desc {
-    background : none;
-}
-
 
 /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 #invoice{
@@ -241,19 +149,30 @@ table.dataTable thead .sorting_desc {
     padding: 8px 0
 }
 
-@media print {
-    .invoice {
-        font-size: 11px!important;
-        overflow: hidden!important
-    }
-
-    .invoice footer {
-        position: absolute;
-        bottom: 10px;
-        page-break-after: always
-    }
-
-    .invoice>div:last-child {
-        page-break-before: always
-    }
+.unit:before, .totals-value:before {
+  content: 'R';
 }
+
+.vat:after {
+  content: '%';
+}
+	
+/*Remove Add supplement button*/
+.invoice .btn-outline-success{
+	display: none;
+}
+
+/*Remove supplement button column*/
+.invoice td:nth-of-type(7){
+	display: none;
+}
+
+.invoice th:nth-of-type(7){
+	display: none;
+}
+
+/*adjust table*/
+.invoice tfoot td:nth-of-type(1){
+	display: none;
+}
+	

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.altHealth.entity.Client;
 import com.altHealth.entity.Supplement;
+import com.altHealth.model.HTMLModel;
 import com.altHealth.model.ReturnModel;
 
 public interface CartActivity {
@@ -17,4 +18,6 @@ public interface CartActivity {
 	abstract ReturnModel getCartInfo();
 	
 	abstract ReturnModel removeSupplement(String supplementId);
+	
+	abstract ReturnModel sendPDF(HTMLModel html);
 }

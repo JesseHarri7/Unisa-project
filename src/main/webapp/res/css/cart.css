@@ -149,6 +149,11 @@
     padding: 8px 0
 }
 
+.imgImport {
+  content: '../unisa-project/src/main/webapp/res/images/AltHealthBig.jpg';
+  width: 150px;
+}
+
 .unit:before, .totals-value:before {
   content: 'R';
 }
@@ -175,6 +180,11 @@
 	
 	/*Remove Add supplement button*/
 	.invoice .btn-outline-success{
+		display: none;
+	}
+	
+	/*Remove print buttons*/
+	.invoice .btn-info{
 		display: none;
 	}
 	

@@ -12,6 +12,7 @@ import com.altHealth.activity.CartActivity;
 import com.altHealth.entity.Supplement;
 import com.altHealth.mappings.ModelMappings;
 import com.altHealth.model.CartModel;
+import com.altHealth.model.HTMLModel;
 import com.altHealth.model.ReturnModel;
 
 @RestController
@@ -63,6 +64,9 @@ public class WebCartController {
 			result.setMsg("Error! " + returnModel.getStringErrorList());
 			result.setResult(returnModel.getErrorList());
 			result.setIdTags(returnModel.getIdTags());
+			result.setClientInfo(cart.getClient());
+			result.setSupplementList(cart.getSupplementList());
+			result.setInvoiceInfo(cart.getInvoice());
 		}
 
 		// AjaxResponseBody will be converted into json format and send back to the
@@ -138,4 +142,27 @@ public class WebCartController {
 		// request.
 		return result;
 	}
+	
+	//Send PDF
+	@RequestMapping(value = "sendPDF", method = RequestMethod.POST)
+	public AjaxResponseBody sendPDF(@RequestBody HTMLModel html) {
+		ReturnModel returnModel = activity.sendPDF(html);
+		AjaxResponseBody result = new AjaxResponseBody();
+		HTMLModel htmlResp = (HTMLModel) returnModel.getEntity();
+		
+		if (returnModel.getErrorList().isEmpty()) {
+			result.setStatus(ModelMappings.TRUE);
+			result.setMsg("Success! Invoice " + htmlResp.getInvNum() + " has been sent.");
+		} else {
+			result.setStatus(ModelMappings.FALSE);
+			result.setMsg("Error! " + returnModel.getStringErrorList());
+			result.setResult(returnModel.getErrorList());
+			result.setIdTags(returnModel.getIdTags());
+		}
+
+		// AjaxResponseBody will be converted into json format and send back to the
+		// request.
+		return result;
+	}
+		
 }

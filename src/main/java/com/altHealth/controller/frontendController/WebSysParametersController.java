@@ -21,7 +21,7 @@ public class WebSysParametersController {
 	
 	@RequestMapping(value = "formUpdateBtn", method = RequestMethod.PUT)
 	public AjaxResponseBody formUpdateBtn(@RequestBody SysParameters entity) {
-		entity.setId(1);
+		entity.setId(ModelMappings.COMPANY_ID);
 		ReturnModel returnModel = activity.formUpdateBtn(entity);
 		AjaxResponseBody result = new AjaxResponseBody();
 		SysParameters sysPara = (SysParameters) returnModel.getEntity();

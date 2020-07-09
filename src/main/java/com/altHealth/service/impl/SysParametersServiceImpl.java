@@ -69,17 +69,27 @@ public class SysParametersServiceImpl implements SysParametersService {
 		return returnList(sysPara);
 	}
 	
+	@Override
+	public void updateAll(List<SysParameters> entities) {
+		repo.saveAll(entities);
+	}
+	
+	@Override
+	public SysParameters findSysParametersByEmail(String email) {
+		SysParameters sysPara = repo.findSysParametersByEmail(email);
+		if(sysPara == null) {
+			return null;
+		}else {
+			return sysPara;
+		}
+	}
+	
 	private <E> List<E> returnList(List<E> list){
 		if(list.isEmpty()) {
 			return null;
 		}else {
 			return list;
 		}
-	}
-
-	@Override
-	public void updateAll(List<SysParameters> entities) {
-		repo.saveAll(entities);
 	}
 
 }
