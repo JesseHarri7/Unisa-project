@@ -3,9 +3,6 @@ package com.altHealth.entity.VO;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.annotation.ManagedBean;
-import javax.persistence.EntityListeners;
-
 public class ReportVO implements Serializable{
 	
 	/**

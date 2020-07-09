@@ -4,14 +4,14 @@
 	<meta name="viewport"
 		content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<title>Cart</title>
+	<title>Invoice</title>
 	
 	<!--CSS links -->
 	<link rel="icon" type="image/png" href="../res/images/icons/altHealth-favicon.ico" />
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="http://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
 	<!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
-	<link rel="stylesheet" href="../res/css/cart.css" />
+	<link rel="stylesheet" href="../res/css/invoice.css" />
 	<link rel="stylesheet" href="../res/css/styles.css" />
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
 </head>
@@ -23,6 +23,13 @@
 	<div id="invoice">
 
     <div class="toolbar hidden-print">
+	
+		<div class="form-inline">
+			<input class="mb-2 mr-sm-2" type="text" id="sInvNum" placeholder="Invoice number" aria-label="Search" />
+					
+            <button id="searchInv-btn" class="btn btn-info"><i class="fa"></i> Search</button>
+        </div>
+
         <div class="text-right">
             <button id="printLocal" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
             <button id="printInvoice" class="btn btn-info"><i class="fa fa-file-pdf-o"></i> Send invoice</button>
@@ -61,7 +68,8 @@
 							<span class="left-text">INVOICE: </span>
 							<span class="byline" id="invNum"> </span>
 						</h1>
-                        <div class="date">Date of Invoice: <label id="currDate"></div>
+                        <div class="date">Date of Invoice: <label id="invDate"></div>
+						<div class="date">Date of Invoice Paid: <label id="invPaidDate"></div>
                     </div>
                 </div>
                 <table border="0" cellspacing="0" cellpadding="0">
@@ -71,27 +79,22 @@
 							<th class="text-left">Description</th>
                             <th class="text-right">Quantity</th>
                             <th class="text-right">Cost(Excl)</th>
-                            <th class="text-right">Cost(Incl)</th>
 							<th class="text-right">Total</th>
-							<th class="text-right"></th>
                         </tr>
                     </thead>
                     <tbody id="cartItems">
                     </tbody>
                     <tfoot>
                         <tr>
-							<td class="text-left"><input type="button" value="Add supplement +" id="addSupp-btn" class="btn btn-outline-success"></td>
-                            <td colspan="5">SUBTOTAL(excl)</td>
+                            <td colspan="4">SUBTOTAL(excl)</td>
                             <td id="cart-subtotal" class="totals-value">0</td>
                         </tr>
                         <tr>
-                            <td colspan="1"></td>
-                            <td colspan="5">VAT <label id="vat" class="vat"/></td>
+                            <td colspan="4">VAT <label id="vat" class="vat"/></td>
                             <td id="cart-tax" class="totals-value">0</td>
                         </tr>
                         <tr>
-                            <td colspan="1"></td>
-                            <td colspan="5">TOTAL(incl)</td>
+                            <td colspan="4">TOTAL(incl)</td>
                             <td id="cart-total" class="totals-value">0</td>
                         </tr>
                     </tfoot>
@@ -124,6 +127,6 @@
 	<!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> -->
 	<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 	<script src="../res/js/plugins/notify.js"></script>
-	<script src="../res/js/cart.js"></script>
+	<script src="../res/js/invoice.js"></script>
 </body>
 </html>
