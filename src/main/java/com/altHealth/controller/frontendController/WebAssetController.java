@@ -36,10 +36,17 @@ public class WebAssetController {
 		return "/pages/Invoice.html";
 	}
 	
+	@RequestMapping(value = "unpaid-Invoices")
+	public String UnpaidInvoices() {
+		return "/pages/reports/Unpaid-Invoices.html";
+	}
+	
 	@RequestMapping(value = "test")
 	public String test() {
 		return "/pages/Test.html";
 	}
+	
+	
 
 	/*
 	 * @RequestMapping(value = "/assetManagement/error") public String Error403() {
