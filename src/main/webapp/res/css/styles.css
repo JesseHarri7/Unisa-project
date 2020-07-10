@@ -173,6 +173,10 @@
 	content: url("../images/icons/cart.png");
 }
 
+.hidden-table{
+   display: none;
+}
+
 .form-fill-error{
 	border-color: red!important;
 }

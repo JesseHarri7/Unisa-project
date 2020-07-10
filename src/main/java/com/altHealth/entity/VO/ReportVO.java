@@ -81,6 +81,14 @@ public class ReportVO implements Serializable{
 	private String supplierBankNum;
 	
 	private String supplierTypeBankAccount;
+	
+	//Concat fields & funcs
+	private String clientName;
+	private String supplierinformation;
+	private String client;
+	private String frequency;
+	private String numOfPurchases;
+	private String month;
 
 	public ReportVO() {
 	}
@@ -347,6 +355,54 @@ public class ReportVO implements Serializable{
 
 	public void setSupplierTypeBankAccount(String supplierTypeBankAccount) {
 		this.supplierTypeBankAccount = supplierTypeBankAccount;
+	}
+
+	public String getClientName() {
+		return clientName;
+	}
+
+	public void setClientName(String clientName) {
+		this.clientName = clientName;
+	}
+
+	public String getSupplierinformation() {
+		return supplierinformation;
+	}
+
+	public void setSupplierinformation(String supplierinformation) {
+		this.supplierinformation = supplierinformation;
+	}
+
+	public String getClient() {
+		return client;
+	}
+
+	public void setClient(String client) {
+		this.client = client;
+	}
+
+	public String getFrequency() {
+		return frequency;
+	}
+
+	public void setFrequency(String frequency) {
+		this.frequency = frequency;
+	}
+
+	public String getNumOfPurchases() {
+		return numOfPurchases;
+	}
+
+	public void setNumOfPurchases(String numOfPurchases) {
+		this.numOfPurchases = numOfPurchases;
+	}
+
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
 	}
 
 	@Override
