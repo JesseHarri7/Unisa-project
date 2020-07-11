@@ -25,7 +25,7 @@
     <div class="toolbar hidden-print">
         <div class="text-right">
             <button id="printLocal" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
-            <button id="printInvoice" class="btn btn-info"><i class="fa fa-file-pdf-o"></i> Send invoice</button>
+            <button id="createInvoice" class="btn btn-info"><i class="fa fa-file-pdf-o"></i> Create invoice</button>
         </div>
         <hr>
     </div>
@@ -64,14 +64,13 @@
                         <div class="date">Date of Invoice: <label id="currDate"></div>
                     </div>
                 </div>
-                <table border="0" cellspacing="0" cellpadding="0">
+                <table id="cartTable" border="0" cellspacing="0" cellpadding="0">
                     <thead>
                         <tr>
                             <th class="text-left">Supplement ID</th>
 							<th class="text-left">Description</th>
                             <th class="text-right">Quantity</th>
                             <th class="text-right">Cost(Excl)</th>
-                            <th class="text-right">Cost(Incl)</th>
 							<th class="text-right">Total</th>
 							<th class="text-right"></th>
                         </tr>
@@ -81,16 +80,14 @@
                     <tfoot>
                         <tr>
 							<td class="text-left"><input type="button" value="Add supplement +" id="addSupp-btn" class="btn btn-outline-success"></td>
-                            <td colspan="5">SUBTOTAL(excl)</td>
+                            <td colspan="4">SUBTOTAL(excl)</td>
                             <td id="cart-subtotal" class="totals-value">0</td>
                         </tr>
                         <tr>
-                            <td colspan="1"></td>
                             <td colspan="5">VAT <label id="vat" class="vat"/></td>
                             <td id="cart-tax" class="totals-value">0</td>
                         </tr>
                         <tr>
-                            <td colspan="1"></td>
                             <td colspan="5">TOTAL(incl)</td>
                             <td id="cart-total" class="totals-value">0</td>
                         </tr>

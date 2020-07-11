@@ -81,12 +81,6 @@ var emptyArray = [];
 	function cartItemsTable(suppDataSet){
 		var tr="";
 		for (ref of suppDataSet) {
-			
-			var dropOpt = "";
-			for (i = 1; i <= ref.currentStockLevels; i++) {
-				dropOpt+= '<option value="'+i+'">' + i + '</option>'
-			}
-			
 			tr+= '<tr class="dataRow">' +
 					'<td class="no">' +
 						'<h6 class="title text-truncate">' + ref.supplementId + '</h6>' +
@@ -95,9 +89,8 @@ var emptyArray = [];
 						ref.supplementDescription +
 					'</td>' +
 					'<td class="qty">' + 
-						'<select class="form-control" id="qty">' +
-							dropOpt +
-						'</select>' +
+						'<input type="number" class="form-control" id="qty" value="1" min="1" ' +
+							'max="' + ref.currentStockLevels + '" required>' +
 					'</td>' +
 					'<td class="unit costExcl">' + 
 						ref.costExcl +
@@ -228,121 +221,21 @@ var emptyArray = [];
 		});
 	}
 	
-	$('#createInvoice').click(function(){
-		var fileName = $('#invNum').text();		
-		var email = $('#cEmail').text();
-		var html = $('.invoice')[0].outerHTML;
+	$('#sendInvoice').click(function(){
 		
-		if(html != "" && fileName != "" && fileName != " "){
-			if(email != "" && email != " "){
-				createInvoice();
-			}
-		}else{
-			$.notify("Error! cannot send a blank invoice", "error");
-		}
+		var html = $('.invoice')[0].outerHTML;
+		var fileName = $('#invNum').text();
+		
+		//TODO: for pdf get invoice num from invoiceCreate
+		//Only send PDF on successful Invoice create
+		sendPDF(fileName, html);
 	
 	});
 	
-	function createInvoice(){
-		var fileName = $('#invNum').text();		
-		
-		n =  new Date();
-		y = n.getFullYear();
-		m = '' + (n.getMonth() + 1);
-		d = '' + n.getDate();
-		
-		if (m.length < 2) {
-			m = '0' + m;
-		}
-		if (d.length < 2) {
-			d = '0' + d;
-		}
-
-		var date = [y, m, d].join('-');
-		//var date = y + "-" + m + "-" + d;
-		
-		//Invoice
-		var invNum = fileName;
-		var clientId = $('#clientId').text();
-		var invDate = date;
-		//$('#currDate').text();
-		
-		var invoice = {invNum, clientId, invDate};
-		
-		//Invoice Item
-		var suppIdQty = [];
-		var rows = $(".dataRow");
-		
-		for(row of rows){
-			var inv = [];
-			
-			//ID
-			inv.push(row.childNodes[0].innerText);
-			//Qty
-			var td = row.childNodes[2];
-			var qty = $(td).children().val();
-			inv.push(qty);
-			//price	
-			inv.push(row.childNodes[3].innerText);
-			
-			suppIdQty.push(inv);
-		}
-		
-		var invoiceItems = new Array();
-		
-		for(item of suppIdQty){
-			var invNum = invNum;
-			var supplementId = item[0];
-			var itemPrice = item[2];
-			var itemQuantity = item[1];
-		
-			var invoiceItem = {invNum, supplementId, itemPrice, itemQuantity};
-			invoiceItems.push(invoiceItem);
-		}
-		
-		var cartModel = {invoice, invoiceItems};
-		
-		//Translate so that JSON can read it
-		var data_json = JSON.stringify(cartModel);
-		
-		$.ajax(
-		{
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json' 
-			},
-			url:"/altHealth/cart/sendInvoice", 
-			dataType: "json",
-			data: data_json,
-			type: "POST",
-			success: function(response)
-			{
-				if(response.status == "true") {
-					$.notify(response.msg, "success");
-					
-					//Only send PDF on successful Invoice create
-					//sendPDF(fileName);
-				}else {
-					for (x of response.result) {
-						$.notify(x, "error");
-					}
-				}
-			},
-			error : function(e) {
-				console.log("ERROR: ", e);
-				$.notify("Status 405", "error");
-			}
-		});	
-	}
-	
-	function sendPDF(invNum){
-		
-		var html = $('.invoice')[0].outerHTML;
-		//var fileName = $('#invNum').text();
-		var email = $('#cEmail').text();
+	function sendPDF(invNum, html){
 		
 		//Set as object
-		var htmlFile = {invNum, html, email};
+		var htmlFile = {invNum, html};
 		
 		//Translate so that JSON can read it
 		var data_json = JSON.stringify(htmlFile);

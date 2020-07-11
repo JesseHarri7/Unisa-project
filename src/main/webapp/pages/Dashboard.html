@@ -6,12 +6,12 @@
 
 <title>Dashboard</title>
 
-<link rel="icon" type="image/png" href="../res/images/icons/S-favicon.png" />
-<!-- <link rel="stylesheet" href="../webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" /> -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link rel="stylesheet" href="../res/css/styles.css" />
-<link rel="stylesheet" href="../res/css/home.css" />
-<link href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css" rel="stylesheet">
+<!--CSS links -->
+	<link rel="icon" type="image/png" href="../res/images/icons/altHealth-favicon.ico" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="../res/css/styles.css" />
+	<link rel="stylesheet" href="../res/css/home.css" />
+	<link href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css" rel="stylesheet">
 </head>
 <body>
 	<div w3-include-html="../pages/temps/header.html"></div>
@@ -33,62 +33,7 @@
 			<!-- /.col -->
 			<!-- /row -->
 			
-			<!-- row -->
-		    <div class="row">
-		        <!--col -->
-		        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-		            <div class="white-box">
-		                <div class="col-in row">
-		                    <div class="col-md-12 col-sm-12 col-xs-12">
-		                        <span class="home-span-left">
-		                        	<h3 class="text-muted vb">Assets</h3>
-		                        </span>
-		                        
-		                        <span class="home-span-right">
-		                        	<h3 class="counter text-right m-t-15 text-danger"><div id="totalAssets"></div></h3>
-		                        </span>
-		                    </div>
-		                    
-		                </div>
-		            </div>
-		        </div>
-		        <!-- /.col -->
-		        <!--col -->
-		        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-		            <div class="white-box">
-		                <div class="col-in row">
-		                   <div class="col-md-12 col-sm-12 col-xs-12">
-		                        <span class="home-span-left">
-		                        	<h3 class="text-muted vb">Employees</h3>
-		                        </span>
-		                        
-		                        <span class="home-span-right">
-		                        	<h3 class="counter text-right m-t-15 text-megna"><div id="totalEmp"></div></h3>
-		                   		</span>
-							</div>
-		            	</div>
-		       		</div>
-		       	</div>
-		        <!-- /.col -->
-		        <!--col -->
-		        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-		            <div class="white-box">
-		                <div class="col-in row">
-		                	<div class="col-md-12 col-sm-12 col-xs-12">
-		                     	<span class="home-span-left">
-		                        	<h3 class="text-muted vb">Assigned</h3> 
-		                        </span>
-		                        
-		                        <span class="home-span-right">
-		                        	<h3 class="counter text-right m-t-15 text-primary"><div id="totalAA"></div></h3>
-		                        </span> 
-		                    </div>
-		                </div>
-		            </div>
-		        </div>
-		        <!-- /.col -->
-		    </div>
-		    <!-- /.row -->
+			
 			<!-- row -->
 			<div class="row">
 				 <!--col -->
@@ -97,11 +42,11 @@
 		                <div class="col-in row">
 		                    <div class="col-md-12 col-sm-12 col-xs-12">
 		                     	<span class="home-span-left">
-									<a class="reportAssets" href="#"><h3 class="text-muted vb">Asset reports</h3></a>
+									<a class="reportUnpaidInvoices" href="#"><h3 class="text-muted vb">Unpaid Invoices report</h3></a>
 		                        </span>
 		                        
 		                        <span class="home-span-right">
-		                        	<h3 class="counter text-right m-t-15 text-danger"><div id="reportAssets"></div></h3>
+		                        	<h3 class="counter text-right m-t-15 text-info"><div id="reportUnpaidInvoices"></div></h3>
 		                   		</span>
 		                    </div>
 		                    
@@ -115,11 +60,11 @@
 		                <div class="col-in row">
 		                    <div class="col-md-12 col-sm-12 col-xs-12">
 		                     	<span class="home-span-left">
-									<a class="reportAssign" href="#"><h3 class="text-muted vb">Assigned reports</h3></a>
+									<a class="reportBirthdays" href="#"><h3 class="text-muted vb">Birthdays for today report</h3></a>
 		                        </span>
 		                        
 		                        <span class="home-span-right">
-		                        	<h3 class="counter text-right m-t-15 text-megna"><div id="reportAA"></div></h3>
+		                        	<h3 class="counter text-right m-t-15 text-danger"><div id="reportBirthdays"></div></h3>
 		                        </span>
 		                    </div>
 		                    
@@ -133,11 +78,11 @@
 		                <div class="col-in row">
 		                    <div class="col-md-12 col-sm-12 col-xs-12">
 		                     	<span class="home-span-left">
-									<a class="reportComp" href="#"><h3 class="text-muted vb">Components reports</h3></a>
+									<a class="reportMinStockLevels" href="#"><h3 class="text-muted vb"> Minimum stock levels report</h3></a>
 		                        </span>
 		                        
 		                         <span class="home-span-right">
-		                        	<h3 class="counter text-right m-t-15 text-primary"> <div id="reportComp"></div> </h3>
+		                        	<h3 class="counter text-right m-t-15 text-megna"> <div id="reportMinStockLevels"></div> </h3>
 		                        </span> 
 		                    </div>
 		                    
@@ -149,92 +94,129 @@
 			</div>
 			<!-- row -->
 			<div class="row">
-				 <!--col -->
+				<!--col -->
 		        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 		            <div class="white-box">
 		                <div class="col-in row">
 		                    <div class="col-md-12 col-sm-12 col-xs-12">
 		                     	<span class="home-span-left">
-									<a href="../pages/user"><h3 class="text-muted vb">Users</h3></a>
+									<a class="reportClientInfoQuery" href="#"><h3 class="text-muted vb">Missing Client Info</h3></a>
 		                        </span>
 		                        
-		                         <span class="home-span-right">
-		                        	<h3 class="counter text-right m-t-15 text-primary"> <!-- ENTER NUMBER HERE --></h3>
-		                        </span> 
+		                        <span class="home-span-right">
+		                        	<h3 class="counter text-right m-t-15 text-primary"><div id="reportClientInfoQuery"></div></h3>
+		                   		</span>
 		                    </div>
 		                    
 		                </div>
 		            </div>
 		        </div>
 		        <!-- /.col -->
-		         <!--col -->
+				<!--col -->
 		        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 		            <div class="white-box">
 		                <div class="col-in row">
 		                    <div class="col-md-12 col-sm-12 col-xs-12">
 		                     	<span class="home-span-left">
-									<h3 class="text-muted vb">Pending requests</h3>
+									<a class="reportTop10" href="#"><h3 class="text-muted vb">Top 10 Clients for 2018 & 2019</h3></a>
 		                        </span>
 		                        
-		                         <span class="home-span-right">
-		                        	<h3 class="counter text-right m-t-15 text-primary"> <!-- ENTER NUMBER HERE --></h3>
-		                        </span> 
+		                        <span class="home-span-right">
+		                        	<h3 class="counter text-right m-t-15 text-info"><div id="reportTop10"></div></h3>
+		                   		</span>
 		                    </div>
 		                    
 		                </div>
 		            </div>
 		        </div>
 		        <!-- /.col -->
+				<!--col -->
+		        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+		            <div class="white-box">
+		                <div class="col-in row">
+		                    <div class="col-md-12 col-sm-12 col-xs-12">
+		                     	<span class="home-span-left">
+									<a class="reportPurchasStats" href="#"><h3 class="text-muted vb">Purchase Statistics</h3></a>
+		                        </span>
+		                        
+		                        <span class="home-span-right">
+		                        	<h3 class="counter text-right m-t-15 text-info"><div id="reportPurchasStats"></div></h3>
+		                   		</span>
+		                    </div>
+		                    
+		                </div>
+		            </div>
+		        </div>
+		        <!-- /.col -->
+				<!-- /row -->
 			</div>
 		</div>
 	</div>
 	
 <!-- 	Hidden tables -->
 	<div class="hidden-table">
-		<table class="display" id="asset-table" style="width:100%">
+		<table class="display" id="unpaidInvoices" style="width:100%">
 			<thead>
 				<tr>
-					<th>Asset_Code</th>
-					<th>Name</th>
-					<th>Description</th>
-					<th>Brand</th>
-					<th>Date_Purchased</th>
-					<th>Date_Removed</th>
-					<th>Status</th>
-					<th>Active/Inactive</th>
+					<th>Client ID</th>
+					<th>Client</th>
+					<th>Invoice number</th>
+					<th>Invoice date</th>
 				</tr>
 			</thead>
 			<tbody>
 			</tbody>
 		</table>
-		
-		<table class="display" id="AA-table" style="width:100%">
+		<table class="display" id="tblBirthdays" style="width:100%">
 			<thead>
 				<tr>
-					<th>Asset_Code</th>
-					<th>Employee_ID</th>
-					<th>Emp_Name</th>
-					<th>Date_Assigned</th>
-					<th>Date_Unassigned</th>
-					<th>Previous_Owner</th>
-					<th>Active/Inactive</th>
+					<th>Client ID</th>
+					<th>Client name</th>
 				</tr>
 			</thead>
 			<tbody>
 			</tbody>
 		</table>
-		
-		<table class="display" id="assetComp-table" style="width:100%">
+		<table class="display" id="tblMinStockLevels" style="width:100%">
 			<thead>
 				<tr>
-					<th>Asset_Code</th>
-					<th>Name</th>
-					<th>Asset_Component</th>
-					<th>Name</th>
-					<th>Date_Assigned</th>
-					<th>Prev_Asset</th>
-					<th>Unassign_Date</th>
-					<th>State</th>
+					<th>Supplement</th>
+					<th>Supplier information</th>
+					<th>Min levels</th>
+					<th>Current stock</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<table class="display" id="tblClientInfoQuery" style="width:100%">
+			<thead>
+				<tr>
+					<th>Client</th>
+					<th>Home</th>
+					<th>Work</th>
+					<th>Cell</th>
+					<th>E-Mail</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<table class="display" id="tblTop10" style="width:100%">
+			<thead>
+				<tr>
+					<th>Client</th>
+					<th>Frequency</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<table class="display" id="tblPurchasStats" style="width:100%">
+			<thead>
+				<tr>
+					<th>Num of purchases</th>
+					<th>Month</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -246,9 +228,10 @@
 	<div w3-include-html="../pages/temps/footer.html"></div>
 	<!-- ./Footer -->
 
+	<!--scripts -->
 	<script src="../webjars/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-	<script src="../res/js/plugins/Chart.bundle.min.js"></script>
+	<script src="../res/js/plugins/Chart.bundle.js"></script>
 	
 	<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 	<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
