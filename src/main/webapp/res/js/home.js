@@ -11,6 +11,10 @@ $(document).ready(function()
 	
 	var clientInfoQuery = findClientInfoQuery();
 	
+	var top10 = findTop10();
+	
+	var purchaseStats = findPurchaseStats();
+	
 	//Reporting stats
 	var allUnpaidInvoices = reportUnpaidInvoices(unpaidInvoices);
 	
@@ -19,6 +23,10 @@ $(document).ready(function()
 	var allMinStockLevels = reportMinStockLevels(minStockLevels);
 	
 	var allClientInfoQuery = reportClientInfoQuery(clientInfoQuery);
+	
+	var allTop10 = reportTop10(top10);
+	
+	var allPurchaseStats = reportPurchaseStats(purchaseStats);
 	
 	//Reporting
 	
@@ -104,6 +112,44 @@ $(document).ready(function()
 		
 		$.ajax({
 			url:"/altHealth/report/clientInformationQuery", 
+			dataType: "json",
+			async: false,
+			type: "GET",
+			success: function(data) {				
+				dataSet = data;
+			},
+			error: function(data) {
+				dataSet = "Error";
+			}
+		});
+		
+		return dataSet;
+	}
+	
+	function findTop10() {
+		var dataSet = [];
+		
+		$.ajax({
+			url:"/altHealth/report/top10ClientsFor2018and2019", 
+			dataType: "json",
+			async: false,
+			type: "GET",
+			success: function(data) {				
+				dataSet = data;
+			},
+			error: function(data) {
+				dataSet = "Error";
+			}
+		});
+		
+		return dataSet;
+	}
+	
+	function findPurchaseStats() {
+		var dataSet = [];
+		
+		$.ajax({
+			url:"/altHealth/report/purchasesStatistics", 
 			dataType: "json",
 			async: false,
 			type: "GET",
@@ -396,6 +442,98 @@ $(document).ready(function()
 	$(document).on('click', '.reportClientInfoQuery', function() 
 	{
 		var table = $("#tblClientInfoQuery").DataTable();
+		
+		//var data = test.buttons.exportData();
+		
+		table.button( '0' ).trigger();
+		
+	});
+	
+	function reportTop10(top10){
+		var dataSet = [];
+					
+		dataSet = top10;
+		
+		//Date for file names
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1;
+		var yyyy = today.getFullYear();
+		
+		today = yyyy + '-' + mm + '-' + dd;
+		
+		var aaTable = $("#tblTop10").DataTable({
+			dom: '<f<t>lip>',
+			buttons: [
+				   {
+					   extend: 'excel',
+					   title: 'Top 10 Clients For 2018 and 2019',
+					   filename: 'Top_10_Clients_' + today
+				   }
+				],
+			retrieve: true,
+			responsive: true,
+			select: true,
+			data: dataSet,
+			columns: 
+			[
+				{data: 'client'},
+				{data: 'frequency'}
+			]
+		});
+		
+		return dataSet;
+	}
+	
+	$(document).on('click', '.reportTop10', function() 
+	{
+		var table = $("#tblTop10").DataTable();
+		
+		//var data = test.buttons.exportData();
+		
+		table.button( '0' ).trigger();
+		
+	});
+	
+	function reportPurchaseStats(purchaseStats){
+		var dataSet = [];
+					
+		dataSet = purchaseStats;
+		
+		//Date for file names
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1;
+		var yyyy = today.getFullYear();
+		
+		today = yyyy + '-' + mm + '-' + dd;
+		
+		var aaTable = $("#tblPurchasStats").DataTable({
+			dom: '<f<t>lip>',
+			buttons: [
+				   {
+					   extend: 'excel',
+					   title: 'Purchases Statistics',
+					   filename: 'Purchases_Statistics_' + today
+				   }
+				],
+			retrieve: true,
+			responsive: true,
+			select: true,
+			data: dataSet,
+			columns: 
+			[
+				{data: 'numOfPurchases'},
+				{data: 'month'}
+			]
+		});
+		
+		return dataSet;
+	}
+	
+	$(document).on('click', '.reportPurchaseStats', function() 
+	{
+		var table = $("#tblPurchasStats").DataTable();
 		
 		//var data = test.buttons.exportData();
 		

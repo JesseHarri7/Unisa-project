@@ -80,12 +80,14 @@ keyframes myanimation {
 .chart-wrapper{
 	display: block;
     width: 100%;
-    height: 230px;
+/*     height: 230px; */
 }
 
 /* Chart center */
 .center {
-  margin: auto;
-  width: 50%;
-  padding: 10px;
+	position: relative;
+ 	margin: auto;
+ 	height: 40vh;
+/*  	width: 80vw; */
+ 	padding: 10px;
 }

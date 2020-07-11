@@ -4,13 +4,14 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>Unpaid Invoices</title>
+<title>Purchases Statistics</title>
 
 <!--CSS links -->
 	<link rel="icon" type="image/png" href="../res/images/icons/altHealth-favicon.ico" />
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="http://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
 	<link rel="stylesheet" href="../res/css/styles.css" />
+	<link rel="stylesheet" href="../res/css/home.css" />
 </head>
 <body>
 	<div w3-include-html="../pages/temps/header.html"></div>
@@ -21,22 +22,28 @@
 		<input type="button" value="Download report" id="downloadReport" class="btn btn-primary">
 	</div>
 	
-	<!--Table -->
-	<div class="table-width-outter">
-		<div class="table-width-inner">
-			<table class="display" id="unpaidInvoices" style="width:100%">
-				<thead>
-					<tr>
-						<th>Client ID</th>
-						<th>Client</th>
-						<th>Invoice number</th>
-						<th>Invoice date</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
+	<div class="row">
+	<!--col -->
+		<div class="chart-wrapper">
+			<div class="center" >
+				<canvas id="graph"  width="800" height="450"></canvas>
+			</div>
 		</div>
+	</div>
+
+	
+<!-- 	Hidden tables -->
+	<div class="hidden-table">
+		<table class="display" id="tblPurchasStats" style="width:100%">
+			<thead>
+				<tr>
+					<th>Num of purchases</th>
+					<th>Month</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
 	</div>
 	
 	<!-- Footer -->
@@ -48,6 +55,7 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 	<script src="http://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 	<script src="../res/js/plugins/notify.js"></script>
+	<script src="../res/js/plugins/Chart.bundle.js"></script>
 	
 	<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
 	<script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
@@ -62,6 +70,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 	<script src=""></script>
 	
-	<script src="../res/js/reports/unpaidInvoice.js"></script>
+	<script src="../res/js/reports/purchaseStats.js"></script>
 </body>
 </html>

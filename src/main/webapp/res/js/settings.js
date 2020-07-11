@@ -33,6 +33,10 @@ $(document).ready(function()
 			data: dataSet,
 			columns: 
 			[
+				{data: 'address'},
+				{data: 'telNo'},
+				{data: 'email'},
+				{data: 'emailPass'},
 				{data: 'vatPercent'}
 			]
 		});

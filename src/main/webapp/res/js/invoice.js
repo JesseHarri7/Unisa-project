@@ -1,6 +1,8 @@
 
 $(document).ready(function() {
 
+var fadeTime = 300;
+
 	//Add temps html files
 	includeHTML(); 
 	
@@ -46,7 +48,7 @@ $(document).ready(function() {
 					}
 				}
 				
-				//recalculateCart();
+				recalculateCart();
 			},
 			error : function(e) {
 				console.log("ERROR: ", e);
@@ -68,6 +70,7 @@ $(document).ready(function() {
 		$('#invNum2').html(dataSet.invNum);
 		$('#invDate').html(dataSet.invDate);
 		$('#invPaidDate').html(dataSet.invPaidDate);
+		$('#invPaid').html(dataSet.invPaid);
 	}
 	
 	function cartItemsTable(itemsDataSet){
@@ -95,6 +98,35 @@ $(document).ready(function() {
 		$('#cartItems').append(tr);
 	}
 	
+	/* Recalculate cart */
+	function recalculateCart() {
+	  var subtotal = 0;
+	   
+	  /* Sum up row totals */
+	  $('.dataRow').each(function () {
+		subtotal += parseFloat($(this).children('.unit.total').text());
+	  });
+	   
+	  /* Calculate totals */
+	  var vat = $('.vat').text();
+	  var vatPerc = vat / 100;
+	  var tax = subtotal * vatPerc;
+	  var total = subtotal + tax;
+	   
+	  /* Update totals display */
+	  $('.totals-value').fadeOut(fadeTime, function() {
+		$('#cart-subtotal').html(subtotal.toFixed(2));
+		$('#cart-tax').html(tax.toFixed(2));
+		$('#cart-total').html(total.toFixed(2));
+		if(total == 0){
+		  $('.btn btn-info').fadeOut(fadeTime);
+		}else{
+		  $('.btn btn-info').fadeIn(fadeTime);
+		}
+		$('.totals-value').fadeIn(fadeTime);
+	  });
+	}
+	
 	//find settings
 	function getSettings() {
 		$.ajax({
@@ -115,17 +147,24 @@ $(document).ready(function() {
 		
 		var html = $('.invoice')[0].outerHTML;
 		var fileName = $('#invNum').text();
+		var email = $('#cEmail').text();
 		
-		//TODO: for pdf get invoice num from invoiceCreate
-		//Only send PDF on successful Invoice create
-		sendPDF(fileName, html);
+		if(html != "" && fileName != "" && fileName != " "){
+			if(email != "" && email != " "){
+				sendPDF(fileName, html, email);
+			}else{
+				$.notify("Error! Client is missing email address", "error");
+			}
+		}else{
+			$.notify("Error! cannot send a blank invoice", "error");
+		}
 	
 	});
 	
-	function sendPDF(invNum, html){
+	function sendPDF(invNum, html, email){
 		
 		//Set as object
-		var htmlFile = {invNum, html};
+		var htmlFile = {invNum, html, email};
 		
 		//Translate so that JSON can read it
 		var data_json = JSON.stringify(htmlFile);
@@ -223,7 +262,7 @@ $(document).ready(function() {
 	}
 	
 	function showActiveNav() {
-		$('#cartNav').addClass('active');
+		$('#invoiceNav').addClass('active');
 	}
  
 });
