@@ -42,7 +42,8 @@ public class InvoiceController implements Controller<Invoice, String> {
 
 	@Override
 	public List<Invoice> findAllHistory() {
-		return service.findAllHistory();
+		return null;
+//		return service.findAllHistory();
 	}
 
 	@Override

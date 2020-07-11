@@ -12,4 +12,5 @@ public interface CartModelActivity {
 	abstract void setSupplementList(List<Supplement> supplementList);
 	abstract List<Supplement> getSupplementList();
 	abstract CartModel getCart();
+	abstract void clearCartSession();
 }

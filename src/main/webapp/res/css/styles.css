@@ -180,3 +180,11 @@
 .form-fill-error{
 	border-color: red!important;
 }
+
+.span-right{
+	float: right;
+}
+
+.span-left{
+	float: left;
+}

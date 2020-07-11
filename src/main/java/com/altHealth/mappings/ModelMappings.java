@@ -6,6 +6,8 @@ public class ModelMappings {
 	public final static String TRUE = "true";
 	public final static String FALSE = "false";
 	public final static Integer COMPANY_ID = 1;
+	public final static String YES = "Y";
+	public final static String NO = "N";
 	
 	//Client
 	public final static String CLIENT_id = "#id";

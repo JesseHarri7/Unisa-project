@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.altHealth.Utils.AjaxCartResponseBody;
 import com.altHealth.Utils.AjaxResponseBody;
 import com.altHealth.activity.InvoiceActivity;
 import com.altHealth.mappings.ModelMappings;
@@ -23,9 +24,9 @@ public class WebInvoiceController {
 
 	// getSessionClient
 	@RequestMapping(value = "getInvoiceInfo/{invoiceNum}", method = RequestMethod.GET)
-	public AjaxResponseBody getInvoiceInfo(@PathVariable String invoiceNum) {
+	public AjaxCartResponseBody getInvoiceInfo(@PathVariable String invoiceNum) {
 		ReturnModel returnModel = activity.getInvoiceInfo(invoiceNum);
-		AjaxResponseBody result = new AjaxResponseBody();
+		AjaxCartResponseBody result = new AjaxCartResponseBody();
 		CartModel cart = (CartModel) returnModel.getEntity();
 
 		if (returnModel.getErrorList().isEmpty()) {
