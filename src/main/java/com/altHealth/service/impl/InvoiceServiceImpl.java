@@ -59,11 +59,6 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 
 	@Override
-	public List<Invoice> findAllHistory() {
-		return repo.findInvoiceAllHistory();
-	}
-
-	@Override
 	public List<Invoice> findInvoiceByClientId(String clientId) {
 		List<Invoice> invoices = repo.findInvoiceByClientId(clientId);
 		return returnList(invoices);
@@ -114,6 +109,12 @@ public class InvoiceServiceImpl implements InvoiceService {
 		}else {
 			return invNumMax;
 		}
+	}
+
+	@Override
+	public List<Invoice> findAllHistory() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

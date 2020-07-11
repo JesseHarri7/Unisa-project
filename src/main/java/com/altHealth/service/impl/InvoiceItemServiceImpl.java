@@ -1,5 +1,6 @@
 package com.altHealth.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,21 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
 		}else {
 			return null;
 		}
+	}
+	
+	public List<InvoiceItem> create(List<InvoiceItem> entities) {
+		List<InvoiceItem> saveList = new ArrayList<InvoiceItem>();
+		
+		for(InvoiceItem entity : entities) {
+			InvoiceItem invoiceItem = findInvoiceItemByInvNumSupplementId(entity.getInvNum(), entity.getSupplementId());
+			if(invoiceItem == null) {
+				saveList.add(repo.save(entity));
+			}else {
+				return null;
+			}
+		}
+		
+		return saveList;
 	}
 
 	@Override

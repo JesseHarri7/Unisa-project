@@ -23,7 +23,8 @@ public class CartModel implements CartModelActivity{
 	List<InvoiceItem> invoiceItems = new ArrayList<InvoiceItem>();
 	Client client;
 	List<Supplement> supplementList = new ArrayList<Supplement>();
-	
+	Double cartTotal;
+	Double VAT;
 
 	public CartModel() {}
 
@@ -65,6 +66,22 @@ public class CartModel implements CartModelActivity{
 		this.invoiceItems = invoiceItems;
 	}
 
+	public Double getCartTotal() {
+		return cartTotal;
+	}
+
+	public void setCartTotal(Double cartTotal) {
+		this.cartTotal = cartTotal;
+	}
+
+	public Double getVAT() {
+		return VAT;
+	}
+
+	public void setVAT(Double vAT) {
+		VAT = vAT;
+	}
+
 	@Override
 	public CartModel getCart() {
 		CartModel cart = new CartModel();
@@ -74,4 +91,14 @@ public class CartModel implements CartModelActivity{
 		
 		return cart;
 	}
+	
+	public void clearCartSession() {
+		this.invoice = new Invoice();
+		this.invoiceItems = new ArrayList<InvoiceItem>();
+		this.client = new Client();
+		this.supplementList = new ArrayList<Supplement>();
+		this.cartTotal = 0.0;
+		this.VAT = 0.0;
+	}
+	
 }

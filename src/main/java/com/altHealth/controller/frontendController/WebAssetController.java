@@ -36,9 +36,39 @@ public class WebAssetController {
 		return "/pages/Invoice.html";
 	}
 	
-	@RequestMapping(value = "unpaid-Invoices")
+	@RequestMapping(value = "home")
+	public String Dashboard() {
+		return "/pages/Dashboard.html";
+	}
+	
+	@RequestMapping(value = "unpaidInvoices")
 	public String UnpaidInvoices() {
 		return "/pages/reports/Unpaid-Invoices.html";
+	}
+	
+	@RequestMapping(value = "birthdaysForToday")
+	public String BirthdaysForToday() {
+		return "/pages/reports/BirthdaysForToday.html";
+	}
+	
+	@RequestMapping(value = "minStockLevels")
+	public String MinStockLevels() {
+		return "/pages/reports/MinStockLevels.html";
+	}
+	
+	@RequestMapping(value = "top10")
+	public String Top10() {
+		return "/pages/reports/Top10.html";
+	}
+	
+	@RequestMapping(value = "purchasesStats")
+	public String PurchasesStats() {
+		return "/pages/reports/PurchasesStats.html";
+	}
+	
+	@RequestMapping(value = "clientInfoQuery")
+	public String ClientInfoQuery() {
+		return "/pages/reports/ClientInfoQuery.html";
 	}
 	
 	@RequestMapping(value = "test")

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.altHealth.Utils.AjaxResponseBody;
+import com.altHealth.Utils.AjaxCartResponseBody;
 import com.altHealth.activity.CartActivity;
 import com.altHealth.entity.Supplement;
 import com.altHealth.mappings.ModelMappings;
@@ -25,9 +25,9 @@ public class WebCartController {
 	// getSessionClient
 
 	@RequestMapping(value = "getClientInfo", method = RequestMethod.GET)
-	public AjaxResponseBody getClientInfo() {
+	public AjaxCartResponseBody getClientInfo() {
 		ReturnModel returnModel = activity.getClientInfo();
-		AjaxResponseBody result = new AjaxResponseBody();
+		AjaxCartResponseBody result = new AjaxCartResponseBody();
 		// Client client = (Client) returnModel.getEntity();
 
 		if (returnModel.getErrorList().isEmpty()) {
@@ -48,9 +48,9 @@ public class WebCartController {
 
 	// getSessionClient
 	@RequestMapping(value = "getCartInfo", method = RequestMethod.GET)
-	public AjaxResponseBody getCartInfo() {
+	public AjaxCartResponseBody getCartInfo() {
 		ReturnModel returnModel = activity.getCartInfo();
-		AjaxResponseBody result = new AjaxResponseBody();
+		AjaxCartResponseBody result = new AjaxCartResponseBody();
 		CartModel cart = (CartModel) returnModel.getEntity();
 
 		if (returnModel.getErrorList().isEmpty()) {
@@ -59,6 +59,8 @@ public class WebCartController {
 			result.setClientInfo(cart.getClient());
 			result.setSupplementList(cart.getSupplementList());
 			result.setInvoiceInfo(cart.getInvoice());
+			result.setCartTotal(cart.getCartTotal());
+			result.setVAT(cart.getVAT());
 		} else {
 			result.setStatus(ModelMappings.FALSE);
 			result.setMsg("Error! " + returnModel.getStringErrorList());
@@ -76,9 +78,9 @@ public class WebCartController {
 
 	// getSessionCartItem
 	@RequestMapping(value = "addCartItem", method = RequestMethod.POST)
-	public AjaxResponseBody addCartItem(@RequestBody Supplement entity) {
+	public AjaxCartResponseBody addCartItem(@RequestBody Supplement entity) {
 		ReturnModel returnModel = activity.addSupplementToCart(entity);
-		AjaxResponseBody result = new AjaxResponseBody();
+		AjaxCartResponseBody result = new AjaxCartResponseBody();
 		Supplement supp = (Supplement) returnModel.getEntity();
 
 		if (returnModel.getErrorList().isEmpty()) {
@@ -99,9 +101,9 @@ public class WebCartController {
 
 	// getSessionCartItems
 	@RequestMapping(value = "getCartItems", method = RequestMethod.GET)
-	public AjaxResponseBody getCartItems() {
+	public AjaxCartResponseBody getCartItems() {
 		ReturnModel returnModel = activity.getSupplements();
-		AjaxResponseBody result = new AjaxResponseBody();
+		AjaxCartResponseBody result = new AjaxCartResponseBody();
 //		Supplement supps = (Supplement) returnModel.getEntity();
 
 		if (returnModel.getErrorList().isEmpty()) {
@@ -123,9 +125,9 @@ public class WebCartController {
 	
 	// removeSelectedSupplement
 	@RequestMapping(value = "removeSupplement/{supplementId}", method = RequestMethod.POST)
-	public AjaxResponseBody removeSupplement(@PathVariable String supplementId) {
+	public AjaxCartResponseBody removeSupplement(@PathVariable String supplementId) {
 		ReturnModel returnModel = activity.removeSupplement(supplementId);
-		AjaxResponseBody result = new AjaxResponseBody();
+		AjaxCartResponseBody result = new AjaxCartResponseBody();
 //			Supplement supps = (Supplement) returnModel.getEntity();
 
 		if (returnModel.getErrorList().isEmpty()) {
@@ -145,9 +147,9 @@ public class WebCartController {
 	
 	//Send PDF
 	@RequestMapping(value = "sendPDF", method = RequestMethod.POST)
-	public AjaxResponseBody sendPDF(@RequestBody HTMLModel html) {
+	public AjaxCartResponseBody sendPDF(@RequestBody HTMLModel html) {
 		ReturnModel returnModel = activity.sendPDF(html);
-		AjaxResponseBody result = new AjaxResponseBody();
+		AjaxCartResponseBody result = new AjaxCartResponseBody();
 		HTMLModel htmlResp = (HTMLModel) returnModel.getEntity();
 		
 		if (returnModel.getErrorList().isEmpty()) {
@@ -158,6 +160,27 @@ public class WebCartController {
 			result.setMsg("Error! " + returnModel.getStringErrorList());
 			result.setResult(returnModel.getErrorList());
 			result.setIdTags(returnModel.getIdTags());
+		}
+
+		// AjaxResponseBody will be converted into json format and send back to the
+		// request.
+		return result;
+	}
+	
+	//SendInvoice
+	@RequestMapping(value = "sendInvoice", method = RequestMethod.POST)
+	public AjaxCartResponseBody sendInvoice(@RequestBody CartModel cart) {
+		ReturnModel returnModel = activity.sendInvoice(cart);
+		AjaxCartResponseBody result = new AjaxCartResponseBody();
+		CartModel cartReturn = (CartModel) returnModel.getEntity();
+		
+		if (returnModel.getErrorList().isEmpty()) {
+			result.setStatus(ModelMappings.TRUE);
+			result.setMsg("Success! Invoice " + cartReturn.getInvoice().getInvNum() + " has been created.");
+		} else {
+			result.setStatus(ModelMappings.FALSE);
+			result.setMsg("Error! " + returnModel.getStringErrorList());
+			result.setResult(returnModel.getErrorList());
 		}
 
 		// AjaxResponseBody will be converted into json format and send back to the

@@ -24,10 +24,7 @@ public interface InvoiceRepo extends CrudRepository<Invoice, String> {
 	
 	@Query(value = "select max(inv_num) from tblinv_info", nativeQuery = true)
 	String findInvNumByMax();
-    
-    @Query(value = "SELECT * FROM tblinv_info", nativeQuery = true)
-   	List<Invoice> findInvoiceAllHistory();
    	
-   	@Query(value = "SELECT * FROM tblinv_info WHERE state = 'A'", nativeQuery = true)
+   	@Query(value = "SELECT * FROM tblinv_info", nativeQuery = true)
    	List<Invoice> findInvoiceAll();
 }

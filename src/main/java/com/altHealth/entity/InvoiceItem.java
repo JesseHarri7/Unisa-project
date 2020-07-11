@@ -39,12 +39,6 @@ public class InvoiceItem implements Serializable
 	@Column(name = "Item_Quantity")
 	private Integer itemQuantity;
 	
-	@Column(name = "State")
-	private String state = "A";
-	
-	@Column(name = "Term_date")
-	private String termDate;
-	
 	@Transient
 	private String supplementDescription;
 	@Transient
@@ -93,22 +87,6 @@ public class InvoiceItem implements Serializable
 		this.itemQuantity = itemQuantity;
 	}
 
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public String getTermDate() {
-		return termDate;
-	}
-
-	public void setTermDate(String termDate) {
-		this.termDate = termDate;
-	}
-
 	public String getSupplementDescription() {
 		return supplementDescription;
 	}
@@ -127,8 +105,9 @@ public class InvoiceItem implements Serializable
 
 	@Override
 	public String toString() {
-		return "InvoiceItem [invNum=" + invNum + ", supplementId=" + supplementId + ", itemPrice="
-				+ itemPrice + ", itemQuantity=" + itemQuantity + ", state=" + state + ", termDate=" + termDate + "]";
+		return "InvoiceItem [invNum=" + invNum + ", supplementId=" + supplementId + ", itemPrice=" + itemPrice
+				+ ", itemQuantity=" + itemQuantity + ", supplementDescription=" + supplementDescription + ", lineTotal="
+				+ lineTotal + "]";
 	}
 	
 }

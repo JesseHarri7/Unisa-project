@@ -13,7 +13,10 @@ import com.altHealth.Utils.Utils;
 import com.altHealth.activity.CartActivity;
 import com.altHealth.entity.Client;
 import com.altHealth.entity.Invoice;
+import com.altHealth.entity.InvoiceItem;
 import com.altHealth.entity.Supplement;
+import com.altHealth.entity.SysParameters;
+import com.altHealth.mappings.ModelMappings;
 import com.altHealth.model.CartModel;
 import com.altHealth.model.CartModelActivity;
 import com.altHealth.model.HTMLModel;
@@ -85,6 +88,7 @@ public class CartActivityService implements CartActivity {
 			errorList.add(result);
 		}
 
+		//Get Invoice number
 		if (sessionCart.getInvoice() == null) {
 			Invoice newInvoice = new Invoice();
 			String max = service.getInvoiceService().findInvNumByMax();
@@ -94,8 +98,29 @@ public class CartActivityService implements CartActivity {
 			newInvoice.setInvNum("INV" + max);
 			sessionCart.setInvoice(newInvoice);
 		}
+		
+		if (!sessionCart.getSupplementList().isEmpty()) {
+			//Do initial cart calcs
+			SysParameters settings = service.getSysParaService().readById(ModelMappings.COMPANY_ID);
+			Integer vatPercent = settings.getVatPercent();
+			Double cartItemsTotal = calcItemTotals(sessionCart.getSupplementList());
+			Double vat = util.calcVAT(cartItemsTotal, vatPercent);
+			
+			sessionCart.setCartTotal(cartItemsTotal);
+			sessionCart.setVAT(vat);
+		}
 
 		return returnModel;
+	}
+	
+	private Double calcItemTotals(List<Supplement> cartItems) {
+		Double total = new Double("0");
+		
+		for(Supplement cartItem : cartItems) {
+			total = Double.sum(total, cartItem.getCostExcl());
+		}
+		
+		return total;
 	}
 
 	@Override
@@ -246,6 +271,115 @@ public class CartActivityService implements CartActivity {
 		}
 
 		return returnModel;
+	}
+
+	@Override
+	public ReturnModel sendInvoice(CartModel cartInv) {
+		ReturnModel returnModel = new ReturnModel();
+		List<String> errorList = new ArrayList<String>();
+		returnModel.setEntity(cartInv);
+		returnModel.setErrorList(errorList);
+		
+		//Validate all cart information
+		Invoice invoice = cartInv.getInvoice();
+		List<InvoiceItem> invoiceItems = cartInv.getInvoiceItems();
+		
+		if(invoice != null && !invoiceItems.isEmpty()) {
+			//Validate invoice fields
+			validateInvoiceFields(invoice, invoiceItems, errorList);
+			if(!errorList.isEmpty()) {
+				return returnModel;				
+			}
+			
+			//Make sure invoice number is unique
+			getValidInvNum(invoice, errorList);
+			if(!errorList.isEmpty()) {
+				return returnModel;				
+			}
+			
+			//Adjust supplement stock
+			adjustSupplementStock(invoiceItems, errorList);
+			invoice.setInvPaid(ModelMappings.NO);
+			
+			if(errorList.isEmpty()) {
+				//No errors then create Invoice
+				createInvoice(invoice, invoiceItems);
+				cart.clearCartSession();
+			}
+			
+		}else {
+			String result = "Cart Invoice details or Invoice items cannot be empty!";
+			System.out.println(result);
+			errorList.add(result);
+		}
+		
+		return returnModel;
+	}
+	
+	private void createInvoice(Invoice invoice, List<InvoiceItem> invoiceItems) {		
+		for(InvoiceItem invoiceItem : invoiceItems) {
+			invoiceItem.setInvNum(invoice.getInvNum());
+		}
+		service.getInvoiceService().create(invoice);
+		service.getInvoiceItemService().create(invoiceItems);
+	}
+	
+	private void getValidInvNum(Invoice invoice, List<String> errorList) {
+		Invoice existingInv = service.getInvoiceService().readById(invoice.getInvNum());
+		
+		if(existingInv != null) {
+			String result = "Invoice number is not unique!";
+			System.out.println(result);
+			errorList.add(result);
+		}		
+	}
+	
+	private void adjustSupplementStock(List<InvoiceItem> invoiceItems, List<String> errorList) {
+		for(InvoiceItem invoiceItem : invoiceItems) {
+			//get fresh supplement
+			Supplement supplement = service.getSupplementService().readById(invoiceItem.getSupplementId());
+			Integer newStockLevel = Math.subtractExact(supplement.getCurrentStockLevels(), invoiceItem.getItemQuantity());
+			
+			if(newStockLevel >= 0) {
+				supplement.setCurrentStockLevels(newStockLevel);
+				service.getSupplementService().update(supplement);
+			}else {
+				String result = "Stock level below 0!";
+				System.out.println(result);
+				errorList.add(result);
+			}
+		}
+	}
+	
+	private void validateInvoiceFields(Invoice invoice, List<InvoiceItem> invoiceItems, List<String> errorList) {
+		if(invoice.getInvNum() == null) {
+			String result = "Invoice number is empty!";
+			System.out.println(result);
+			errorList.add(result);
+		}
+		if(invoice.getClientId() == null) {
+			String result = "Client ID is empty!";
+			System.out.println(result);
+			errorList.add(result);
+		}
+		if(invoice.getInvDate() == null) {
+			String result = "Invoice date is empty!";
+			System.out.println(result);
+			errorList.add(result);
+		}
+		
+		for(InvoiceItem invoiceItem : invoiceItems) {
+			if(invoiceItem.getSupplementId() == null) {
+				String result = "Supplement ID is empty!";
+				System.out.println(result);
+				errorList.add(result);
+			}
+			if(invoiceItem.getItemQuantity() == null || invoiceItem.getItemQuantity() <= 0) {
+				String result = "Item quantity is 0 or below!";
+				System.out.println(result);
+				errorList.add(result);
+			}
+		}
 	}
 
 }

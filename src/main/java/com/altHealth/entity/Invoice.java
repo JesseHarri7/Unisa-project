@@ -43,12 +43,6 @@ public class Invoice implements Serializable
 	
 	@Column(name = "Comments")
 	private String comments;
-	
-	@Column(name = "State")
-	private String state = "A";
-	
-	@Column(name = "Term_date")
-	private String termDate;
 
 	public Invoice() {
 	}
@@ -111,27 +105,10 @@ public class Invoice implements Serializable
 		this.comments = comments;
 	}
 
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public String getTermDate() {
-		return termDate;
-	}
-
-	public void setTermDate(String termDate) {
-		this.termDate = termDate;
-	}
-
 	@Override
 	public String toString() {
-		return "Invoice [invNum=" + invNum + ", clientId=" + clientId + ", invDate=" + invDate
-				+ ", invPaid=" + invPaid + ", invPaidDate=" + invPaidDate + ", comments=" + comments + ", state="
-				+ state + ", termDate=" + termDate + "]";
+		return "Invoice [invNum=" + invNum + ", clientId=" + clientId + ", invDate=" + invDate + ", invPaid=" + invPaid
+				+ ", invPaidDate=" + invPaidDate + ", comments=" + comments + "]";
 	}
 	
 }
