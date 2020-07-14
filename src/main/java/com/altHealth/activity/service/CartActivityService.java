@@ -148,13 +148,17 @@ public class CartActivityService implements CartActivity {
 		returnModel.setIdTags(idTagList);
 		returnModel.setResultList(resultList);
 
-		List<Supplement> existingSupps = cart.getSupplementList();
-
-		if (!existingSupps.isEmpty()) {
-			List<Supplement> suppToAdd = validateSuppToAdd(existingSupps, supplements, errorList, resultList);
-			existingSupps.addAll(suppToAdd);
-		} else {
-			cart.setSupplementList(supplements);
+		validateQty(supplements, errorList, resultList);
+		
+		if(!supplements.isEmpty()) {
+			List<Supplement> existingSupps = cart.getSupplementList();
+	
+			if (!existingSupps.isEmpty()) {
+				List<Supplement> suppToAdd = removeDuplicates(existingSupps, supplements, errorList, resultList);
+				existingSupps.addAll(suppToAdd);
+			} else {
+				cart.setSupplementList(supplements);
+			}
 		}
 
 		return returnModel;
@@ -179,8 +183,24 @@ public class CartActivityService implements CartActivity {
 
 		return returnModel;
 	}
+	
+	private void validateQty(List<Supplement> supplements, List<String> errorList, List<String> resultList) {
+		List<Supplement> erroSuppList = new ArrayList<Supplement>();
+		
+		for(Supplement supplement : supplements) {
+			if(supplement.getCurrentStockLevels().compareTo(0) == 0) {
+				String result = "Supplement: " + supplement.getSupplementId() + " has 0 stock available";
+				System.out.println(result);
+				errorList.add(result);
+				
+				erroSuppList.add(supplement);
+			}
+		}
+		
+		supplements.removeAll(erroSuppList);
+	}
 
-	private List<Supplement> validateSuppToAdd(List<Supplement> existingSupps, List<Supplement> supplements,
+	private List<Supplement> removeDuplicates(List<Supplement> existingSupps, List<Supplement> supplements,
 			List<String> errorList, List<String> resultList) {
 		List<Supplement> returnList = new ArrayList<Supplement>();
 		List<Supplement> dupList = new ArrayList<Supplement>();

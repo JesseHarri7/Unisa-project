@@ -34,7 +34,7 @@ $(document).ready(function()
 	}
 	
 	freq.push(1);
-	freq.push(15);
+	//freq.push(12);
 	
 	
 	// Data

@@ -39,17 +39,18 @@
 
 .text-danger {
 	color: #FF6384!important;
-/* 	color:red!important; */
 }
 
 .text-megna {
 	color: #36A2EB!important;
-/* 	color: blue!important; */
 }
 
 .text-primary, .text-purple {
 	color: #FFCD56!important;
-/* 	color: yellow!important; */
+}
+
+.text-primary, .text-purple {
+	color: #8e5ea2!important;
 }
 
 
