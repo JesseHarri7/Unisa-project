@@ -157,5 +157,81 @@ public class Utils {
 		}
 
 	}
+	
+	/**
+	 * Outgoing Mail (SMTP) Server requires TLS or SSL: smtp.gmail.com (use
+	 * authentication) Use Authentication: Yes Port for SSL: 465
+	 */
+	public void sendLowStockEmail(String toEmail, String subject, String msg) {
+		toEmail = "jesse.harri@gmail.com";
+		// Recipient's email ID needs to be mentioned.
+		String to = toEmail;
+
+		// Sender's email ID needs to be mentioned
+		SysParameters settings = service.getSysParaService().readById(ModelMappings.COMPANY_ID);
+		String from = settings.getEmail();
+
+		final String username = from;// change accordingly
+		final String password = settings.getEmailPass();// change accordingly
+
+		System.out.println("SSLEmail Start");
+
+		Properties props = new Properties(); 
+		props.put("mail.smtp.host", "smtp.gmail.com"); // SMTP Host 
+//		props.put("mail.smtp.socketFactory.port", "465"); // SSL Port 
+		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory"); // SSL Factory Class
+		props.put("mail.smtp.auth", "true"); // Enabling SMTP Authentication
+		props.put("mail.smtp.starttls.enable","true");
+//		props.put("mail.smtp.port", "465"); // SMTP Port
+//		props.put("mail.smtp.ssl.enable", "true");
+
+		//Get the Session object. 
+		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		});
+		
+		System.out.println("Session created");
+		try {
+			// Create a default MimeMessage object.
+			Message message = new MimeMessage(session);
+
+			// Set From: header field of the header.
+			message.setFrom(new InternetAddress(from));
+
+			// Set To: header field of the header.
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+
+			// Set Subject: header field
+			message.setSubject(subject);
+
+			// Create the message part
+			BodyPart messageBodyPart = new MimeBodyPart();
+
+			// Now set the actual message
+			messageBodyPart.setText(msg);
+
+			// Create a multipar message
+			Multipart multipart = new MimeMultipart();
+
+			// Set text message part
+			multipart.addBodyPart(messageBodyPart);
+
+			// Send the complete message parts
+			message.setContent(multipart);
+
+			// Send message
+			Transport trans= session.getTransport("smtp");
+	        trans.connect("smtp.gmail.com", username, password);
+			Transport.send(message);
+
+			System.out.println("Sent message successfully....");
+
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}
+
+	}
 
 }

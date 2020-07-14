@@ -52,6 +52,7 @@ $(document).ready(function()
 		var clientTable = $("#client-table").DataTable({
 			dom: '<f<t>lip>',
 			retrieve: true,
+			responsive: true,
 			select: true,
 			data: dataSet,
 			columns: 
@@ -63,6 +64,8 @@ $(document).ready(function()
 				{data: 'cTelW'},
 				{data: 'cTelCell'},
 				{data: 'cEmail'},
+				{data: 'address'},
+				{data: 'code'},
 				{data: 'referenceId'}
 			]
 		});

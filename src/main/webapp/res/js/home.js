@@ -181,7 +181,7 @@ $(document).ready(function()
 			backgroundColor: [
 	            /*'#cbb2ae',
 	            '#aec9cb',*/
-	            '#17a2b8',
+	            '#8e5ea2',
 				'#FF6384',
 				'#36A2EB',
 				'#FFCD56'
