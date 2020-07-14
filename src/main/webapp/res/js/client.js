@@ -57,6 +57,8 @@ $(document).ready(function()
 			columns: 
 			[
 				{data: 'clientId'},
+				{data: 'cName'},
+				{data: 'cSurname'},
 				{data: 'cTelH'},
 				{data: 'cTelW'},
 				{data: 'cTelCell'},
@@ -136,9 +138,6 @@ $(document).ready(function()
 		
 		//Translate so that JSON can read it
 		var data_json = JSON.stringify(client);
-		
-		//Before creating, first check to see if the asset already exists
-		//var exists = findId(assetCode);
 		
 		//if(exists.length == 0)
 		//{

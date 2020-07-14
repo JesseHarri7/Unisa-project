@@ -93,12 +93,12 @@ public class CartModel implements CartModelActivity{
 	}
 	
 	public void clearCartSession() {
-		this.invoice = new Invoice();
+		this.invoice = null;
 		this.invoiceItems = new ArrayList<InvoiceItem>();
-		this.client = new Client();
+		this.client = null;
 		this.supplementList = new ArrayList<Supplement>();
-		this.cartTotal = 0.0;
-		this.VAT = 0.0;
+		this.cartTotal = null;
+		this.VAT = null;
 	}
 	
 }
