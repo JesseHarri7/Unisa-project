@@ -101,26 +101,7 @@ public class Utils {
 		props.put("mail.smtp.starttls.enable","true");
 //		props.put("mail.smtp.port", "465"); // SMTP Port
 //		props.put("mail.smtp.ssl.enable", "true");
-		 
 
-		// Assuming you are sending email through relay.jangosmtp.net
-		/*
-		 * String host = "relay.jangosmtp.net";
-		 * 
-		 * Properties props = new Properties(); props.put("mail.smtp.auth", "true");
-		 * props.put("mail.smtp.starttls.enable", "true"); props.put("mail.smtp.host",
-		 * host); props.put("mail.smtp.port", "25");
-		 */
-
-		/*
-		 * Authenticator auth = new Authenticator() { //override the
-		 * getPasswordAuthentication method protected PasswordAuthentication
-		 * getPasswordAuthentication() { return new PasswordAuthentication(from,
-		 * password); } };
-		 * 
-		 * Session session = Session.getDefaultInstance(props, auth);
-		 */
-/*
 		//Get the Session object. 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
@@ -174,7 +155,7 @@ public class Utils {
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
-*/
+
 	}
 
 }

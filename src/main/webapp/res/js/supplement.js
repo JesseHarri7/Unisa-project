@@ -141,7 +141,7 @@ $(document).ready(function()
 
 	}
 	
-	//Add client to cart
+	//Add Supp to cart
 	$('#addToCart-btn').click(function(event) {
 		var table = $('#supplement-table').DataTable();			
 

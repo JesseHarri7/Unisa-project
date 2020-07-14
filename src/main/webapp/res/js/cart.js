@@ -35,6 +35,7 @@ var emptyArray = [];
 					
 					$('#cart-tax').html(response.VAT);
 				}else {
+					//If data is missing then display what is available
 					for (x of response.result) {
 						$.notify(x, "error");
 					}
@@ -65,6 +66,7 @@ var emptyArray = [];
 		});		
 	}
 	
+	//Populate invoice with the clients info from the session
 	function clientInfoTable(dataSet){
 		$('#cNameSurname').html(dataSet.cName + ' ' + dataSet.cSurname);
 		$('#clientId').html(dataSet.clientId);
@@ -73,11 +75,13 @@ var emptyArray = [];
 		$('#cEmail').html(dataSet.cEmail);
 	}
 	
+	//Populate the invoice with the Invoice data from the session
 	function invoiceInfo(dataSet){
 		$('#invNum').html(dataSet.invNum);
 		$('#invNum2').html(dataSet.invNum);
 	}
 	
+	//Populate the invoice with the supplements from the session
 	function cartItemsTable(suppDataSet){
 		var tr="";
 		for (ref of suppDataSet) {
@@ -150,7 +154,6 @@ var emptyArray = [];
 	function updateQuantity(quantityInput) {
 	  /* Calculate line price */
 	  var productRow = $(quantityInput).parent();
-	  //var tr = productRow[0];
 	  var price = parseFloat(productRow.children('.unit.costExcl').text());
 	  var quantity = $(quantityInput).children().val();
 	  var linePrice = price * quantity;
@@ -236,6 +239,8 @@ var emptyArray = [];
 		if(html != "" && fileName != "" && fileName != " "){
 			if(email != "" && email != " "){
 				createInvoice();
+			}else{
+				$.notify("Error! Client Email is required", "error");
 			}
 		}else{
 			$.notify("Error! cannot send a blank invoice", "error");
@@ -321,7 +326,7 @@ var emptyArray = [];
 					$.notify(response.msg, "success");
 					
 					//Only send PDF on successful Invoice create
-					//sendPDF(fileName);
+					sendPDF(fileName);
 				}else {
 					for (x of response.result) {
 						$.notify(x, "error");

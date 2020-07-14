@@ -189,11 +189,11 @@
 	}
 	
 	/*Remove supplement button column*/
-	.invoice td:nth-of-type(7){
+	.invoice td:nth-of-type(6){
 		display: none;
 	}
 	
-	.invoice th:nth-of-type(7){
+	.invoice th:nth-of-type(6){
 		display: none;
 	}
 	
