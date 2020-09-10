@@ -91,20 +91,20 @@ public class Validations {
 		boolean validtel2 = true;
 		boolean validtel3 = true;
 		
-		String patternString = "^(([0-9]{3}))?[-. ]?([0-9]{3})[-. ]?([0-9]{4})";
+		String patternString = "^[(. ]?(([0-9]{3}))?[). ]?[-. ]?[(. ]?([0-9]{3})?[). ]?[-. ]?[(. ]?([0-9]{4})[). ]?";
 		Pattern pattern = Pattern.compile(patternString);
 
-		if(tel1 != null) {
+		if(tel1 != null && !tel1.isEmpty()) {
 	        Matcher matcherTelH = pattern.matcher(tel1);
 	        validtel1 = matcherTelH.matches();
 		}
         
-		if(tel2 != null) {
+		if(tel2 != null && !tel2.isEmpty()) {
 	        Matcher matcherTelW = pattern.matcher(tel2);
 	        validtel2 = matcherTelW.matches();
 		}
         
-		if(tel3 != null) {
+		if(tel3 != null && !tel3.isEmpty()) {
 	        Matcher matcherTelCell = pattern.matcher(tel3);
 	        validtel3 = matcherTelCell.matches();
 		}
@@ -126,7 +126,7 @@ public class Validations {
         }
         
         if(!validtel1 || !validtel2 || !validtel3) {
-        	errorList.add("Error! Please match the 000-000-0000 format");
+        	errorList.add("Error! Please match the (000)-(000)-(0000) format");
         	valid = false;
         }
         

@@ -54,6 +54,28 @@ public class ClientActivityService implements ClientActiviy{
 		return returnModel;
 	}
 	
+	@Override
+	public ReturnModel formUpdateBtn(Client client) {
+		ReturnModel returnModel = new ReturnModel();
+		List<String> errorList = new ArrayList<String>();
+		List<String> idTagList = new ArrayList<String>();
+		returnModel.setEntity(client);
+		returnModel.setErrorList(errorList);
+		returnModel.setIdTags(idTagList);
+		
+		//Validate email
+		boolean isValidEmail = validation.emailValidation(client.getcEmail(), errorList, idTagList, ModelMappings.CLIENT_cEmail);
+		
+		//Validate tel number format
+		boolean isValidTelNum = validation.telNumValidation(client.getcTelH(), client.getcTelW(), client.getcTelCell(), errorList, idTagList, ModelMappings.CLIENT_cTelH, ModelMappings.CLIENT_cTelW, ModelMappings.CLIENT_cTelCell);
+		
+		if(isValidEmail && isValidTelNum) {
+			service.update(client);
+		}
+		
+		return returnModel;
+	}
+	
 	private boolean doesClientExist(String clientId, List<String> errorList, List<String> idTagList) {
 		boolean valid = true;
 		

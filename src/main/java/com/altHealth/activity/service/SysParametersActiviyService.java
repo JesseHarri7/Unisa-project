@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.altHealth.Utils.ServiceHelper;
 import com.altHealth.Utils.Utils;
+import com.altHealth.Utils.Validations;
 import com.altHealth.activity.SysParametersActiviy;
 import com.altHealth.entity.Supplement;
 import com.altHealth.entity.SysParameters;
@@ -21,6 +22,8 @@ public class SysParametersActiviyService implements SysParametersActiviy {
 	ServiceHelper service;
 	@Autowired
 	Utils utils;
+	@Autowired
+	Validations validation;
 	
 	@Override
 	public ReturnModel formUpdateBtn(SysParameters sysPara) {
@@ -35,7 +38,9 @@ public class SysParametersActiviyService implements SysParametersActiviy {
 		
 		boolean isValidVatPer = validateVatPer(sysPara.getVatPercent(), errorList, idTagList);
 		
-		if(exists && isValidVatPer) {
+		boolean isValidTelNum = validation.telNumValidation(sysPara.getTelNo(), null, null, errorList, idTagList, ModelMappings.SETTINGS_telNo);
+		
+		if(exists && isValidVatPer && isValidTelNum) {
 			service.getSysParaService().update(sysPara);
 		}
 		

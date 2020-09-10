@@ -19,13 +19,14 @@ $(document).ready(function()
 			{
 				dataSet = data;
 				
-				settingsList(dataSet);
+				settingsList(dataSet[0]);
 				
 			}
 		});
 	}		
 	
 	function settingsList(dataSet) {
+		/*
 		var table = $("#settings-table").DataTable({
 			dom: '<f<t>lip>',
 			retrieve: true,
@@ -42,6 +43,12 @@ $(document).ready(function()
 		});
 		
 		return table;
+		*/
+		document.forms["settings"]["address"].value = dataSet.address;
+		document.forms["settings"]["telNo"].value = dataSet.telNo;
+		document.forms["settings"]["email"].value = dataSet.email;
+		document.forms["settings"]["emailPass"].value = dataSet.emailPass;
+		document.forms["settings"]["vatPercent"].value = dataSet.vatPercent;
 	}
 	
 	//Select
@@ -93,10 +100,14 @@ $(document).ready(function()
 	
 	function validateUpdate()
 	{
-		var vatPercent = document.forms["update"]["vatPercent"].value;
+		var address = document.forms["settings"]["address"].value;
+		var telNo = document.forms["settings"]["telNo"].value;
+		var email = document.forms["settings"]["email"].value;
+		var emailPass = document.forms["settings"]["emailPass"].value;
+		var vatPercent = document.forms["settings"]["vatPercent"].value;
 		 
-	    if(vatPercent == "") {
-	    	displayFormBorder(vatPercent);
+	    if(vatPercent == "" || address == "" || telNo == "" || email == "" || emailPass == "") {
+	    	displayFormBorder(vatPercent, address, telNo, email, emailPass);
 	    	$.notify("Heads up! All fields must be filled out.", "error");
 	        return false;
 	    }else {
@@ -107,9 +118,13 @@ $(document).ready(function()
 	function update() {
 		var table = $('#settings-table').DataTable();
 		
-		var vatPercent = document.forms["update"]["vatPercent"].value;
+		var address = document.forms["settings"]["address"].value;
+		var telNo = document.forms["settings"]["telNo"].value;
+		var email = document.forms["settings"]["email"].value;
+		var emailPass = document.forms["settings"]["emailPass"].value;
+		var vatPercent = document.forms["settings"]["vatPercent"].value;
 		
-		var sysParameters = {vatPercent};
+		var sysParameters = {vatPercent, address, telNo, email, emailPass};
 		
 		var data_json = JSON.stringify(sysParameters);
 		
@@ -164,9 +179,21 @@ $(document).ready(function()
 	});
 	
 	
-	function displayFormBorder(vatPercent) {
+	function displayFormBorder(vatPercent, address, telNo, email, emailPass) {
 		if(!vatPercent) {
 			$('#vatPercent').addClass("form-fill-error");
+		}
+		if(!address) {
+			$('#address').addClass("form-fill-error");
+		}
+		if(!telNo) {
+			$('#telNo').addClass("form-fill-error");
+		}
+		if(!email) {
+			$('#email').addClass("form-fill-error");
+		}
+		if(!emailPass) {
+			$('#emailPass').addClass("form-fill-error");
 		}
 	}
 	
@@ -174,6 +201,10 @@ $(document).ready(function()
 	{
 		//create form
 		$('#vatPercent').removeClass("form-fill-error");
+		$('#address').removeClass("form-fill-error");
+		$('#telNo').removeClass("form-fill-error");
+		$('#email').removeClass("form-fill-error");
+		$('#emailPass').removeClass("form-fill-error");
 	}
 	
 	//Notify class

@@ -26,11 +26,12 @@
 	<div w3-include-html="../pages/temps/nav.html"></div>
 
 	<div id="nav-buttons">
-		<input type="button" value="Edit" id="edit-btn" class="btn btn-primary" data-target="#updateModal">
+		<!--<input type="button" value="Edit" id="edit-btn" class="btn btn-primary" data-target="#updateModal"> -->
+		<input type="button" value="Update" id="form-update-btn" class="btn btn-primary">
 		<input type="button" value="Update all costIncl" id="update-vat-btn" class="btn btn-primary">
 	</div>
 	
-	<!--Table -->
+	<!--Table
 	<div class="table-width-outter">
 		<div class="table-width-inner">
 			<table class="display" id="settings-table" style="width:100%">
@@ -47,11 +48,11 @@
 				</tbody>
 			</table>
 		</div>
-	</div>
+	</div> -->
 	
 	<!-- Settings modal view -->
-	<!-- Update Modal -->
-	<div class="modal fade" id="updateModal" role="dialog">
+	<!-- Settings Modal 
+	<div class="modal fade" id="updateModal" role="dialog">-->
 		<div class="modal-dialog">
 
 			<!-- Modal content-->
@@ -63,38 +64,41 @@
 				<div class="modal-body">
 					<div id="boot-alert-m-u"></div>
 
-					<form name="update">
+					<form name="settings">
 						<div>
-							<label for="assetId">Company address:</label> <input type="number"
-								name="uId" class="form-control" id="vatPercent"
+							<label for="assetId">Company address:</label> <input type="text"
+								class="form-control" id="address"
 								placeholder="Enter Company address">
 						</div>
 						<div>
-							<label for="assetId">Company Tel:</label> <input type="number"
-								name="uId" class="form-control" id="vatPercent"
-								placeholder="Enter Company Tel">
+							<label for="assetId">Company Tel:</label> <input type="tel"
+								class="form-control" id="telNo" 
+								placeholder="(000)-(000)-(0000)"
+								maxlength="18"
+								pattern="([0-9]{3})-([0-9]{3})-([0-9]{4})"
+								/>
 						</div>
 						<div>
-							<label for="assetId">Company Email:</label> <input type="number"
-								name="uId" class="form-control" id="vatPercent"
+							<label for="assetId">Company Email:</label> <input type="text"
+								class="form-control" id="email"
 								placeholder="Enter Company Email">
 						</div>
 						<div>
-							<label for="assetId">Email Password:</label> <input type="number"
-								name="uId" class="form-control" id="vatPercent"
+							<label for="assetId">Email Password:</label> <input type="text"
+								class="form-control" id="emailPass"
 								placeholder="Enter Email Password">
 						</div>
 						<div>
 							<label for="assetId">VAT (%):</label> <input type="number"
-								name="uId" class="form-control" id="vatPercent"
+								class="form-control" id="vatPercent"
 								placeholder="Enter VAT %">
 						</div>
 					</form>
 				</div>
-				<div class="modal-footer">
+				<!--<div class="modal-footer">
 					<button type="submit" class="btn btn-primary" id="form-update-btn">Update</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
+				</div>-->
 			</div>
 
 		</div>
