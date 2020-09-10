@@ -86,27 +86,27 @@
 						<div class="form-group">
 							<label for="cTelH">Tel home number:</label> <input type="tel"
 								class="form-control" id="cTelH" 
-								placeholder="000-000-0000"
-								maxlength="12"
-								pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+								placeholder="(000)-(000)-(0000)"
+								maxlength="18"
+								pattern="([0-9]{3})-([0-9]{3})-([0-9]{4})"
 								/>
 						</div>
 						
 						<div class="form-group">
 							<label for="cTelW">Tel work number:</label> <input type="tel"
 								class="form-control" id="cTelW" 
-								placeholder="000-000-0000"
-								maxlength="12"
-								pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"								
+								placeholder="(000)-(000)-(0000)"
+								maxlength="18"
+								pattern="([0-9]{3})-([0-9]{3})-([0-9]{4})"							
 								/>
 						</div>
 						
 						<div class="form-group">
 							<label for="cTelW">Cell number:</label> <input type="tel"
 								class="form-control" id="cTelCell"  
-								placeholder="000-000-0000"
-								maxlength="12"
-								pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+								placeholder="(000)-(000)-(0000)"
+								maxlength="18"
+								pattern="([0-9]{3})-([0-9]{3})-([0-9]{4})"
 								/>
 						</div>
 						
@@ -133,6 +133,98 @@
 					</form>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-primary" id="form-create-btn">Save</button>
+						<button type="button" class="btn btn-secondary" id="form-close-btn" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Emp-update modal view -->
+	<!-- Update Modal -->
+	<div class="modal fade" id="updateModal" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="modal-title">Update Client</h2>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<form name="update" id="update">
+					
+						<div class="form-group">
+							<label for="clientId">*Client ID:</label> <input type="text" maxlength="13"
+								class="form-control" id="uid" placeholder="Enter client ID" disabled/>
+						</div>
+
+						<div class="form-group">
+							<label for="firstname">*First name:</label> <input type="text"
+								class="form-control" id="ucName"
+								placeholder="Enter first name" required />
+						</div>
+
+						<div class="form-group">
+							<label for="lastname">*Last name:</label> <input type="text"
+								class="form-control" id="ucSurname"
+								placeholder="Enter last name" required />
+						</div>
+						
+						<div class="form-group">
+							<label for="Email">*Email:</label> <input type="text"
+								class="form-control" id="ucEmail" 
+								placeholder="Enter email" required />
+						</div>
+						
+						<div class="form-group">
+							<label for="cTelH">Tel home number:</label> <input type="tel"
+								class="form-control" id="ucTelH" 
+								placeholder="(000)-(000)-(0000)"
+								maxlength="18"
+								pattern="([0-9]{3})-([0-9]{3})-([0-9]{4})"
+								/>
+						</div>
+						
+						<div class="form-group">
+							<label for="cTelW">Tel work number:</label> <input type="tel"
+								class="form-control" id="ucTelW" 
+								placeholder="(000)-(000)-(0000)"
+								maxlength="18"
+								pattern="([0-9]{3})-([0-9]{3})-([0-9]{4})"							
+								/>
+						</div>
+						
+						<div class="form-group">
+							<label for="cTelW">Cell number:</label> <input type="tel"
+								class="form-control" id="ucTelCell"  
+								placeholder="(000)-(000)-(0000)"
+								maxlength="18"
+								pattern="([0-9]{3})-([0-9]{3})-([0-9]{4})"
+								/>
+						</div>
+						
+						<div class="form-group">
+							<label for="address">*Address:</label> <input type="text"
+								class="form-control" id="uaddress" 
+								placeholder="Enter Address" />
+						</div>
+						
+						<div class="form-group">
+							<label for="code">*Code:</label> <input type="text"
+								class="form-control" id="ucode" 
+								placeholder="Enter code" />
+						</div>
+						
+						<div class="form-group">
+							<label for="type">Select Reference ID:</label>
+							<select class="form-control" id="urefId">
+						    	<option></option>
+						  	</select>
+						</div>
+						
+					</form>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="form-update-btn">Update</button>
 						<button type="button" class="btn btn-secondary" id="form-close-btn" data-dismiss="modal">Close</button>
 					</div>
 				</div>

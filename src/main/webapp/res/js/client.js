@@ -1,5 +1,4 @@
-$(document).ready(function()
-{
+$(document).ready(function() {
 	var dataSet = [];
 	var count = 0;
 	
@@ -13,8 +12,7 @@ $(document).ready(function()
 	includeHTML();
 	
 	//find all
-	function findAll()
-	{
+	function findAll() {
 		$.ajax({
 			url:"/altHealth/client/findAll", 
 			dataType: "json",
@@ -30,8 +28,7 @@ $(document).ready(function()
 	}	
 	
 	//Select
-	$('#client-table tbody').on('click','tr', function()
-	{
+	$('#client-table tbody').on('click','tr', function() {
 		$(this).toggleClass('selected');
 		
 		/*if ( $(this).hasClass('selected') ) 
@@ -47,8 +44,7 @@ $(document).ready(function()
         }*/
 	} );	
 	
-	function clientList(dataSet)
-	{
+	function clientList(dataSet) {
 		var clientTable = $("#client-table").DataTable({
 			dom: '<f<t>lip>',
 			retrieve: true,
@@ -82,17 +78,17 @@ $(document).ready(function()
 			{
 				var li="";
 				for (ref of data) {
-					li+='<option>'+ref.description+'</option>';
+					li+='<option value="'+ref.referenceId+'">'+ref.description+'</option>';
 				}
 				
 				$('#refId').append(li);
+				$('#urefId').append(li);
 			}
 		});
 	}
 	
 	//Create button
-	$('#create-btn').click(function(event) 
-	{		
+	$('#create-btn').click(function(event) {		
 		//Clear form red border css
 		clearFormBorder();
 		
@@ -102,9 +98,33 @@ $(document).ready(function()
 		$('.notifyjs-corner').remove();
 	});
 	
+	//Edit button
+	$('#edit-btn').click(function(event) {		
+		//Clear form red border css
+		clearFormBorder();
+		
+		//Clear form content if any
+		document.getElementById("update").reset();
+		
+		$('.notifyjs-corner').remove();
+		
+		var table = $('#client-table').DataTable();
+
+		//Get data of the selected row
+		var update = table.row( '.selected' ).data();
+		if(update) {
+			//Data in the update variable gets saved as an object
+			//Take that data and display it in the modal form
+			displayClient(update);
+			$('#updateModal').modal('show');
+		}else {	
+			$.notify("Heads up! Please select a client to edit.", "error");
+		}
+		
+	});
+	
 	//Modal form create button
-	$('#form-create-btn').click(function(event) 
-	{
+	$('#form-create-btn').click(function(event) {
 		var id = document.forms["create"]["id"].value;
 		//Clear form red border css
 		clearFormBorder();
@@ -120,8 +140,21 @@ $(document).ready(function()
 		}
 	});
 	
-	function create()
-	{
+	//Modal form update button
+	$('#form-update-btn').click(function(event) {
+		var id = document.forms["create"]["id"].value;
+		//Clear form red border css
+		clearFormBorder();
+		$('.notifyjs-corner').remove();
+		
+		var requiredFields = validateUpdateEmptyFields();
+		
+		if(requiredFields){
+			update();
+		}
+	});
+	
+	function create() {
 		dataSet = [];
 		var table = $('#client-table').DataTable();
 		
@@ -164,6 +197,65 @@ $(document).ready(function()
 						//Clear data from the modal form
 						document.getElementById("create").reset();
 						$('#createModal').modal('hide');
+					}else {
+						for (x of response.result) {
+							$.notify(x, "error");
+						}
+						
+						for (x of response.idTags) {
+							$(x).addClass("form-fill-error");
+						}
+					}
+				},
+				error : function(e) {
+					console.log("ERROR: ", e);
+					$.notify("Status 405", "error");
+				}
+			});
+
+	}
+	
+	function update() {
+		dataSet = [];
+		var table = $('#client-table').DataTable();
+		
+		var clientId = $('#uid').val();
+		var cName = $('#ucName').val();
+		var cSurname = $('#ucSurname').val();
+		var cEmail = $('#ucEmail').val();
+		var cTelH = $('#ucTelH').val();
+		var cTelW = $('#ucTelW').val();
+		var cTelCell = $('#ucTelCell').val();
+		var address = $('#uaddress').val();
+		var code = $('#ucode').val();
+		var referenceId = $('#urefId').val();
+		
+		//Set as object
+		var client = {clientId, cName, cSurname, cEmail, cTelH, cTelW, cTelCell, address, code, referenceId};
+		
+		//Translate so that JSON can read it
+		var data_json = JSON.stringify(client);
+		
+		//if(exists.length == 0)
+		//{
+			$.ajax( {
+				headers: {
+			        'Accept': 'application/json',
+			        'Content-Type': 'application/json' 
+			    },
+				url:"/altHealth/client/formUpdateBtn", 
+				dataType: "json",
+				data: data_json,
+				type: "POST",
+				success: function(response) {
+					if(response.status == "true") {
+						$.notify(response.msg, "success");
+					
+						table.row( '.selected' ).data(client).draw();
+						
+						//Clear data from the modal form
+						document.getElementById("update").reset();
+						$('#updateModal').modal('hide');
 					}else {
 						for (x of response.result) {
 							$.notify(x, "error");
@@ -277,53 +369,75 @@ $(document).ready(function()
 		}	
 	}
 	
+	function validateUpdateEmptyFields() {
+		var id = document.forms["update"]["uid"].value;
+		var cName = document.forms["update"]["ucName"].value;
+		var cSurname = document.forms["update"]["ucSurname"].value;
+		var cEmail = document.forms["update"]["ucEmail"].value;
+		var address = document.forms["update"]["uaddress"].value;
+		var code = document.forms["update"]["ucode"].value;
+		
+		if (id == "" || cName == "" || cSurname == "" || cEmail == "" || address == "" || code == "") {
+			displayFormBorder(id, cName, cSurname, cEmail, address, code);
+			$.notify("Heads up! All required fields must be filled out.", "error");
+			return false;
+		}else {
+			return true;
+		}	
+	}
+	
 	function displayFormBorder(id, cName, cSurname, cEmail, address, code) {
 		if(!id)
 		{
 			$('#id').addClass("form-fill-error");
-			//$('#uId').addClass("form-fill-error");
+			$('#uid').addClass("form-fill-error");
 		}	
 		
 		if(!cName)
 		{
 			$('#cName').addClass("form-fill-error");
-			//$('#uName').addClass("form-fill-error");
+			$('#ucName').addClass("form-fill-error");
 		}
 		
 		if(!cSurname)
 		{
 			$('#cSurname').addClass("form-fill-error");
-			//$('#uSurname').addClass("form-fill-error");
+			$('#ucSurname').addClass("form-fill-error");
 		}
 		
 		if(!cEmail)
 		{
 			$('#cEmail').addClass("form-fill-error");
-			//$('#uEmail').addClass("form-fill-error");
+			$('#ucEmail').addClass("form-fill-error");
 		}
 		
 		if(!address)
 		{
 			$('#address').addClass("form-fill-error");
-			//$('#uDateStart').addClass("form-fill-error");
+			$('#uaddress').addClass("form-fill-error");
 		}
 		
 		if(!code)
 		{
 			$('#code').addClass("form-fill-error");
-			//$('#uDateStart').addClass("form-fill-error");
+			$('#ucode').addClass("form-fill-error");
 		}
-		
-/*		if(!cTelCell)
-		{
-			$('#cTelCell').addClass("form-fill-error");
-			//$('#uDateStart').addClass("form-fill-error");
-		}
-*/
 	}
 	
-	function clearFormBorder()
-	{
+	function displayClient(client){
+		document.forms["update"]["uid"].value = client.clientId;
+		document.forms["update"]["ucName"].value = client.cName;
+		document.forms["update"]["ucSurname"].value = client.cSurname;
+		document.forms["update"]["ucEmail"].value = client.cEmail;
+		document.forms["update"]["ucTelH"].value = client.cTelH;
+		document.forms["update"]["ucTelW"].value = client.cTelW;
+		document.forms["update"]["ucTelCell"].value = client.cTelCell;
+		document.forms["update"]["uaddress"].value = client.address;
+		document.forms["update"]["ucode"].value = client.code;
+		document.forms["update"]["urefId"].value = client.refId;
+	}
+	
+	function clearFormBorder() {
 		//create form
 		$('#id').removeClass("form-fill-error");
 		$('#cName').removeClass("form-fill-error");
@@ -378,8 +492,7 @@ $(document).ready(function()
 		
 	});
 	
-	function includeHTML() 
-	{
+	function includeHTML() {
 		  var z, i, elmnt, file, xhttp;
 		  /*loop through a collection of all HTML elements:*/
 		  z = document.getElementsByTagName("*");
@@ -412,8 +525,7 @@ $(document).ready(function()
 		  showActiveNav();
 	}
 	
-	function showActiveNav()
-	{
+	function showActiveNav() {
 		$('#clientNav').addClass('active');
 		/*var url = window.location.pathname;
 		
