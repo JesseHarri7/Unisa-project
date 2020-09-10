@@ -45,7 +45,27 @@ public class WebClientController {
 		return result;
 	}
 	
-	//create
+	@RequestMapping(value = "formUpdateBtn", method = RequestMethod.POST)
+	public AjaxResponseBody formUpdateBtn(@RequestBody Client entity) {
+		ReturnModel returnModel = activity.formUpdateBtn(entity);
+		AjaxResponseBody result = new AjaxResponseBody();
+		Client client = (Client) returnModel.getEntity();
+		
+		if(returnModel.getErrorList().isEmpty()) {
+			result.setStatus(ModelMappings.TRUE);
+			result.setMsg("Success! Client " + client.getClientId() + " has been updated.");
+			result.setResult(client);
+		}else {
+			result.setStatus(ModelMappings.FALSE);
+			result.setMsg("Error! " + returnModel.getStringErrorList());
+			result.setResult(returnModel.getErrorList());
+			result.setIdTags(returnModel.getIdTags());
+		}
+
+		//AjaxResponseBody will be converted into json format and send back to the request.
+		return result;
+	}
+	
 	@RequestMapping(value = "addClientToCart", method = RequestMethod.POST)
 	public AjaxResponseBody addClientToCart(@RequestBody Client entity) {
 		ReturnModel returnModel = cartActivity.addClientToCart(entity);

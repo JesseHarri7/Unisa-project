@@ -42,4 +42,8 @@ public class ModelMappings {
 	//SysParameters
 	public final static String SETTINGS_id = "#id";
 	public final static String SETTINGS_vatPercent = "#vatPercent";
+	public final static String SETTINGS_email = "#email";
+	public final static String SETTINGS_emailPass = "#emailPass";
+	public final static String SETTINGS_address = "#address";
+	public final static String SETTINGS_telNo = "#telNo";
 }

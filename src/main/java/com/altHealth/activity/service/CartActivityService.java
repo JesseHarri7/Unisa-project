@@ -185,7 +185,7 @@ public class CartActivityService implements CartActivity {
 	}
 	
 	private void validateQty(List<Supplement> supplements, List<String> errorList, List<String> resultList) {
-		List<Supplement> erroSuppList = new ArrayList<Supplement>();
+		List<Supplement> errSuppList = new ArrayList<Supplement>();
 		
 		for(Supplement supplement : supplements) {
 			if(supplement.getCurrentStockLevels().compareTo(0) == 0) {
@@ -193,11 +193,11 @@ public class CartActivityService implements CartActivity {
 				System.out.println(result);
 				errorList.add(result);
 				
-				erroSuppList.add(supplement);
+				errSuppList.add(supplement);
 			}
 		}
 		
-		supplements.removeAll(erroSuppList);
+		supplements.removeAll(errSuppList);
 	}
 
 	private List<Supplement> removeDuplicates(List<Supplement> existingSupps, List<Supplement> supplements,
