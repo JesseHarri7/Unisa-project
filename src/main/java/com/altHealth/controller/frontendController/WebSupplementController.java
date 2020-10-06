@@ -47,6 +47,27 @@ public class WebSupplementController {
 		return result;
 	}
 	
+	@RequestMapping(value = "formUpdateBtn", method = RequestMethod.POST)
+	public AjaxResponseBody formUpdateBtn(@RequestBody Supplement entity) {
+		ReturnModel returnModel = activity.formUpdateBtn(entity);
+		AjaxResponseBody result = new AjaxResponseBody();
+		Supplement supplement = (Supplement) returnModel.getEntity();
+		
+		if(returnModel.getErrorList().isEmpty()) {
+			result.setStatus(ModelMappings.TRUE);
+			result.setMsg("Success! Supplement " + supplement.getSupplementId() + " has been updated.");
+			result.setResult(supplement);
+		}else {
+			result.setStatus(ModelMappings.FALSE);
+			result.setMsg("Error! " + returnModel.getStringErrorList());
+			result.setResult(returnModel.getErrorList());
+			result.setIdTags(returnModel.getIdTags());
+		}
+
+		//AjaxResponseBody will be converted into json format and send back to the request.
+		return result;
+	}
+	
 	//addSessionCartItem
 	@RequestMapping(value = "addCartItems", method = RequestMethod.POST)
 	public AjaxResponseBody addCartItems(@RequestBody List<Supplement> entities) {

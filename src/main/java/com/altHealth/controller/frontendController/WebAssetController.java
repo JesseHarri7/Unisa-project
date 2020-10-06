@@ -71,6 +71,11 @@ public class WebAssetController {
 		return "/pages/reports/ClientInfoQuery.html";
 	}
 	
+	@RequestMapping(value = "invoiceList")
+	public String invoiceList() {
+		return "/pages/InvoiceList.html";
+	}
+	
 	@RequestMapping(value = "test")
 	public String test() {
 		return "/pages/Test.html";

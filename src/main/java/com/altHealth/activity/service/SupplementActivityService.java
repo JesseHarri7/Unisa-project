@@ -86,5 +86,24 @@ public class SupplementActivityService implements SupplementActiviy{
 		
 		supp.setCostIncl(costIncl);
 	}
+
+	@Override
+	public ReturnModel formUpdateBtn(Supplement supp) {
+		ReturnModel returnModel = new ReturnModel();
+		List<String> errorList = new ArrayList<String>();
+		List<String> idTagList = new ArrayList<String>();
+		returnModel.setEntity(supp);
+		returnModel.setErrorList(errorList);
+		returnModel.setIdTags(idTagList);
+		
+		boolean isValidSupplierID = doesSupplierIDExist(supp.getSupplierId(), errorList, idTagList);
+		
+		if(isValidSupplierID) {
+			updateCostIncl(supp);
+			service.getSupplementService().update(supp);
+		}
+		
+		return returnModel;
+	}
 	
 }
