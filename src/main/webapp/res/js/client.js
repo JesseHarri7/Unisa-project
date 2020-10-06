@@ -111,12 +111,16 @@ $(document).ready(function() {
 		var table = $('#client-table').DataTable();
 
 		//Get data of the selected row
-		var update = table.row( '.selected' ).data();
-		if(update) {
-			//Data in the update variable gets saved as an object
-			//Take that data and display it in the modal form
-			displayClient(update);
-			$('#updateModal').modal('show');
+		var update = table.rows( '.selected' ).data();
+		if(update.length != 0) {
+			if (update.length > 1) {
+				$.notify("Heads up! Please select only one client to update.", "error");
+			}else{
+				//Data in the update variable gets saved as an object
+				//Take that data and display it in the modal form
+				displayClient(update[0]);
+				$('#updateModal').modal('show');
+			}
 		}else {	
 			$.notify("Heads up! Please select a client to edit.", "error");
 		}
@@ -142,7 +146,6 @@ $(document).ready(function() {
 	
 	//Modal form update button
 	$('#form-update-btn').click(function(event) {
-		var id = document.forms["create"]["id"].value;
 		//Clear form red border css
 		clearFormBorder();
 		$('.notifyjs-corner').remove();
@@ -251,7 +254,7 @@ $(document).ready(function() {
 					if(response.status == "true") {
 						$.notify(response.msg, "success");
 					
-						table.row( '.selected' ).data(client).draw();
+						table.row( '.selected' ).data(response.result).draw();
 						
 						//Clear data from the modal form
 						document.getElementById("update").reset();
@@ -451,11 +454,16 @@ $(document).ready(function() {
 		$('#refId').removeClass("form-fill-error");
 		
 		//Update form
-		$('#uId').removeClass("form-fill-error");
-		$('#uName').removeClass("form-fill-error");
-		$('#uType').removeClass("form-fill-error");
-		$('#uBrand').removeClass("form-fill-error");
-		$('#uDatePurchased').removeClass("form-fill-error");
+		$('#uid').removeClass("form-fill-error");
+		$('#ucName').removeClass("form-fill-error");
+		$('#ucSurname').removeClass("form-fill-error");
+		$('#ucEmail').removeClass("form-fill-error");
+		$('#ucTelH').removeClass("form-fill-error");
+		$('#ucTelW').removeClass("form-fill-error");
+		$('#ucTelCell').removeClass("form-fill-error");
+		$('#uaddress').removeClass("form-fill-error");
+		$('#ucode').removeClass("form-fill-error");
+		$('#urefId').removeClass("form-fill-error");
 	}
 	
 	//Notify class

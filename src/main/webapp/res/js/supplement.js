@@ -53,13 +53,10 @@ $(document).ready(function()
 	//Select
 	$('#supplement-table tbody').on('click','tr', function() {
 		$(this).toggleClass('selected');
-		
-
 	} );
 	
 	//Create button
-	$('#create-btn').click(function(event) 
-	{		
+	$('#create-btn').click(function(event) {		
 		//Clear form red border css
 		clearFormBorder();
 		
@@ -70,8 +67,7 @@ $(document).ready(function()
 	});
 	
 	//Modal form create button
-	$('#form-create-btn').click(function(event) 
-	{
+	$('#form-create-btn').click(function(event) {
 		//Clear form red border css
 		clearFormBorder();
 		$('.notifyjs-corner').remove();
@@ -83,8 +79,7 @@ $(document).ready(function()
 		}
 	});
 	
-	function create()
-	{
+	function create() {
 		dataSet = [];
 		var table = $('#supplement-table').DataTable();
 		
@@ -123,6 +118,104 @@ $(document).ready(function()
 					//Clear data from the modal form
 					document.getElementById("create").reset();
 					$('#createModal').modal('hide');
+				}else {
+					for (x of response.result) {
+						$.notify(x, "error");
+					}
+					
+					for (x of response.idTags) {
+						$(x).addClass("form-fill-error");
+					}
+				}
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				$.notify("Status 405", "error");
+			}
+		});
+
+	}
+	
+	//Update button
+	$('#edit-btn').click(function(event) {		
+		//Clear form red border css
+		clearFormBorder();
+		
+		//Clear form content if any
+		document.getElementById("update").reset();
+		
+		$('.notifyjs-corner').remove();
+		
+		var table = $('#supplement-table').DataTable();
+
+		//Get data of the selected row
+		var update = table.rows( '.selected' ).data();
+		
+		if(update.length != 0) {
+			if (update.length > 1) {
+				$.notify("Heads up! Please select only one supplement to update.", "error");
+			}else{
+				//Data in the update variable gets saved as an object
+				//Take that data and display it in the modal form
+				displaySupplement(update[0]);
+				$('#updateModal').modal('show');
+			}
+		}else {	
+			$.notify("Heads up! Please select a supplement to edit.", "error");
+		}
+	});
+	
+	//Modal form update button
+	$('#form-update-btn').click(function(event) {
+		//Clear form red border css
+		clearFormBorder();
+		$('.notifyjs-corner').remove();
+		
+		var requiredFields = validateUpdateEmptyFields();
+		
+		if(requiredFields){
+			update();
+		}
+	});
+	
+	function update() {
+		dataSet = [];
+		var table = $('#supplement-table').DataTable();
+		
+		var supplementId = $('#uid').val();
+		var supplierId = $('#usupplierId').val();
+		var supplementDescription = $('#usupplementDescription').val();
+		var costExcl = $('#ucostExcl').val();
+		var minLevels = $('#uminLevels').val();
+		var currentStockLevels = $('#ucurrentStockLevels').val();
+		var nappiCode = $('#unappiCode').val();
+		
+		costExcl = costExcl.substr(1);
+		
+		//Set as object
+		var supplement = {supplementId, supplierId, supplementDescription, costExcl, minLevels, currentStockLevels, nappiCode};
+		
+		//Translate so that JSON can read it
+		var data_json = JSON.stringify(supplement);
+		
+		$.ajax( {
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json' 
+			},
+			url:"/altHealth/supplement/formUpdateBtn", 
+			dataType: "json",
+			data: data_json,
+			type: "POST",
+			success: function(response) {
+				if(response.status == "true") {
+					$.notify(response.msg, "success");
+				
+					table.row( '.selected' ).data(response.result).draw();
+					
+					//Clear data from the modal form
+					document.getElementById("update").reset();
+					$('#updateModal').modal('hide');
 				}else {
 					for (x of response.result) {
 						$.notify(x, "error");
@@ -205,14 +298,14 @@ $(document).ready(function()
 			url:"/altHealth/supplier/findAll", 
 			dataType: "json",
 			type: "GET",
-			success: function(data)
-			{
+			success: function(data) {
 				var li="";
 				for (supp of data) {
 					li+='<option>'+supp.supplierId+'</option>';
 				}
 				
 				$('#supplierId').append(li);
+				$('#usupplierId').append(li);
 			}
 		});
 	}
@@ -235,41 +328,53 @@ $(document).ready(function()
 		}	
 	}
 	
+	function validateUpdateEmptyFields() {
+		var id = document.forms["update"]["uid"].value;
+		var supplierId = document.forms["update"]["usupplierId"].value;
+		var supplementDescription = document.forms["update"]["usupplementDescription"].value;		
+		var costExcl = document.forms["update"]["ucostExcl"].value;
+		var minLevels = document.forms["update"]["uminLevels"].value;
+		var currentStockLevels = document.forms["update"]["ucurrentStockLevels"].value;
+		//var nappiCode = document.forms["update"]["unappiCode"].value;
+		
+		if (id == "" || supplierId == "" || supplementDescription == "" || costExcl == "" || minLevels == "" || currentStockLevels == "" || nappiCode == "") {
+			displayFormBorder(id, supplierId, supplementDescription, costExcl, minLevels, currentStockLevels);
+			$.notify("Heads up! All required fields must be filled out.", "error");
+			return false;
+		}else {
+			return true;
+		}	
+	}
+	
 	function displayFormBorder(id, supplierId, supplementDescription, costExcl, minLevels, currentStockLevels) {
-		if(!id)
-		{
+		if(!id) {
 			$('#id').addClass("form-fill-error");
-			//$('#uId').addClass("form-fill-error");
+			$('#uId').addClass("form-fill-error");
 		}	
 		
-		if(!supplierId)
-		{
+		if(!supplierId) {
 			$('#supplierId').addClass("form-fill-error");
-			//$('#uName').addClass("form-fill-error");
+			$('#usupplierId').addClass("form-fill-error");
 		}
 		
-		if(!supplementDescription)
-		{
+		if(!supplementDescription) {
 			$('#supplementDescription').addClass("form-fill-error");
-			//$('#uSurname').addClass("form-fill-error");
+			$('#usupplementDescription').addClass("form-fill-error");
 		}
 		
-		if(!costExcl)
-		{
+		if(!costExcl) {
 			$('#costExcl').addClass("form-fill-error");
-			//$('#uEmail').addClass("form-fill-error");
+			$('#ucostExcl').addClass("form-fill-error");
 		}
 		
-		if(!minLevels)
-		{
+		if(!minLevels) {
 			$('#minLevels').addClass("form-fill-error");
-			//$('#uDateStart').addClass("form-fill-error");
+			$('#uminLevels').addClass("form-fill-error");
 		}
 		
-		if(!currentStockLevels)
-		{
+		if(!currentStockLevels) {
 			$('#currentStockLevels').addClass("form-fill-error");
-			//$('#uDateStart').addClass("form-fill-error");
+			$('#ucurrentStockLevels').addClass("form-fill-error");
 		}
 
 	}
@@ -304,8 +409,17 @@ $(document).ready(function()
 		return valid;
 	}
 	
-	function clearFormBorder()
-	{
+	function displaySupplement(supplement){
+		document.forms["update"]["uid"].value = supplement.supplementId;
+		document.forms["update"]["usupplierId"].value = supplement.supplierId;
+		document.forms["update"]["usupplementDescription"].value = supplement.supplementDescription;
+		document.forms["update"]["ucostExcl"].value = "R"+supplement.costExcl;
+		document.forms["update"]["uminLevels"].value = supplement.minLevels;
+		document.forms["update"]["ucurrentStockLevels"].value = supplement.currentStockLevels;
+		document.forms["update"]["unappiCode"].value = supplement.nappiCode;
+	}
+	
+	function clearFormBorder() {
 		//create form
 		$('#id').removeClass("form-fill-error");
 		$('#supplierId').removeClass("form-fill-error");
@@ -317,14 +431,15 @@ $(document).ready(function()
 		
 		//Update form
 		$('#uId').removeClass("form-fill-error");
-		$('#uName').removeClass("form-fill-error");
-		$('#uType').removeClass("form-fill-error");
-		$('#uBrand').removeClass("form-fill-error");
-		$('#uDatePurchased').removeClass("form-fill-error");
+		$('#usupplierId').removeClass("form-fill-error");
+		$('#usupplementDescription').removeClass("form-fill-error");
+		$('#ucostExcl').removeClass("form-fill-error");
+		$('#uminLevels').removeClass("form-fill-error");
+		$('#ucurrentStockLevels').removeClass("form-fill-error");
+		$('#unappiCode').removeClass("form-fill-error");
 	}
 	
-	function includeHTML() 
-	{
+	function includeHTML() {
 		  var z, i, elmnt, file, xhttp;
 		  /*loop through a collection of all HTML elements:*/
 		  z = document.getElementsByTagName("*");
@@ -357,8 +472,7 @@ $(document).ready(function()
 		  showActiveNav();
 	}
 	
-	function showActiveNav()
-	{
+	function showActiveNav() {
 		$('#supplementNav').addClass('active');
 		/*var url = window.location.pathname;
 		

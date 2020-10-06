@@ -9,6 +9,9 @@ var fadeTime = 300;
 	//Company info
 	getSettings();
 	
+	//Display Selected Invoice
+	getSelectedInv();
+	
 	//search button
 	$('#searchInv-btn').click(function(event) {
 		var invNum = $('#sInvNum').val();
@@ -20,6 +23,15 @@ var fadeTime = 300;
 		if(validateEmpty(invNum)){
 			getCartInfo(invNum)
 		}
+	});
+	
+	//Invoice list button
+	$('#invList-btn').click(function(event) {		
+		//Clear form red border css
+		clearFormBorder();
+		$('.notifyjs-corner').remove();
+		
+		window.location = "../invoiceList/";
 	});
 	
 	//Get cart info
@@ -161,6 +173,19 @@ var fadeTime = 300;
 	
 	});
 	
+	function getSelectedInv(){
+		if(localStorage.length > 0) {
+			var localData = JSON.parse(localStorage.getItem('invoice'));
+			
+			if(localData){
+				var invNum = localData.invNum;
+				$('#sInvNum').html(invNum);
+				getCartInfo(invNum);
+				resetLocal();
+			}
+		}
+	}
+	
 	function sendPDF(invNum, html, email){
 		
 		//Set as object
@@ -226,6 +251,10 @@ var fadeTime = 300;
 	
 	function clearFormBorder() {
 		$('#sInvNum').removeClass("form-fill-error");
+	}
+	
+	function resetLocal() {
+		localStorage.clear();
 	}
 
 	function includeHTML() {

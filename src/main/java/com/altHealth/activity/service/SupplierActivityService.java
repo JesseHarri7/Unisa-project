@@ -63,5 +63,27 @@ public class SupplierActivityService implements SupplierActiviy{
 		
 		return valid;
 	}
+
+	@Override
+	public ReturnModel formUpdateBtn(Supplier supp) {
+		ReturnModel returnModel = new ReturnModel();
+		List<String> errorList = new ArrayList<String>();
+		List<String> idTagList = new ArrayList<String>();
+		returnModel.setEntity(supp);
+		returnModel.setErrorList(errorList);
+		returnModel.setIdTags(idTagList);
+		
+		//Validate email
+		boolean isValidEmail = validation.emailValidation(supp.getSupplierEmail(), errorList, idTagList, ModelMappings.SUPPLIER_supplierEmail);
+		
+		//Validate tel number format
+		boolean isValidTelNum = validation.telNumValidation(supp.getSupplierTel(), null, null, errorList, idTagList, ModelMappings.SUPPLIER_supplierTel);
+		
+		if(isValidEmail && isValidTelNum) {
+			service.update(supp);
+		}
+		
+		return returnModel;
+	}
 	
 }
