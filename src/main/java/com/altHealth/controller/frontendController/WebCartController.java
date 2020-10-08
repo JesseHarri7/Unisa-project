@@ -187,5 +187,48 @@ public class WebCartController {
 		// request.
 		return result;
 	}
+	
+	@RequestMapping(value = "removeSessionClient/", method = RequestMethod.POST)
+	public AjaxCartResponseBody removeSessionClient() {
+		ReturnModel returnModel = activity.removeSessionClient();
+		AjaxCartResponseBody result = new AjaxCartResponseBody();
+//		CartModel sessionCart = (CartModel) returnModel.getEntity();
+
+		if (returnModel.getErrorList().isEmpty()) {
+			result.setStatus(ModelMappings.TRUE);
+			result.setMsg("Success! Client removed from session.");
+		} else {
+			result.setStatus(ModelMappings.FALSE);
+			result.setMsg("Error! " + returnModel.getStringErrorList());
+			result.setResult(returnModel.getErrorList());
+			result.setIdTags(returnModel.getIdTags());
+		}
+
+		// AjaxResponseBody will be converted into json format and send back to the
+		// request.
+		return result;
+	}
+	
+	@RequestMapping(value = "clearCartSession/", method = RequestMethod.POST)
+	public AjaxCartResponseBody clearCartSession() {
+		ReturnModel returnModel = activity.clearCartSession();
+		AjaxCartResponseBody result = new AjaxCartResponseBody();
+		CartModel sessionCart = (CartModel) returnModel.getEntity();
+
+		if (returnModel.getErrorList().isEmpty()) {
+			result.setStatus(ModelMappings.TRUE);
+			result.setMsg("Success! Cart session cleared.");
+			result.setInvoiceInfo(sessionCart.getInvoice());
+		} else {
+			result.setStatus(ModelMappings.FALSE);
+			result.setMsg("Error! " + returnModel.getStringErrorList());
+			result.setResult(returnModel.getErrorList());
+			result.setIdTags(returnModel.getIdTags());
+		}
+
+		// AjaxResponseBody will be converted into json format and send back to the
+		// request.
+		return result;
+	}
 		
 }

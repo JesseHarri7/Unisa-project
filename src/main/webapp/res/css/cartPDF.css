@@ -162,6 +162,11 @@
 	display: none;
 }
 
+/*Remove remove client button*/
+.invoice .btn-outline-danger{
+	display: none;
+}
+
 /*Remove supplement button column*/
 .invoice td:nth-of-type(6){
 	display: none;

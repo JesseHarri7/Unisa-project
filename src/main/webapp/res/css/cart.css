@@ -1,5 +1,11 @@
 
 /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+.btn-outline-danger-item{
+	color:#dc3545;
+	border-color:#dc3545
+}
+
 #invoice{
     padding: 30px;
 }
@@ -180,6 +186,11 @@
 	
 	/*Remove Add supplement button*/
 	.invoice .btn-outline-success{
+		display: none;
+	}
+	
+	/*Remove remove client button*/
+	.invoice .btn-outline-danger{
 		display: none;
 	}
 	
