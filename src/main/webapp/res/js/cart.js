@@ -73,6 +73,8 @@ var emptyArray = [];
 		$('#cAddress').html(dataSet.address);
 		$('#cTelCell').html(dataSet.cTelCell);
 		$('#cEmail').html(dataSet.cEmail);
+		$('#addClient-btn').addClass('hidden');
+		$('#clientRm-btn').removeClass('hidden');
 	}
 	
 	//Populate the invoice with the Invoice data from the session
@@ -110,12 +112,13 @@ var emptyArray = [];
 						ref.costExcl +
 					'</td>' +
 					'<td class="text-right removal">' +
-						'<button class="btn btn-outline-danger"> × Remove</button>' +
+						'<button class="btn btn-outline-danger-item"> × Remove</button>' +
 					'</td>' +
 				'</tr>';
 		}
 		
 		$('#cartItems').append(tr);
+		$('#clearCart-btn').removeClass('hidden');
 	}
 	
 	//find settings
@@ -146,9 +149,22 @@ var emptyArray = [];
 		window.location = "/altHealth/supplement/";
 	});
 	 
-	$(document).on('click', '.btn.btn-outline-danger', function() {
+	$(document).on('click', '.btn.btn-outline-danger-item', function() {
 	  removeItem(this);
 	}); 
+	
+	$('#clientRm-btn').click(function(event) {
+		removeClient();
+	});
+	
+	$('#clearCart-btn').click(function(event) {
+		clearCart();
+	});
+	
+	//Form addClient button
+	$('#addClient-btn').click(function(event) {
+		window.location = "/altHealth/client/";
+	});
 	
 	/* Update quantity */
 	function updateQuantity(quantityInput) {
@@ -217,6 +233,65 @@ var emptyArray = [];
 						productRow.remove();
 						recalculateCart();
 					});
+				}else {
+					for (x of response.result) {
+						$.notify(x, "error");
+					}
+				}
+				
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				$.notify("Status 405", "error");
+			}
+		});
+	}
+	
+	function removeClient(){
+		$.ajax({
+			url:"/altHealth/cart/removeSessionClient/", 
+			dataType: "json",
+			type: "POST",
+			success: function(response) {
+				if(response.status == "true") {
+					$.notify(response.msg, "success");
+					var dataSet = {cName:"", cSurname:"", clientId:"", clientId:"", address:"", cTelCell:"", cEmail:""};
+
+					clientInfoTable(dataSet);
+					$('#clientRm-btn').addClass('hidden');
+					$('#addClient-btn').removeClass('hidden');
+				}else {
+					for (x of response.result) {
+						$.notify(x, "error");
+					}
+				}
+				
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				$.notify("Status 405", "error");
+			}
+		});
+	}
+	
+	function clearCart(){
+		$.ajax({
+			url:"/altHealth/cart/clearCartSession/", 
+			dataType: "json",
+			type: "POST",
+			success: function(response) {
+				if(response.status == "true") {
+					$.notify(response.msg, "success");
+					var clientDataSet = {cName:"", cSurname:"", clientId:"", clientId:"", address:"", cTelCell:"", cEmail:""};
+					var tr="";
+					
+					clientInfoTable(clientDataSet);
+					invoiceInfo(response.invoiceInfo);
+					$('#cartItems').html(tr);
+					$('#clientRm-btn').addClass('hidden');
+					$('#addClient-btn').removeClass('hidden');
+					$('#clearCart-btn').addClass('hidden');
+					recalculateCart();
 				}else {
 					for (x of response.result) {
 						$.notify(x, "error");

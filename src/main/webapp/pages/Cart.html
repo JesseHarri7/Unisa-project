@@ -24,6 +24,7 @@
 
     <div class="toolbar hidden-print">
         <div class="text-right">
+			<button id ="clearCart-btn" class="btn btn-outline-danger hidden"> Clear cart</button>
             <button id="printLocal" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
             <button id="createInvoice" class="btn btn-info"><i class="fa fa-file-pdf-o"></i> Create invoice</button>
         </div>
@@ -50,11 +51,13 @@
                 <div class="row contacts">
                     <div class="col invoice-to">
                         <div class="text-gray-light">INVOICE TO:</div>
+						<td class="text-left"><input type="button" value="Add client" id="addClient-btn" class="btn btn-outline-success"></td>
                         <h2 id="cNameSurname" class="to"></h2>
 						<div id="clientId" class="clientId"></div>
                         <div id="cAddress" class="address"></div>
 						<div id="cTelCell" class="cTelCell"></div>
                         <div id="cEmail" class="email"></div>
+						<button id ="clientRm-btn" class="btn btn-outline-danger hidden"> × Remove</button>
                     </div>
                     <div class="col invoice-details">
                         <h1 class="invoice-id">

@@ -85,6 +85,11 @@
 	visibility: visible;
 }
 
+.hidden {
+/* 	visibility: hidden; */
+	display: none;
+}
+
 .center-box {
 	position: absolute;
 	top: 0;

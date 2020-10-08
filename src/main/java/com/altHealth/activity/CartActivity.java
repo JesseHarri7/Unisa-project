@@ -22,4 +22,7 @@ public interface CartActivity {
 	
 	abstract ReturnModel sendPDF(HTMLModel html);
 	abstract ReturnModel sendInvoice(CartModel cart);
+	
+	abstract ReturnModel removeSessionClient();
+	abstract ReturnModel clearCartSession();
 }

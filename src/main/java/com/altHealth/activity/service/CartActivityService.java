@@ -402,4 +402,51 @@ public class CartActivityService implements CartActivity {
 		}
 	}
 
+	@Override
+	public ReturnModel removeSessionClient() {
+		ReturnModel returnModel = new ReturnModel();
+		List<String> errorList = new ArrayList<String>();
+		List<String> idTagList = new ArrayList<String>();
+		returnModel.setErrorList(errorList);
+		returnModel.setIdTags(idTagList);
+
+		CartModel sessionCart = cart.getCart();
+		returnModel.setEntity(sessionCart);
+
+		if(sessionCart.getClient() != null) {
+			sessionCart.setClient(null);
+			cart.setClient(null);
+		}else {
+			String result = "Cart Session Client info is empty!";
+			System.out.println(result);
+			errorList.add(result);
+		}
+
+		return returnModel;
+	}
+
+	@Override
+	public ReturnModel clearCartSession() {
+		ReturnModel returnModel = new ReturnModel();
+		List<String> errorList = new ArrayList<String>();
+		List<String> idTagList = new ArrayList<String>();
+		returnModel.setErrorList(errorList);
+		returnModel.setIdTags(idTagList);
+
+		cart.clearCartSession();
+		CartModel sessionCart = cart.getCart();
+		returnModel.setEntity(sessionCart);
+		
+		//Get Invoice number
+		Invoice newInvoice = new Invoice();
+		String max = service.getInvoiceService().findInvNumByMax();
+		max = max.substring(3);
+		Integer sum = Math.addExact(Integer.parseInt(max), 1);
+		max = sum.toString();
+		newInvoice.setInvNum("INV" + max);
+		sessionCart.setInvoice(newInvoice);
+
+		return returnModel;
+	}
+
 }
