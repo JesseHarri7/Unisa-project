@@ -130,7 +130,7 @@ $(document).ready(function()
 		var dataSet = [];
 		
 		$.ajax({
-			url:"/altHealth/report/top10ClientsFor2018and2019", 
+			url:"/altHealth/report/top10Clients", 
 			dataType: "json",
 			async: false,
 			type: "GET",

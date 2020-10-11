@@ -1,8 +1,12 @@
 package com.altHealth.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +23,12 @@ public class ReportVOController {
 	
 	@RequestMapping(value = "unpaidInvoices", method = RequestMethod.GET)
 	List<ReportVO> unpaidInvoices() {
-		return service.unpaidInvoices();
+		return service.unpaidInvoices("2020");
+	}
+	
+	@RequestMapping(value = "unpaidInvoices/{year}", method = RequestMethod.GET)
+	List<ReportVO> unpaidInvoices(@PathVariable String year) {
+		return service.unpaidInvoices(year);
 	}
 	
 	@RequestMapping(value = "birthdaysForToday", method = RequestMethod.GET)
@@ -32,9 +41,22 @@ public class ReportVOController {
 		return service.minimumStockLevels();
 	}
 	
-	@RequestMapping(value = "top10ClientsFor2018and2019", method = RequestMethod.GET)
-	List<ReportVO> top10ClientsFor2018and2019() {
-		return service.top10ClientsFor2018and2019();
+	@RequestMapping(value = "top10Clients", method = RequestMethod.GET)
+	List<ReportVO> top10Clients() {	
+		DateTimeFormatter FOMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		
+		LocalDate fromDate = LocalDate.of(2018, 1, 1);
+		LocalDate toDate = LocalDate.of(2019, 12, 31);
+		
+		String fromDateString = FOMATTER.format(fromDate);
+		String toDateString = FOMATTER.format(toDate);
+		
+		return service.top10Clients(fromDateString, toDateString);
+	}
+	
+	@RequestMapping(value = "top10Clients/{fromDate}/{toDate}", method = RequestMethod.GET)
+	List<ReportVO> top10Clients(@PathVariable String fromDate, @PathVariable String toDate) {
+		return service.top10Clients(fromDate, toDate);
 	}
 	
 	@RequestMapping(value = "purchasesStatistics", method = RequestMethod.GET)
@@ -44,7 +66,13 @@ public class ReportVOController {
 	
 	@RequestMapping(value = "clientInformationQuery", method = RequestMethod.GET)
 	List<ReportVO> clientInformationQuery() {
-		return service.clientInformationQuery();
+		String[] fieldList = {"cTelCell", "cEmail"};
+		return service.clientInformationQuery(Arrays.asList(fieldList));
+	}
+	
+	@RequestMapping(value = "clientInformationQuery/{fieldList}", method = RequestMethod.GET)
+	List<ReportVO> clientInformationQuery(@PathVariable List<String> fieldList) {
+		return service.clientInformationQuery(fieldList);
 	}
 	
 }

@@ -14,6 +14,7 @@ import org.hibernate.type.StringType;
 import org.springframework.stereotype.Service;
 
 import com.altHealth.entity.VO.ReportVO;
+import com.altHealth.mappings.ModelMappings;
 import com.altHealth.repository.ReportVORepo;
 
 @SuppressWarnings("deprecation")
@@ -25,12 +26,14 @@ public class ReportVOServiceImpl implements ReportVORepo<ReportVO> {
 	 
 	@SuppressWarnings({ "unchecked" })
 	@Override
-	public List<ReportVO> unpaidInvoices() {
+	public List<ReportVO> unpaidInvoices(String year) {
+		year = year + "-01-01";
         Query nativeQuery = entityManager.createNativeQuery("Select client.client_id as clientId, concat(client.c_name,\" \",client.c_surname) as clientName, inv.inv_num as invNum, inv.inv_date as invDate\r\n" + 
         		"from tblclient_info client, tblinv_info inv\r\n" + 
-        		"where client.client_id = inv.client_id and inv.inv_date < '2020-01-01' and inv.inv_paid_date is null\r\n" + 
+        		"where client.client_id = inv.client_id and inv.inv_date < ? and inv.inv_paid_date is null\r\n" + 
         		"order by inv_date asc");
         
+        nativeQuery.setParameter(1, year);
         nativeQuery.unwrap(SQLQuery.class)
         .addScalar("clientId", StringType.INSTANCE)
         .addScalar("clientName", StringType.INSTANCE)
@@ -77,14 +80,16 @@ public class ReportVOServiceImpl implements ReportVORepo<ReportVO> {
 
 	@SuppressWarnings({ "unchecked" })
 	@Override
-	public List<ReportVO> top10ClientsFor2018and2019() {
+	public List<ReportVO> top10Clients(String fromDate, String toDate) {
 		Query nativeQuery = entityManager.createNativeQuery("select concat(client.client_id, \" \", client.c_name,\" \",client.c_surname) as client, count(inv.client_id) frequency\r\n" + 
 				"from tblclient_info client, tblinv_info inv\r\n" + 
-				"where client.client_id = inv.client_id and inv.inv_date between '2018-01-01' and '2019-12-31'\r\n" + 
+				"where client.client_id = inv.client_id and inv.inv_date between ? and ? \r\n" + 
 				"group by client.client_id\r\n" + 
 				"order by Frequency desc, c_name, c_surname asc\r\n" + 
 				"limit 10");
         
+		nativeQuery.setParameter(1, fromDate);
+		nativeQuery.setParameter(2, toDate);
         nativeQuery.unwrap(SQLQuery.class)
         .addScalar("client", StringType.INSTANCE)
         .addScalar("frequency", StringType.INSTANCE)
@@ -112,10 +117,11 @@ public class ReportVOServiceImpl implements ReportVORepo<ReportVO> {
 
 	@SuppressWarnings({ "unchecked" })
 	@Override
-	public List<ReportVO> clientInformationQuery() {
+	public List<ReportVO> clientInformationQuery(List<String> fieldList) {
+		String buildWhereClause = useFieldList(fieldList);
 		Query nativeQuery = entityManager.createNativeQuery("select client_id as clientId, c_tel_h as cTelH, c_tel_w as cTelW, c_tel_cell as cTelCell, c_email as cEmail\r\n" + 
 				"from tblclient_info\r\n" + 
-				"where c_tel_cell = '' and c_email = '' or  c_tel_cell is null and c_email is null");
+				"where " + buildWhereClause);
         
         nativeQuery.unwrap(SQLQuery.class)
         .addScalar("clientId", StringType.INSTANCE)
@@ -126,6 +132,36 @@ public class ReportVOServiceImpl implements ReportVORepo<ReportVO> {
         .setResultTransformer(Transformers.aliasToBean(ReportVO.class));
         
         return nativeQuery.getResultList();
+	}
+	
+	private String useFieldList(List<String> fieldList) {
+		String clause = "";
+		
+		for(String field : fieldList) {
+			if(!clause.isEmpty()) {
+				clause+= " AND ";
+			}
+			switch (field) {
+			case ModelMappings.CLIENT_Java_cTelH:
+				clause+= "(C_Tel_H = '' or C_Tel_H is null)";
+				break;
+			case ModelMappings.CLIENT_Java_cTelW:
+				clause+= "(C_Tel_W = '' or C_Tel_W is null)";
+				break;
+			case ModelMappings.CLIENT_Java_cTelCell:
+				clause+= "(c_tel_cell = '' or c_tel_cell is null)";
+				break;
+			case ModelMappings.CLIENT_Java_cEmail:
+				clause+= "(c_email = '' or c_email is null)";
+				break;
+
+			default:
+				clause+= "c_tel_cell = '' and c_email = '' or  c_tel_cell is null and c_email is null";
+				break;
+			}
+		}
+		
+		return clause;
 	}
 
 }

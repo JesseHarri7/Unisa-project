@@ -46,4 +46,14 @@ public class ModelMappings {
 	public final static String SETTINGS_emailPass = "#emailPass";
 	public final static String SETTINGS_address = "#address";
 	public final static String SETTINGS_telNo = "#telNo";
+	
+	//Client - java field names
+	public final static String CLIENT_Java_id = "clientId";
+	public final static String CLIENT_Java_cName = "cName";
+	public final static String CLIENT_Java_cSurname = "cSurname";
+	public final static String CLIENT_Java_cEmail = "cEmail";
+	public final static String CLIENT_Java_cTelH = "cTelH";
+	public final static String CLIENT_Java_cTelW = "cTelW";
+	public final static String CLIENT_Java_cTelCell = "cTelCell";
+	public final static String CLIENT_Java_refId = "referenceId";
 }

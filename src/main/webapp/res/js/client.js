@@ -66,6 +66,19 @@ $(document).ready(function() {
 			]
 		});
 		
+		if(localStorage.length > 0) {
+			var localData = JSON.parse(localStorage.getItem('clientInfoReport'));
+			
+			if(localData){
+				var clientID = localData.clientId;
+				var table = $('#client-table').DataTable();
+				table.search(clientID).draw();
+				resetLocal()
+			}
+			
+
+		}
+		
 		return clientTable;
 	}
 	
@@ -275,6 +288,19 @@ $(document).ready(function() {
 				}
 			});
 
+	}
+	
+	function editFromReport(){
+		if(localStorage.length > 0) {
+			var localData = JSON.parse(localStorage.getItem('clientInfoReport'));
+			
+			if(localData){
+				var clientID = localData.clientId;
+				var table = $('#client-table').DataTable();
+				table.search(clientID).draw();
+				resetLocal()
+			}
+		}
 	}
 	
 	//Add client to cart
@@ -541,6 +567,10 @@ $(document).ready(function() {
 		{
 			$('#aNav').addClass('active');
 		}*/
+	}
+	
+	function resetLocal() {
+		localStorage.clear();
 	}
 
 });
