@@ -27,13 +27,98 @@ $(document).ready(function()
 		return dataSet;
 	}
 	
-	function showActiveNav()
-	{
+	$(document).on('click', '.form-check.form-check-inline', function() {
+		$('.notifyjs-corner').remove();
+		missingfield();
+	}); 
+	
+	function missingfield(){
+		var home = document.querySelector('#homeCheck').checked;
+		var work = document.querySelector('#workCheck').checked;
+		var cell = document.querySelector('#cellCheck').checked;
+		var email = document.querySelector('#emailCheck').checked;
+		var fieldList = [];
+		
+		if(home){
+			fieldList.push(document.querySelector('#homeCheck').value);
+		}
+		if(work){
+			fieldList.push(document.querySelector('#workCheck').value);
+		}
+		if(cell){
+			fieldList.push(document.querySelector('#cellCheck').value);
+		}
+		if(email){
+			fieldList.push(document.querySelector('#emailCheck').value);
+		}
+		
+		if(fieldList.length > 0){
+		
+			$.ajax({
+				url:"/altHealth/report/clientInformationQuery/" + fieldList, 
+				dataType: "json",
+				type: "GET",
+				success: function(data) {
+					var table = $('#tblClientInfoQuery').DataTable();
+					table.clear().draw();
+					
+					for (x of data) {
+						var clintInfo = {clientId:x.clientId, cTelH:x.cTelH, cTelW:x.cTelW, cTelCell:x.cTelCell, cEmail:x.cEmail};
+						table.row.add(clintInfo).draw();
+					}
+				},
+				error : function(e) {
+					console.log("ERROR: ", e);
+					$.notify("Status 405", "error");
+				}
+			});
+		}
+	}
+	
+	//Select
+	$('#tblClientInfoQuery tbody').on('click','tr', function() {
+		$(this).toggleClass('selected');
+	} );
+	
+	//Edit button
+	$('#edit-btn').click(function(event) {
+		$('.notifyjs-corner').remove();
+		resetLocal();
+		
+		var table = $('#tblClientInfoQuery').DataTable();
+
+		//Get data of the selected row
+		var data = table.rows( '.selected' ).data();
+		
+		if(data.length != 0) {
+			if (data.length > 1) {
+				$.notify("Heads up! Please select only one client to edit.", "error");
+			}else{
+				saveClient(data[0]);
+			}
+		}else {	
+			$.notify("Heads up! Please select a client to edit.", "error");
+		}
+	});
+	
+	//Saving selected row to local storage
+	function saveClient(data) {
+		if (data) {
+			localStorage.setItem('clientInfoReport', JSON.stringify(data));
+			window.location = "../client/";
+		}
+
+	}
+	
+	function resetLocal() {
+		localStorage.clear();
+	}
+	
+	function showActiveNav() {
 		$('#cInfoNav').addClass('active');
 	}
 	
-	function includeHTML() 
-	{
+	function includeHTML() {
 		  var z, i, elmnt, file, xhttp;
 		  /*loop through a collection of all HTML elements:*/
 		  z = document.getElementsByTagName("*");

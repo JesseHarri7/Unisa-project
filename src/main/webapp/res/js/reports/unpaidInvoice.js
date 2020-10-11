@@ -3,14 +3,15 @@ $(document).ready(function()
 	//Add template files
 	includeHTML();
 	
+	yearSelector();
+	
 	var unpaidInvoices = findUnpaidInvoices();
 	
 	//Reporting stats
 	var allUnpaidInvoices = reportUnpaidInvoices(unpaidInvoices);
 	
 	//Find all Unpaid-Invoices
-	function findUnpaidInvoices()
-	{
+	function findUnpaidInvoices() {
 		var dataSet = [];
 		
 		$.ajax({
@@ -18,12 +19,10 @@ $(document).ready(function()
 			dataType: "json",
 			async: false,
 			type: "GET",
-			success: function(data)
-			{
+			success: function(data) {
 				dataSet = data;
 			},
-			error: function(data)
-			{
+			error: function(data) {
 				dataSet = "Error";
 			}
 		});
@@ -31,13 +30,86 @@ $(document).ready(function()
 		return dataSet;
 	}
 	
-	function showActiveNav()
-	{
+	function yearSelector(){
+		for (i = new Date().getFullYear(); i > 2011; i--) {
+			$('#yearpicker').append($('<option />').val(i).html(i));
+		}
+	}
+	
+	$(document).on('click', '#yearpicker', function() {
+		$('.notifyjs-corner').remove();
+		searchYear(this);
+	}); 
+	
+	function searchYear(yearSelector){
+		var year = yearSelector.value;
+		
+		$.ajax({
+			url:"/altHealth/report/unpaidInvoices/" + year, 
+			dataType: "json",
+			type: "GET",
+			success: function(data) {
+				var table = $('#unpaidInvoices').DataTable();
+				table.clear().draw();
+				
+				for (x of data) {
+					var unpaidInvObj = {clientId:x.clientId, clientName:x.clientName, invNum:x.invNum, invDate:x.invDate};
+					table.row.add(unpaidInvObj).draw();
+				}
+				
+				//reportUnpaidInvoices(dataSet);
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				$.notify("Status 405", "error");
+			}
+		});	
+	}
+	
+	//Select
+	$('#unpaidInvoices tbody').on('click','tr', function() {
+		$(this).toggleClass('selected');
+	} );
+	
+	//Select button
+	$('#select-btn').click(function(event) {				
+		$('.notifyjs-corner').remove();
+		resetLocal();
+		
+		var table = $('#unpaidInvoices').DataTable();
+
+		//Get data of the selected row
+		var data = table.rows( '.selected' ).data();
+		
+		if(data.length != 0) {
+			if (data.length > 1) {
+				$.notify("Heads up! Please select only one invoice to view.", "error");
+			}else{
+				saveInvoice(data[0]);
+			}
+		}else {	
+			$.notify("Heads up! Please select a invoice to view.", "error");
+		}
+	});
+	
+	//Saving selected rows to local storage
+	function saveInvoice(data) {		
+		if (data) {
+			localStorage.setItem('invoice', JSON.stringify(data));
+			window.location = "../invoice/";
+		}
+
+	}
+	
+	function resetLocal() {
+		localStorage.clear();
+	}
+	
+	function showActiveNav() {
 		$('#unpaidNav').addClass('active');
 	}
 	
-	function includeHTML() 
-	{
+	function includeHTML() {
 		  var z, i, elmnt, file, xhttp;
 		  /*loop through a collection of all HTML elements:*/
 		  z = document.getElementsByTagName("*");
@@ -73,8 +145,7 @@ $(document).ready(function()
 	////////////////////////////////////////////////////////////////REPORTING////////////////////////////////////////////////////////////////
 	
 	//Report all unpaidInvoices from the database
-	function reportUnpaidInvoices(unpaidInvoices)
-	{
+	function reportUnpaidInvoices(unpaidInvoices) {
 		var dataSet = [];
 		
 		dataSet = unpaidInvoices;
@@ -115,8 +186,7 @@ $(document).ready(function()
 		return dataSet;
 	}
 	
-	$(document).on('click', '.downloadReport', function() 
-	{
+	$(document).on('click', '.downloadReport', function() {
 		var UnpaidInvoices = $("#unpaidInvoices").DataTable();
 		
 		//var data = test.buttons.exportData();

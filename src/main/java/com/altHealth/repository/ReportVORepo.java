@@ -9,16 +9,16 @@ import com.altHealth.entity.VO.ReportVO;
 @NoRepositoryBean
 public interface ReportVORepo<T> {
 	
-	List<ReportVO> unpaidInvoices();
+	List<ReportVO> unpaidInvoices(String year);
 	
 	List<ReportVO> birthdaysForToday();
 	
 	List<ReportVO> minimumStockLevels ();
 	
-	List<ReportVO> top10ClientsFor2018and2019();
+	List<ReportVO> top10Clients(String fromDate, String toDate);
 	
 	List<ReportVO> purchasesStatistics();
 	
-	List<ReportVO> clientInformationQuery();
+	List<ReportVO> clientInformationQuery(List<String> fieldList);
 
 }

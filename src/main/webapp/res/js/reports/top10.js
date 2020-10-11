@@ -5,6 +5,8 @@ $(document).ready(function()
 	
 	var top10 = findTop10();
 	
+	callChart(top10, "2018", "2019");
+	
 	//Reporting stats
 	var allTop10 = reportTop10(top10);
 	
@@ -12,7 +14,7 @@ $(document).ready(function()
 		var dataSet = [];
 		
 		$.ajax({
-			url:"/altHealth/report/top10ClientsFor2018and2019", 
+			url:"/altHealth/report/top10Clients", 
 			dataType: "json",
 			async: false,
 			type: "GET",
@@ -26,56 +28,102 @@ $(document).ready(function()
 		
 		return dataSet;
 	}
-	var freq = [];
-	var clients = [];
-	for (x of top10) {
-		freq.push(x.frequency);
-		clients.push(x.client);
+	
+	
+	
+	
+	
+	function callChart(top10, fromDateText, toDateText){
+		
+		var freq = [];
+		var clients = [];
+		for (x of top10) {
+			freq.push(x.frequency);
+			clients.push(x.client);
+		}
+
+		freq.push(1);
+		//freq.push(12);
+
+
+		// Data
+		data = 
+		{
+			labels: clients,
+			datasets: [{ 
+				backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", "#343a40", "#ffc107", "#e83e8c", "#fd7e14", "#28a745"],
+				data: freq
+			  }]
+
+		};
+		//Set up
+		var ctx = document.getElementById("graph").getContext('2d');
+		
+		var graph = new Chart(ctx, {
+			type: 'horizontalBar',
+		 // The data for the dataset
+			data: data,
+		 // Configuration options
+			options: {
+					responsive: true,
+					maintainAspectRatio: false,
+					legend: { display: false },
+					 title: 
+					 {
+						 display: true,
+						 text: 'Top 10 clients for '+fromDateText+' and '+toDateText,
+						 fontSize: 20
+					 }
+				}
+		});
 	}
 	
-	freq.push(1);
-	//freq.push(12);
-	
-	
-	// Data
-	data = 
-	{
-		labels: clients,
-		datasets: [{ 
-			backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", "#343a40", "#ffc107", "#e83e8c", "#fd7e14", "#28a745"],
-			data: freq
-		  }]
-
-	};
-	
-	//Set up
-	var ctx = document.getElementById("graph").getContext('2d');
-	
-	var graph = new Chart(ctx, {
-	    type: 'horizontalBar',
-	 // The data for the dataset
-	    data: data,
-	 // Configuration options
-	    options: {
-	    		responsive: true,
-	    		maintainAspectRatio: false,
-				legend: { display: false },
-	    		 title: 
-	    		 {
-	    			 display: true,
-	    			 text: 'Top 10 clients for 2018 and 2019',
-	    			 fontSize: 20
-	    		 }
-	    	}
+	//search button
+	$('#search-btn').click(function(event) {
+		$('.notifyjs-corner').remove();
+		var dateFrom = $('#fromDate').val();
+		var dateTo = $('#toDate').val();
+		
+		if(dateFrom && dateTo && dateFrom < dateTo) {
+			
+			$.ajax({
+			url:"/altHealth/report/top10Clients/"+ dateFrom+"/"+dateTo, 
+			dataType: "json",
+			async: false,
+			type: "GET",
+			success: function(data) {				
+				var top10 = data;
+				var fromDateText = dateFrom.substring(0, 4);
+				var toDateText = dateTo.substring(0, 4);
+				
+				var canvas = $('#graph');
+				var chart = new Chart(canvas);
+				chart.destroy();
+				clearHTMLCanvas();
+				callChart(top10, fromDateText, toDateText);
+				reportTop10(top10);
+			},
+			error: function(data) {
+				dataSet = "Error";
+			}
+		});
+			
+		}else {	
+			$.notify("Heads up! Please select a valid from/to date range", "error");
+		}
 	});
 	
-	function showActiveNav()
-	{
+	function clearHTMLCanvas(){
+		$('#graph').remove(); // this is my <canvas> element
+		$('#graph-container').append('<canvas id="graph"  width="800" height="450"></canvas>');
+	}
+
+	
+	function showActiveNav() {
 		$('#topNav').addClass('active');
 	}
 	
-	function includeHTML() 
-	{
+	function includeHTML() {
 		  var z, i, elmnt, file, xhttp;
 		  /*loop through a collection of all HTML elements:*/
 		  z = document.getElementsByTagName("*");
@@ -147,8 +195,7 @@ $(document).ready(function()
 		return dataSet;
 	}
 	
-	$(document).on('click', '.downloadReport', function() 
-	{
+	$(document).on('click', '.downloadReport', function()  {
 		var table = $("#tblTop10").DataTable();
 		
 		//var data = test.buttons.exportData();

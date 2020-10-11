@@ -20,6 +20,26 @@
 	
 	<div id="nav-buttons">
 		<input type="button" value="Download report" id="downloadReport" class="btn btn-primary">
+		<input type="button" value="Edit" id="edit-btn" class="btn btn-primary">
+		<div class="form-check">
+			Select fields to search by:
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="checkbox" id="homeCheck" value="cTelH">
+			  <label class="form-check-label" for="homeCheck">Home tel</label>
+			</div>
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="checkbox" id="workCheck" value="cTelW">
+			  <label class="form-check-label" for="workCheck">Work tel</label>
+			</div>
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="checkbox" id="cellCheck" value="cTelCell">
+			  <label class="form-check-label" for="cellCheck">Cell</label>
+			</div>
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="checkbox" id="emailCheck" value="cEmail">
+			  <label class="form-check-label" for="emailCheck">Email</label>
+			</div>
+		</div>
 	</div>
 	
 	<table class="display" id="tblClientInfoQuery" style="width:100%">
