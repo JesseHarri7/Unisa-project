@@ -21,6 +21,8 @@ public class ReportVOController {
 	@Autowired
 	ReportVOServiceImpl service;
 	
+	DateTimeFormatter FOMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+	
 	@RequestMapping(value = "unpaidInvoices", method = RequestMethod.GET)
 	List<ReportVO> unpaidInvoices() {
 		return service.unpaidInvoices("2020");
@@ -43,8 +45,6 @@ public class ReportVOController {
 	
 	@RequestMapping(value = "top10Clients", method = RequestMethod.GET)
 	List<ReportVO> top10Clients() {	
-		DateTimeFormatter FOMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-		
 		LocalDate fromDate = LocalDate.of(2018, 1, 1);
 		LocalDate toDate = LocalDate.of(2019, 12, 31);
 		
@@ -61,7 +61,18 @@ public class ReportVOController {
 	
 	@RequestMapping(value = "purchasesStatistics", method = RequestMethod.GET)
 	List<ReportVO> purchasesStatistics() {
-		return service.purchasesStatistics();
+		LocalDate fromDate = LocalDate.of(2012, 1, 1);
+		LocalDate toDate = LocalDate.now();
+		
+		String fromDateString = FOMATTER.format(fromDate);
+		String toDateString = FOMATTER.format(toDate);
+		
+		return service.purchasesStatistics(fromDateString, toDateString);
+	}
+	
+	@RequestMapping(value = "purchasesStatistics/{fromDate}/{toDate}", method = RequestMethod.GET)
+	List<ReportVO> purchasesStatistics(@PathVariable String fromDate, @PathVariable String toDate) {
+		return service.purchasesStatistics(fromDate, toDate);
 	}
 	
 	@RequestMapping(value = "clientInformationQuery", method = RequestMethod.GET)

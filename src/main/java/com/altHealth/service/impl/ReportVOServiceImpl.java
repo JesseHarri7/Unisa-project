@@ -100,13 +100,15 @@ public class ReportVOServiceImpl implements ReportVORepo<ReportVO> {
 
 	@SuppressWarnings({ "unchecked" })
 	@Override
-	public List<ReportVO> purchasesStatistics() {
+	public List<ReportVO> purchasesStatistics(String fromDate, String toDate) {
 		Query nativeQuery = entityManager.createNativeQuery("select count(inv_num) as numOfPurchases, monthname(inv_date) as month\r\n" + 
 				"from tblinv_info\r\n" + 
-				"where inv_date > '2012-01-01'\r\n" + 
+				"where inv_date between ? and ? \r\n" + 
 				"group by Month\r\n" + 
 				"ORDER BY FIELD(MONTH,'January','February','March','April','May', 'June', 'July', 'August','September', 'October', 'November', 'December')");
         
+		nativeQuery.setParameter(1, fromDate);
+		nativeQuery.setParameter(2, toDate);
         nativeQuery.unwrap(SQLQuery.class)
         .addScalar("numOfPurchases", StringType.INSTANCE)
         .addScalar("month", StringType.INSTANCE)

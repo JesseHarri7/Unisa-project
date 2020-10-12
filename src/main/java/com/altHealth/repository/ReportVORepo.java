@@ -17,7 +17,7 @@ public interface ReportVORepo<T> {
 	
 	List<ReportVO> top10Clients(String fromDate, String toDate);
 	
-	List<ReportVO> purchasesStatistics();
+	List<ReportVO> purchasesStatistics(String fromDate, String toDate);
 	
 	List<ReportVO> clientInformationQuery(List<String> fieldList);
 
