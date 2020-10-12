@@ -5,6 +5,8 @@ $(document).ready(function()
 	
 	var purchaseStats = findPurchaseStats();
 	
+	callChart(purchaseStats, "2012", "Current");
+	
 	//Reporting stats
 	var allPurchaseStats = reportPurchaseStats(purchaseStats);
 	
@@ -27,54 +29,93 @@ $(document).ready(function()
 		return dataSet;
 	}
 	
-	var purchases = [];
-	var month = [];
-	for (x of purchaseStats) {
-		purchases.push(x.numOfPurchases);
-		month.push(x.month);
+	function callChart(purchaseStats, fromDateText, toDateText){
+		var purchases = [];
+		var month = [];
+		for (x of purchaseStats) {
+			purchases.push(x.numOfPurchases);
+			month.push(x.month);
+		}
+		
+		// Data
+		data = 
+		{
+			labels: month,
+			datasets: [{ 
+				data: purchases,
+				label: "Purchases",
+				borderColor: "#3cba9f",
+				fill: false
+			  }]
+
+		};
+		
+		//Set up
+		var ctx = document.getElementById("graph").getContext('2d');
+		
+		var homeChart = new Chart(ctx, {
+			type: 'line',
+		 // The data for the dataset
+			data: data,
+		 // Configuration options
+			options: {
+					responsive: true,
+					maintainAspectRatio: false,
+					legend: { display: false },
+					 title: 
+					 {
+						 display: true,
+						 text: 'Purchases statistics ('+fromDateText+' - '+toDateText+')',
+						 fontSize: 20
+					 }
+				}
+		});
 	}
 	
-	// Data
-	data = 
-	{
-		labels: month,
-		datasets: [{ 
-			data: purchases,
-			label: "Purchases",
-			borderColor: "#3cba9f",
-			fill: false
-		  }]
-
-	};
-	
-	//Set up
-	var ctx = document.getElementById("graph").getContext('2d');
-	
-	var homeChart = new Chart(ctx, {
-	    type: 'line',
-	 // The data for the dataset
-	    data: data,
-	 // Configuration options
-	    options: {
-	    		responsive: true,
-	    		maintainAspectRatio: false,
-				legend: { display: false },
-	    		 title: 
-	    		 {
-	    			 display: true,
-	    			 text: 'Purchases statistics (2012 - current)',
-	    			 fontSize: 20
-	    		 }
-	    	}
+	//search button
+	$('#search-btn').click(function(event) {
+		$('.notifyjs-corner').remove();
+		var dateFrom = $('#fromDate').val();
+		var dateTo = $('#toDate').val();
+		
+		if(dateFrom && dateTo && dateFrom < dateTo) {
+			
+			$.ajax({
+			url:"/altHealth/report/purchasesStatistics/"+ dateFrom+"/"+dateTo, 
+			dataType: "json",
+			async: false,
+			type: "GET",
+			success: function(data) {				
+				var fromDateText = dateFrom;
+				var toDateText = dateTo;
+				
+				var canvas = $('#graph');
+				var chart = new Chart(canvas);
+				chart.destroy();
+				clearHTMLCanvas();
+				callChart(data, fromDateText, toDateText);
+				reportPurchaseStats(data);
+			},
+			error: function(data) {
+				dataSet = "Error";
+			}
+		});
+			
+		}else {	
+			$.notify("Heads up! Please select a valid from/to date range", "error");
+		}
 	});
 	
-	function showActiveNav()
-	{
+	function clearHTMLCanvas(){
+		$('#graph').remove(); // this is my <canvas> element
+		$('#graph-container').append('<canvas id="graph"  width="800" height="450"></canvas>');
+	}
+	
+	function showActiveNav() {
 		$('#purStatsNav').addClass('active');
 	}
 	
-	function includeHTML() 
-	{
+	function includeHTML() {
 		  var z, i, elmnt, file, xhttp;
 		  /*loop through a collection of all HTML elements:*/
 		  z = document.getElementsByTagName("*");
@@ -145,8 +186,7 @@ $(document).ready(function()
 		return dataSet;
 	}
 	
-	$(document).on('click', '.downloadReport', function() 
-	{
+	$(document).on('click', '.downloadReport', function() {
 		var table = $("#tblPurchasStats").DataTable();
 		
 		//var data = test.buttons.exportData();

@@ -76,6 +76,11 @@ public class WebAssetController {
 		return "/pages/InvoiceList.html";
 	}
 	
+	@RequestMapping(value = "backupAndRestore")
+	public String BackupAndRestore() {
+		return "/pages/BackupAndRestore.html";
+	}
+	
 	@RequestMapping(value = "test")
 	public String test() {
 		return "/pages/Test.html";
