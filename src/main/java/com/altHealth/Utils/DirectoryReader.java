@@ -20,7 +20,9 @@ public class DirectoryReader {
 		List<String> fileNames = new ArrayList<String>();
 	    for (final File fileEntry : folder.listFiles()) {
 	        if (fileEntry.isDirectory()) {
-	            listFilesForFolder();
+//	            listFilesForFolder();
+	        	System.out.println("Directory:");
+	        	System.out.println(fileEntry.getName());
 	        } else {
 	        	fileNames.add(fileEntry.getName());
 	            System.out.println(fileEntry.getName());
