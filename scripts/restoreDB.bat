@@ -20,3 +20,5 @@ CD C:/Users/Ninja/Documents/AltHealthWebAppBackup/restore/
 DEL /q /f %DBFILE%
 
 echo %DBFILE%
+
+EXIT

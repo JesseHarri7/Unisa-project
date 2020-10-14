@@ -64,8 +64,8 @@ public class WebBackupRestoreActivityService implements WebBackupRestoreActivity
 		returnModel.setIdTags(idTagList);
 		
 		try {
-			String dbFileName = shellScriptRunner.scriptRunner(ModelMappings.RESTORE, fileName);
-			returnModel.setEntity(dbFileName);
+			shellScriptRunner.scriptRunner(ModelMappings.RESTORE, fileName);
+			returnModel.setEntity(fileName);
 		}catch (Exception e) {
 			errorList.add(e.getMessage());
 		}
