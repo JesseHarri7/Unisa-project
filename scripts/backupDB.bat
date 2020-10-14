@@ -22,3 +22,5 @@ MAKECAB "altHealthDB.%TIMESTAMP%.sql" "altHealthDB.%TIMESTAMP%.sql.cab"
 REM Delete uncompressed DB dump file.
 DEL /q /f "altHealthDB.%TIMESTAMP%.sql"
 echo altHealthDB.%TIMESTAMP%.sql
+
+EXIT
