@@ -61,8 +61,9 @@ $(document).ready(function()
 			success: function(response) {
 				if(response.status == "true") {
 					$.notify(response.msg, "success");
+					var fileObj = {fileName:response.result};
 				
-					table.row.add(client).draw()
+					table.row.add(fileObj).draw();
 				}else {
 					for (x of response.result) {
 						$.notify(x, "error");
@@ -75,6 +76,53 @@ $(document).ready(function()
 			}
 		});
 	});
+	
+	//Restore button
+	$('#restore-btn').click(function(event) {
+		$('.notifyjs-corner').remove();
+		var table = $('#backup-table').DataTable();
+		//Get data of the selected row
+		var selected = table.rows( '.selected' ).data();
+		
+		if(selected.length != 0) {
+			if (selected.length > 1) {
+				$.notify("Heads up! Please select only one file to restore.", "error");
+			}else{
+				restore(selected[0].fileName);
+			}
+		}else {	
+			$.notify("Heads up! Please select a file to restore.", "error");
+		}
+	});
+	
+	function restore(selected){
+		
+		var data_json = JSON.stringify(selected);
+		
+		$.ajax({
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json' 
+			},
+			url:"/altHealth/backupAndRestore/restoreDB/"+selected,
+			dataType: "json",
+			data: data_json,
+			type: "POST",
+			success: function(response) {
+				if(response.status == "true") {
+					$.notify(response.msg, "success");
+				}else {
+					for (x of response.result) {
+						$.notify(x, "error");
+					}
+				}
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				$.notify("Status 405", "error");
+			}
+		});
+	}
 	
 	function includeHTML() {
 		  var z, i, elmnt, file, xhttp;

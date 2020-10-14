@@ -6,4 +6,5 @@ public interface WebBackupRestoreActivity {
 	
 	abstract ReturnModel findAll();
 	abstract ReturnModel createBackup();
+	abstract ReturnModel restoreDB(String fileName);
 }

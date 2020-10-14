@@ -56,4 +56,8 @@ public class ModelMappings {
 	public final static String CLIENT_Java_cTelW = "cTelW";
 	public final static String CLIENT_Java_cTelCell = "cTelCell";
 	public final static String CLIENT_Java_refId = "referenceId";
+	
+	//Script names
+	public final static String BACKUP = "backupDB";
+	public final static String RESTORE = "restoreDB";
 }
