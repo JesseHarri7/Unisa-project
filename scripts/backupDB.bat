@@ -21,6 +21,6 @@ REM Compress DB dump file into CAB file (use "EXPAND file.cab" to decompress).
 MAKECAB "altHealthDB.%TIMESTAMP%.sql" "altHealthDB.%TIMESTAMP%.sql.cab"
 REM Delete uncompressed DB dump file.
 DEL /q /f "altHealthDB.%TIMESTAMP%.sql"
-echo altHealthDB.%TIMESTAMP%.sql
+echo altHealthDB.%TIMESTAMP%.sql.cab
 
 EXIT
