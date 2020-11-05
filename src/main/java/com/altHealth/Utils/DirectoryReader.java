@@ -18,16 +18,18 @@ public class DirectoryReader {
 	
 	public List<String> listFilesForFolder() {
 		List<String> fileNames = new ArrayList<String>();
-	    for (final File fileEntry : folder.listFiles()) {
-	        if (fileEntry.isDirectory()) {
-//	            listFilesForFolder();
-	        	System.out.println("Directory:");
-	        	System.out.println(fileEntry.getName());
-	        } else {
-	        	fileNames.add(fileEntry.getName());
-	            System.out.println(fileEntry.getName());
-	        }
-	    }
-	    return fileNames;
+		if(folder.exists()) {
+		    for (final File fileEntry : folder.listFiles()) {
+		        if (fileEntry.isDirectory()) {
+	//	            listFilesForFolder();
+		        	System.out.println("Directory:");
+		        	System.out.println(fileEntry.getName());
+		        } else {
+		        	fileNames.add(fileEntry.getName());
+		            System.out.println(fileEntry.getName());
+		        }
+		    }
+		}
+		return fileNames;
 	}
 }

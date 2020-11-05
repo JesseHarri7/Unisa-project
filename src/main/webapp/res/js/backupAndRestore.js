@@ -14,9 +14,11 @@ $(document).ready(function()
 			type: "GET",
 			success: function(data) {
 				var fileNameList = [];
-				for (x of data.resultList) {
-					var fileObj = {fileName:x};
-					fileNameList.push(fileObj);
+				if(data && data.resultList){
+					for (x of data.resultList) {
+						var fileObj = {fileName:x};
+						fileNameList.push(fileObj);
+					}
 				}
 				dataTable(fileNameList);
 				
