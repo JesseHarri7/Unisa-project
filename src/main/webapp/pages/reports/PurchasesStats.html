@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title>Purchases Statistics</title>
+
+<!--CSS links -->
+	<link rel="icon" type="image/png" href="../res/images/icons/altHealth-favicon.ico" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
+	<link rel="stylesheet" href="../res/css/styles.css" />
+	<link rel="stylesheet" href="../res/css/home.css" />
+</head>
+<body>
+	<div w3-include-html="../pages/temps/header.html"></div>
+	<!-- 	<h3>Saratoga</h3> -->
+	<div w3-include-html="../pages/temps/nav-reports.html"></div>
+	
+	<div id="nav-buttons">
+		<input type="button" value="Download report" id="downloadReport" class="btn btn-primary">
+		<input type="button" value="Search" id="search-btn" class="btn btn-primary">
+		
+		<div class="form-group" style="margin-top: 12px;">
+		  <label for="fromDate">From date:</label>
+		  <input type="date" id="fromDate" name="fromDate" max="2090-12-31" placeholder="Enter from date range">
+		  
+		  <label for="toDate">To date:</label>
+		  <input type="date" id="toDate" name="toDate" max="2090-12-31" placeholder="Enter to date range">
+		</div>
+	</div>
+	
+	<div class="row">
+	<!--col -->
+		<div class="chart-wrapper">
+			<div class="center" id="graph-container">
+				<canvas id="graph"  width="800" height="450"></canvas>
+			</div>
+		</div>
+	</div>
+
+	
+<!-- 	Hidden tables -->
+	<div class="hidden-table">
+		<table class="display" id="tblPurchasStats" style="width:100%">
+			<thead>
+				<tr>
+					<th>Num of purchases</th>
+					<th>Month</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+	
+	<!-- Footer -->
+	<div w3-include-html="../pages/temps/footer.html"></div>
+	<!-- ./Footer -->
+
+	<!--scripts -->
+	<script src="../res/js/plugins/jquery-3.5.1.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	<script src="http://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+	<script src="../res/js/plugins/notify.js"></script>
+	<script src="../res/js/plugins/Chart.bundle.js"></script>
+	
+	<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+	<script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+	<script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+
+	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+	<script src=""></script>
+	
+	<script src="../res/js/reports/purchaseStats.js"></script>
+</body>
+</html>

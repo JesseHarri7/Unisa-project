@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title>Dashboard</title>
+
+<!--CSS links -->
+	<link rel="icon" type="image/png" href="../res/images/icons/altHealth-favicon.ico" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="../res/css/styles.css" />
+	<link rel="stylesheet" href="../res/css/home.css" />
+	<link href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css" rel="stylesheet">
+</head>
+<body>
+	<div w3-include-html="../pages/temps/header.html"></div>
+	<!-- 	<h3>Saratoga</h3> -->
+	<div w3-include-html="../pages/temps/nav.html"></div>
+	
+	<!-- 	Page Content -->
+	<div id="page-wrapper">
+		<div class="container-fluid">
+			<!-- row -->
+			<div class="row">
+			<!--col -->
+		    	<div class="chart-wrapper">
+			    	<div class="center">
+						<canvas id="homeChart"></canvas>
+					</div>
+				</div>
+			</div>
+			<!-- /.col -->
+			<!-- /row -->
+			
+			
+			<!-- row -->
+			<div class="row">
+				 <!--col -->
+		        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+		            <div class="white-box">
+		                <div class="col-in row">
+		                    <div class="col-md-12 col-sm-12 col-xs-12">
+		                     	<span class="home-span-left">
+									<a class="reportUnpaidInvoices" href="#"><h3 class="text-muted vb">Unpaid Invoices report</h3></a>
+		                        </span>
+		                        
+		                        <span class="home-span-right">
+		                        	<h3 class="counter text-right m-t-15 text-purple"><div id="reportUnpaidInvoices"></div></h3>
+		                   		</span>
+		                    </div>
+		                    
+		                </div>
+		            </div>
+		        </div>
+		        <!-- /.col -->
+		         <!--col -->
+		        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+		            <div class="white-box">
+		                <div class="col-in row">
+		                    <div class="col-md-12 col-sm-12 col-xs-12">
+		                     	<span class="home-span-left">
+									<a class="reportBirthdays" href="#"><h3 class="text-muted vb">Birthdays for today report</h3></a>
+		                        </span>
+		                        
+		                        <span class="home-span-right">
+		                        	<h3 class="counter text-right m-t-15 text-danger"><div id="reportBirthdays"></div></h3>
+		                        </span>
+		                    </div>
+		                    
+		                </div>
+		            </div>
+		        </div>
+		        <!-- /.col -->
+				 <!--col -->
+		        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+		            <div class="white-box">
+		                <div class="col-in row">
+		                    <div class="col-md-12 col-sm-12 col-xs-12">
+		                     	<span class="home-span-left">
+									<a class="reportMinStockLevels" href="#"><h3 class="text-muted vb"> Minimum stock levels report</h3></a>
+		                        </span>
+		                        
+		                         <span class="home-span-right">
+		                        	<h3 class="counter text-right m-t-15 text-megna"> <div id="reportMinStockLevels"></div> </h3>
+		                        </span> 
+		                    </div>
+		                    
+		                </div>
+		            </div>
+		        </div>
+		        <!-- /.col -->
+				<!-- /row -->
+			</div>
+			<!-- row -->
+			<div class="row">
+				<!--col -->
+		        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+		            <div class="white-box">
+		                <div class="col-in row">
+		                    <div class="col-md-12 col-sm-12 col-xs-12">
+		                     	<span class="home-span-left">
+									<a class="reportClientInfoQuery" href="#"><h3 class="text-muted vb">Missing Client Info</h3></a>
+		                        </span>
+		                        
+		                        <span class="home-span-right">
+		                        	<h3 class="counter text-right m-t-15 text-primary"><div id="reportClientInfoQuery"></div></h3>
+		                   		</span>
+		                    </div>
+		                    
+		                </div>
+		            </div>
+		        </div>
+		        <!-- /.col -->
+				<!--col -->
+		        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+		            <div class="white-box">
+		                <div class="col-in row">
+		                    <div class="col-md-12 col-sm-12 col-xs-12">
+		                     	<span class="home-span-left">
+									<a class="reportTop10" href="#"><h3 class="text-muted vb">Top 10 Clients for 2018 & 2019</h3></a>
+		                        </span>
+		                        
+		                        <span class="home-span-right">
+		                        	<h3 class="counter text-right m-t-15 text-info"><div id="reportTop10"></div></h3>
+		                   		</span>
+		                    </div>
+		                    
+		                </div>
+		            </div>
+		        </div>
+		        <!-- /.col -->
+				<!--col -->
+		        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+		            <div class="white-box">
+		                <div class="col-in row">
+		                    <div class="col-md-12 col-sm-12 col-xs-12">
+		                     	<span class="home-span-left">
+									<a class="reportPurchasStats" href="#"><h3 class="text-muted vb">Purchase Statistics</h3></a>
+		                        </span>
+		                        
+		                        <span class="home-span-right">
+		                        	<h3 class="counter text-right m-t-15 text-info"><div id="reportPurchasStats"></div></h3>
+		                   		</span>
+		                    </div>
+		                    
+		                </div>
+		            </div>
+		        </div>
+		        <!-- /.col -->
+				<!-- /row -->
+			</div>
+		</div>
+	</div>
+	
+<!-- 	Hidden tables -->
+	<div class="hidden-table">
+		<table class="display" id="unpaidInvoices" style="width:100%">
+			<thead>
+				<tr>
+					<th>Client ID</th>
+					<th>Client</th>
+					<th>Invoice number</th>
+					<th>Invoice date</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<table class="display" id="tblBirthdays" style="width:100%">
+			<thead>
+				<tr>
+					<th>Client ID</th>
+					<th>Client name</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<table class="display" id="tblMinStockLevels" style="width:100%">
+			<thead>
+				<tr>
+					<th>Supplement</th>
+					<th>Supplier information</th>
+					<th>Min levels</th>
+					<th>Current stock</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<table class="display" id="tblClientInfoQuery" style="width:100%">
+			<thead>
+				<tr>
+					<th>Client</th>
+					<th>Home</th>
+					<th>Work</th>
+					<th>Cell</th>
+					<th>E-Mail</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<table class="display" id="tblTop10" style="width:100%">
+			<thead>
+				<tr>
+					<th>Client</th>
+					<th>Frequency</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<table class="display" id="tblPurchasStats" style="width:100%">
+			<thead>
+				<tr>
+					<th>Num of purchases</th>
+					<th>Month</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+	
+	<!-- Footer -->
+	<div w3-include-html="../pages/temps/footer.html"></div>
+	<!-- ./Footer -->
+
+	<!--scripts -->
+	<script src="../webjars/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="../res/js/plugins/Chart.bundle.js"></script>
+	
+	<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+<!-- 	<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script> -->
+	<script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+	<script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+
+	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+	<script src=""></script>
+	
+	<script src="../res/js/home.js"></script>
+</body>
+</html>

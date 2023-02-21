@@ -1,0 +1,81 @@
+<html>
+<head>
+	<link rel="stylesheet" href="../unisa-project/src/main/webapp/res/css/cartPDF.css" />
+</head>
+<body>
+	<div class="invoice overflow-auto">
+		<div style="min-width: 600px">
+			<header>
+				<div class="row">
+					<div class="col imgImport">
+							<img src="../unisa-project/src/main/webapp/res/images/AltHealthBig.jpg" data-holder-rendered="true" width="150px"/>
+					</div>
+					<div class="col company-details">
+						<h2 class="name">
+							Alt Health
+						</h2>
+						<div>Address</div>
+						<div>(123) 456-789</div>
+						<div>company@altHealth.co.za</div>
+					</div>
+				</div>
+			</header>
+			<main>
+				<div class="row contacts">
+					<div class="col invoice-to">
+						<div class="text-gray-light">INVOICE TO:</div>
+						<h2 id="cNameSurname" class="to">Goratamang  Owens</h2>
+						<div id="address" class="address">19 COB STREET MOSSEL BAY EXT 13</div>
+						<div id="cEmail" class="email">GoOwens@mailman.co.za</div>
+					</div>
+					<div class="col invoice-details">
+						<h1 class="invoice-id">
+							<span class="left-text">INVOICE: </span>
+							<span class="byline" id="invNum">INV1000</span>
+						</h1>
+						<div class="date">Date of Invoice: <label id="currDate">8/7/2020</label></div>
+					</div>
+				</div>
+				<table border="0" cellspacing="0" cellpadding="0">
+					<thead>
+						<tr>
+							<th class="text-left">Supplement ID</th>
+							<th class="text-left">Description</th>
+							<th class="text-right">Quantity</th>
+							<th class="text-right">Cost(Excl)</th>
+							<th class="text-right">Cost(Incl)</th>
+							<th class="text-right">Total</th>
+							<th class="text-right"></th>
+						</tr>
+					</thead>
+					<tbody id="cartItems">
+					<tr class="dataRow"><td class="no"><h6 class="title text-truncate">Supplement-1</h6></td><td class="text-left">Omega 3 Double Strength 60's</td><td class="qty"><input type="number" class="form-control" id="qty" value="1" min="1" max="28" required=""/></td><td class="unit costExcl">313</td><td class="unit costIncl">356.82</td><td class="unit total">313</td><td class="text-right removal"><button class="btn btn-outline-danger"> × Remove</button></td></tr><tr class="dataRow"><td class="no"><h6 class="title text-truncate">Supplement-10</h6></td><td class="text-left">Anti-Anxiety tables 30's</td><td class="qty"><input type="number" class="form-control" id="qty" value="1" min="1" max="2" required=""/></td><td class="unit costExcl">195.86</td><td class="unit costIncl">223.28</td><td class="unit total">195.86</td><td class="text-right removal"><button class="btn btn-outline-danger"> × Remove</button></td></tr><tr class="dataRow"><td class="no"><h6 class="title text-truncate">Supplement-100</h6></td><td class="text-left">Babies 60's</td><td class="qty"><input type="number" class="form-control" id="qty" value="1" min="1" max="25" required=""/></td><td class="unit costExcl">127.92</td><td class="unit costIncl">145.83</td><td class="unit total">127.92</td><td class="text-right removal"><button class="btn btn-outline-danger"> × Remove</button></td></tr></tbody>
+					<tfoot>
+						<tr>
+							<td class="text-left"><input type="button" value="Add supplement +" id="addSupp-btn" class="btn btn-outline-success"/></td>
+							<td colspan="5">SUBTOTAL(excl)</td>
+							<td id="cart-subtotal" class="totals-value" style="">636.78</td>
+						</tr>
+						<tr>
+							<td colspan="1"></td>
+							<td colspan="5">VAT <label id="vat" class="vat">14</label></td>
+							<td id="cart-tax" class="totals-value" style="">89.15</td>
+						</tr>
+						<tr>
+							<td colspan="1"></td>
+							<td colspan="5">TOTAL(incl)</td>
+							<td id="cart-total" class="totals-value" style="">725.93</td>
+						</tr>
+					</tfoot>
+				</table>
+			</main>
+			<footer>
+				
+			</footer>
+		</div>
+		<!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
+		<div></div>
+	</div>
+	
+</body>
+</html>

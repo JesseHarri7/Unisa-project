@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Invoice</title>
+	
+	<!--CSS links -->
+	<link rel="icon" type="image/png" href="../res/images/icons/altHealth-favicon.ico" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
+	<!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+	<link rel="stylesheet" href="../res/css/invoice.css" />
+	<link rel="stylesheet" href="../res/css/styles.css" />
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+</head>
+<body>
+
+	<div w3-include-html="../pages/temps/nav.html"></div>
+		
+	
+	<div id="invoice">
+
+    <div class="toolbar hidden-print">
+
+        <div class="text-right">
+			<input class="mb-2 mr-sm-2" type="text" id="sInvNum" placeholder="Invoice number" aria-label="Search" style="float: left;margin-top: 12px;"/>
+			<button id="searchInv-btn" class="btn btn-info" style="float: left;"><i class="fa"></i> Search</button>
+			<button id="invList-btn" class="btn btn-info" style="float: left;margin-left: 4px;"><i class="fa"></i> Invoice list</button>
+			
+            <button id="printLocal" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
+            <button id="printInvoice" class="btn btn-info"><i class="fa fa-file-pdf-o"></i> Send invoice</button>
+        </div>
+        <hr>
+    </div>
+    <div class="invoice overflow-auto">
+        <div style="min-width: 600px">
+            <header>
+                <div class="row">
+                    <div class="col">
+                            <img src="../res/images/AltHealthBig.jpg" data-holder-rendered="true" width="150px"/>
+                    </div>
+                    <div class="col company-details">
+                        <h2 class="name">
+                            Alt Health
+                        </h2>
+                        <div id="sysAddress"></div>
+                        <div id="sysTelNo">(123) 456-789</div>
+                        <div id="sysEmail">company@altHealth.co.za</div>
+                    </div>
+                </div>
+            </header>
+            <main>
+                <div class="row contacts">
+                    <div class="col invoice-to">
+                        <div class="text-gray-light">INVOICE TO:</div>
+                        <h2 id="cNameSurname" class="to"></h2>
+						<div id="clientId" class="clientId"></div>
+                        <div id="cAddress" class="address"></div>
+						<div id="cTelCell" class="cTelCell"></div>
+                        <div id="cEmail" class="email"></div>
+                    </div>
+                    <div class="col invoice-details">
+                        <h1 class="invoice-id">
+							<span class="left-text">INVOICE: </span>
+							<span class="byline" id="invNum"> </span>
+						</h1>
+                        <div class="date">Date of Invoice: <label id="invDate"></div>
+						<div class="date">Invoice Paid: <label id="invPaid"></div>
+						<div class="date">Date of Invoice Paid: <label id="invPaidDate"></div>
+                    </div>
+                </div>
+                <table border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <tr>
+                            <th class="text-left">Supplement ID</th>
+							<th class="text-left">Description</th>
+                            <th class="text-right">Quantity</th>
+                            <th class="text-right">Cost(Excl)</th>
+							<th class="text-right">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cartItems">
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4">SUBTOTAL(excl)</td>
+                            <td id="cart-subtotal" class="totals-value">0</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">VAT <label id="vat" class="vat"/></td>
+                            <td id="cart-tax" class="totals-value">0</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">TOTAL(incl)</td>
+                            <td id="cart-total" class="totals-value">0</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </main>
+            <footer>
+                
+            </footer>
+        </div>
+        <!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
+        <div></div>
+		<div>
+			<p>Banking Details:	</p>
+			<p>Standard Bank	</p>
+			<p>Acc No: 0124135252	</p>
+			<p>Acc Type: Current	</p>
+			<p>Branch Code: 016145	</p>
+			<p>Reference: <label id="invNum2"></p>
+		</div>
+    </div>
+	</div>	
+
+<div w3-include-html="../pages/temps/footer.html"></div>
+	
+	<!--scripts -->
+	<script src="../res/js/plugins/jquery-3.5.1.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	<script src="http://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+	<!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> -->
+	<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+	<script src="../res/js/plugins/notify.js"></script>
+	<script src="../res/js/invoice.js"></script>
+</body>
+</html>
